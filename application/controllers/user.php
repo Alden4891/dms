@@ -24,7 +24,7 @@ public function __construct() {
       $data['password'] = '';
       $data['status'] = "login_failed";
       $data['alert'] = $this->session->flashdata('login_failed');
-      $this->load->view('login',$data);
+      $this->load->view('user/login',$data);
 
     }else{
       // print_r($this->session->userdata());
