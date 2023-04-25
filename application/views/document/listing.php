@@ -176,7 +176,7 @@
                 </li>
               </ul>
               <div class="text-center mt-5 mb-3">
-                <a href="#" class="btn btn-sm btn-primary" id="btn_upload_document">Upload New document</a>
+                <a href="#" class="btn btn-sm btn-primary" id="btn_upload_document">@DOCUMENT EDITOR</a>
                 <!-- <a href="#" class="btn btn-sm btn-warning">Report contact</a> -->
               </div>
             </div>
@@ -196,7 +196,7 @@
   <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="documentEntryEditorModalLabel">Upload new document</h5>
+        <h5 class="modal-title" id="documentEntryEditorModalLabel">Document Editor</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
