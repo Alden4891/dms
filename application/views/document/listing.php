@@ -176,7 +176,7 @@
                 </li>
               </ul>
               <div class="text-center mt-5 mb-3">
-                <a href="#" class="btn btn-sm btn-primary" id="btn_upload_document">@DOCUMENT EDITOR</a>
+                <a href="#" class="btn btn-sm btn-primary" id="btn_upload_document">NEW DOCUMENT</a>
                 <!-- <a href="#" class="btn btn-sm btn-warning">Report contact</a> -->
               </div>
             </div>
@@ -228,12 +228,12 @@
                                <div class="col-lg-6">
                                   <div class="input-group">
                                      <div class="input-group-prepend">
-                                        <span class="input-group-text">DRN</span>
+                                        <span class="input-group-text" style="min-width:120px;">DRN</span>
                                      </div>
                                      <input type="text" class="form-control" placeholder="">
                                   </div>                              
                                </div>
-                               <div class="col-lg-6">
+                               <div class="col-lg-3">
                                   <div class="input-group">
 
                                      <div class="input-group-prepend">
@@ -242,26 +242,156 @@
                                      <input type="date" class="form-control" placeholder="">
                                   </div>                               
                                 </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                 <div class="col-lg-12">
+                               <div class="col-lg-3">
                                   <div class="input-group">
 
                                      <div class="input-group-prepend">
-                                        <span class="input-group-text">SUBJECT</span>
+                                        <span class="input-group-text">TIME</span>
+                                     </div>
+                                     <input type="time" class="form-control" placeholder="">
+                                  </div>                               
+                                </div>
+
+
+
+                            </div>
+                            <br>
+                            <div class="row">
+                                 <div class="col-lg-9">
+
+
+                                    <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01" style="min-width:120px;">OSBU</label>
+                                      </div>
+                                      <select class="custom-select" id="inputGroupSelect01">
+                                        <option value="1" selected>PANTAWID - DC</option>
+                                        <option value="2">PANTAWID - GRS</option>
+                                        <option value="3">PANTAWID - IPD</option>
+                                        <option value="4">PANTAWID - GRANTS</option>
+                                        <option value="5">PANTAWID - CVS</option>
+                                        <option value="6">PANTAWID - BDM</option>
+                                        <option value="7">PANTAWID - COVENGENCE/RCM</option>
+                                      </select>
+                                    </div>
+                                </div>
+
+
+
+
+                                 <div class="col-lg-3">
+                                    <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">STAT.</label>
+                                      </div>
+                                      <select class="custom-select" id="inputGroupSelect01">
+                                        <option selected>Choose...</option>
+                                        <option value="1">IN-PROGRESS</option>
+                                        <option value="2">PENDING</option>
+                                        <option value="3">FORWARDED</option>
+                                        <option value="3">APPROVED</option>
+                                        <option value="3">DONE/CONDUCTED</option>
+                                        <option value="3">ON-HOLD</option>
+                                        <option value="3">CANCELLED</option>
+                                        <option value="3">ARCHIVED</option>
+                                      </select>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                          
+
+                            
+                            <div class="row">
+                               <div class="col-lg-12">
+                                  <div class="input-group mb-3">
+                                     <div class="input-group-prepend">
+                                        <span class="input-group-text" style="min-width:120px;">DOC. TITLE</span>
+                                     </div>
+                                     <input type="text" class="form-control" placeholder="" >
+                                  </div>                              
+                               </div>
+                            </div>
+
+                            <div class="row">
+                               <div class="col-lg-12">
+                                  <div class="input-group mb-3">
+                                     <div class="input-group-prepend">
+                                        <span class="input-group-text" style="min-width:120px;">REQUESTER</span>
                                      </div>
                                      <input type="text" class="form-control" placeholder="">
-                                  </div>                               
+                                  </div>                              
+                               </div>
+                            </div>
+
+                            <div class="row">
+                               <div class="col-lg-12">
+                                  <div class="input-group mb-3">
+                                     <div class="input-group-prepend">
+                                        <span class="input-group-text" style="min-width:120px;">END-USER</span>
+                                     </div>
+                                     <input type="text" class="form-control" placeholder="">
+                                  </div>                              
+                               </div>
+                            </div>
+                            
+
+                            <div class="row">
+                                <div class="col-lg-6">
+
+                                  <div class="input-group mb-3">
+                                     <div class="input-group-prepend">
+                                        <span class="input-group-text" style="min-width:120px;">VENUE</span>
+                                     </div>
+                                     <input type="text" class="form-control" placeholder="">
+                                  </div>
+
+                                  <div class="input-group mb-3">
+                                     <div class="input-group-prepend">
+                                        <span class="input-group-text" style="min-width:120px;">AMOUNT</span>
+                                     </div>
+                                     <input type="text" class="form-control" placeholder="">
+                                  </div>
+
+                                  <div class="input-group mb-3">
+                                     <div class="input-group-prepend">
+                                        <span class="input-group-text" style="min-width:120px;">PARTICIPANTS</span>
+                                     </div>
+                                     <input type="text" class="form-control" placeholder="">
+                                  </div>
+
+                                </div>
+                                <div class="col-lg-6">
+                                    BREAKDOWN OF EXPENSES
+                                    <textarea style="height: 122px; width: 100%;" class="form-control">
+                                     
+                                    </textarea>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+
+                                </div>
+                                <div class="col-lg-6">
+
                                 </div>
                             </div>
                             
-                            <br>
-                            Document Description
+                            
+                            REMARKS
                             <textarea id="summernote" style="height: 200px;" rows="6">
                               <br><br><br><br><br><br><br><br>
                             </textarea>
-                          </div>
+
+
+
+                          </div> <!-- CARD BODY -->
+
+
 <!--                           <div class="card-footer">
                             Visit <a href="https://github.com/summernote/summernote/">Please input document description</a> documentation for more examples and information about the plugin.
                           </div> -->
