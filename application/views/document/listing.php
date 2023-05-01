@@ -226,7 +226,7 @@
 
                             <div class="row">
                                <div class="col-lg-6">
-                                  <div class="input-group">
+                                  <div class="input-group mb-3">
                                      <div class="input-group-prepend">
                                         <span class="input-group-text" style="min-width:120px;">DRN</span>
                                      </div>
@@ -234,7 +234,7 @@
                                   </div>                              
                                </div>
                                <div class="col-lg-3">
-                                  <div class="input-group">
+                                  <div class="input-group mb-3">
 
                                      <div class="input-group-prepend">
                                         <span class="input-group-text">DATE</span>
@@ -243,7 +243,7 @@
                                   </div>                               
                                 </div>
                                <div class="col-lg-3">
-                                  <div class="input-group">
+                                  <div class="input-group mb-3">
 
                                      <div class="input-group-prepend">
                                         <span class="input-group-text">TIME</span>
@@ -251,11 +251,8 @@
                                      <input type="time" class="form-control" placeholder="">
                                   </div>                               
                                 </div>
-
-
-
                             </div>
-                            <br>
+                            
                             <div class="row">
                                  <div class="col-lg-9">
 
