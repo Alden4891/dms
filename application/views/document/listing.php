@@ -208,7 +208,7 @@
 
           <div class="card-body">
             <div class="row">
-              <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+              <div class="col-12 col-md-12 col-lg-9 order-2 order-md-1">
 
                 <div class="row">
                   <div class="col-12">
@@ -228,14 +228,13 @@
                                <div class="col-lg-6">
                                   <div class="input-group mb-3">
                                      <div class="input-group-prepend">
-                                        <span class="input-group-text" style="min-width:120px;">DRN</span>
+                                        <span class="input-group-text" style="min-width:120px;"><strong>DRN</strong></span>
                                      </div>
                                      <input type="text" class="form-control" placeholder="">
                                   </div>                              
                                </div>
                                <div class="col-lg-3">
                                   <div class="input-group mb-3">
-
                                      <div class="input-group-prepend">
                                         <span class="input-group-text">DATE</span>
                                      </div>
@@ -293,7 +292,6 @@
                                         <option value="3">ARCHIVED</option>
                                       </select>
                                     </div>
-
                                 </div>
 
 
@@ -308,7 +306,7 @@
                                      <div class="input-group-prepend">
                                         <span class="input-group-text" style="min-width:120px;">DOC. TITLE</span>
                                      </div>
-                                     <input type="text" class="form-control" placeholder="" >
+                                     <input type="text" class="form-control" placeholder="" name="doc_title" >
                                   </div>                              
                                </div>
                             </div>
@@ -319,7 +317,7 @@
                                      <div class="input-group-prepend">
                                         <span class="input-group-text" style="min-width:120px;">REQUESTER</span>
                                      </div>
-                                     <input type="text" class="form-control" placeholder="">
+                                     <input type="text" class="form-control" placeholder="" name="doc_requester" >
                                   </div>                              
                                </div>
                             </div>
@@ -359,26 +357,133 @@
                                      </div>
                                      <input type="text" class="form-control" placeholder="">
                                   </div>
-
+                                  <div class="input-group mb-3">
+                                     <div class="input-group-prepend">
+                                        <span class="input-group-text" style="min-width:120px;">TARGET</span>
+                                     </div>
+                                     <input type="date" class="form-control" placeholder="">
+                                  </div> 
                                 </div>
                                 <div class="col-lg-6">
                                     BREAKDOWN OF EXPENSES
-                                    <textarea style="height: 122px; width: 100%;" class="form-control">
+                                    <textarea style="height: 176px; width: 100%;" class="form-control">
                                      
                                     </textarea>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-6">
-
+                                <div class="col-lg-4">
+                                  <div class="input-group mb-3">
+                                     <div class="input-group-prepend">
+                                        <span class="input-group-text">DATE REVIEWED</span>
+                                     </div>
+                                     <input type="date" class="form-control" placeholder="">
+                                  </div> 
                                 </div>
-                                <div class="col-lg-6">
-
+                                <div class="col-lg-4">
+                                  <div class="input-group mb-3">
+                                     <div class="input-group-prepend">
+                                        <span class="input-group-text">DATE INITIALED</span>
+                                     </div>
+                                     <input type="date" class="form-control" placeholder="">
+                                  </div> 
+                                </div>
+                                <div class="col-lg-4">
+                                  <div class="input-group mb-3">
+                                     <div class="input-group-prepend">
+                                        <span class="input-group-text">DATE RECEIVED</span>
+                                     </div>
+                                     <input type="date" class="form-control" placeholder="">
+                                  </div> 
                                 </div>
                             </div>
                             
-                            
+                            <div class="row">
+                                <div class="col-lg-4">
+                                  <div class="input-group mb-3">
+                                     <div class="input-group-prepend">
+                                        <span class="input-group-text">DATE ENDORSED</span>
+                                     </div>
+                                     <input type="date" class="form-control" placeholder="">
+                                  </div> 
+                                </div>
+                                <div class="col-lg-4">
+                                  <div class="input-group mb-3">
+                                     <div class="input-group-prepend">
+                                        <span class="input-group-text">DATE ECMS RECEIVED</span>
+                                     </div>
+                                     <input type="date" class="form-control" placeholder="">
+                                  </div> 
+                                </div>
+                                <div class="col-lg-4">
+                                  <div class="input-group mb-3">
+                                     <div class="input-group-prepend">
+                                        <span class="input-group-text">TURNAROUND TIME</span>
+                                     </div>
+                                     <input type="date" class="form-control" placeholder="">
+                                  </div> 
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-8">
+
+                                    <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">RELEASED BY</label>
+                                      </div>
+                                      <select class="custom-select" id="inputGroupSelect01">
+                                        <option selected>Choose...</option>
+                                        <option value="1">DIVINE GRACE - M&E</option>
+                                        <option value="2">AAAA</option>
+                                        <option value="3">BBBB</option>
+
+                                      </select>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-lg-4">
+                                  <div class="input-group mb-3">
+                                     <div class="input-group-prepend">
+                                        <span class="input-group-text">DATE RELEASED</span>
+                                     </div>
+                                     <input type="date" class="form-control" placeholder="">
+                                  </div> 
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">SIGNED BY</label>
+                                      </div>
+                                      <select class="custom-select" id="inputGroupSelect01">
+                                        <option selected>Choose...</option>
+                                        <option value="1">DIVINE GRACE - M&E</option>
+                                        <option value="2">AAAA</option>
+                                        <option value="3">BBBB</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">RECEIVED BY</label>
+                                      </div>
+                                      <select class="custom-select" id="inputGroupSelect01">
+                                        <option selected>Choose...</option>
+                                        <option value="1">DIVINE GRACE - M&E</option>
+                                        <option value="2">AAAA</option>
+                                        <option value="3">BBBB</option>
+                                      </select>
+                                    </div>
+                                </div>
+                            </div>
+
                             REMARKS
                             <textarea id="summernote" style="height: 200px;" rows="6">
                               <br><br><br><br><br><br><br><br>
@@ -401,7 +506,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+              <div class="col-12 col-md-12 col-lg-3 order-1 order-md-2">
                 <h3 class="text-primary"><i class="fas fa-paint-brush"></i>Note:</h3>
 
                 <p class="text-muted">
