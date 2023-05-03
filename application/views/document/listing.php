@@ -224,81 +224,33 @@
                           <!-- /.card-header -->
                           <div class="card-body">
 
-                            <div class="row">
-                               <div class="col-lg-6">
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="min-width:120px;"><strong>DRN</strong></span>
-                                     </div>
-                                     <input type="text" class="form-control" placeholder="">
-                                  </div>                              
-                               </div>
-                               <div class="col-lg-3">
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">DATE</span>
-                                     </div>
-                                     <input type="date" class="form-control" placeholder="">
-                                  </div>                               
-                                </div>
-                               <div class="col-lg-3">
-                                  <div class="input-group mb-3">
+                            <div class="row" >
+                               <div class="col-lg-12">
 
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">TIME</span>
-                                     </div>
-                                     <input type="time" class="form-control" placeholder="">
-                                  </div>                               
-                                </div>
+                                    <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                        <label class="input-group-text" for="doctype_selection" style="min-width:120px;">DOC TYPE</label>
+                                      </div>
+                                      <select class="custom-select" id="doctype_selection">
+                                        <option value="-1" selected>SELECT</option>
+                                        <option value="1">MEMORANDUM</option>
+                                        <option value="2">EXECUTIVE SUMMARY</option>
+                                        <option value="3">TRAVEL REQUESTS</option>
+                                        <option value="4">COMMUNICATIONS</option>
+                                        <option value="5">PROPOSALS</option>
+                                        <option value="6">MEETINGS</option>
+                                        <option value="7">DATA REQUESTS</option>
+                                      </select>
+                                    </div>
+
+                             
+                               </div>
                             </div>
                             
-                            <div class="row">
-                                 <div class="col-lg-9">
-
-
-                                    <div class="input-group mb-3">
-                                      <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01" style="min-width:120px;">OSBU</label>
-                                      </div>
-                                      <select class="custom-select" id="inputGroupSelect01">
-                                        <option value="1" selected>PANTAWID - DC</option>
-                                        <option value="2">PANTAWID - GRS</option>
-                                        <option value="3">PANTAWID - IPD</option>
-                                        <option value="4">PANTAWID - GRANTS</option>
-                                        <option value="5">PANTAWID - CVS</option>
-                                        <option value="6">PANTAWID - BDM</option>
-                                        <option value="7">PANTAWID - COVENGENCE/RCM</option>
-                                      </select>
-                                    </div>
-                                </div>
-
-
-
-
-                                 <div class="col-lg-3">
-                                    <div class="input-group mb-3">
-                                      <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">STAT.</label>
-                                      </div>
-                                      <select class="custom-select" id="inputGroupSelect01">
-                                        <option selected>Choose...</option>
-                                        <option value="1">IN-PROGRESS</option>
-                                        <option value="2">PENDING</option>
-                                        <option value="3">FORWARDED</option>
-                                        <option value="3">APPROVED</option>
-                                        <option value="3">DONE/CONDUCTED</option>
-                                        <option value="3">ON-HOLD</option>
-                                        <option value="3">CANCELLED</option>
-                                        <option value="3">ARCHIVED</option>
-                                      </select>
-                                    </div>
-                                </div>
-
+                            <div id="form_object_container">
+                              
 
                             </div>
-
-                          
-
                             
                             <div class="row">
                                <div class="col-lg-12">
@@ -431,9 +383,9 @@
 
                                     <div class="input-group mb-3">
                                       <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">RELEASED BY</label>
+                                        <label class="input-group-text" for="doctype_selection">RELEASED BY</label>
                                       </div>
-                                      <select class="custom-select" id="inputGroupSelect01">
+                                      <select class="custom-select" id="doctype_selection">
                                         <option selected>Choose...</option>
                                         <option value="1">DIVINE GRACE - M&E</option>
                                         <option value="2">AAAA</option>
@@ -459,9 +411,9 @@
                                 <div class="col-lg-6">
                                     <div class="input-group mb-3">
                                       <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">SIGNED BY</label>
+                                        <label class="input-group-text" for="doctype_selection">SIGNED BY</label>
                                       </div>
-                                      <select class="custom-select" id="inputGroupSelect01">
+                                      <select class="custom-select" id="doctype_selection">
                                         <option selected>Choose...</option>
                                         <option value="1">DIVINE GRACE - M&E</option>
                                         <option value="2">AAAA</option>
@@ -472,9 +424,9 @@
                                 <div class="col-lg-6">
                                     <div class="input-group mb-3">
                                       <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">RECEIVED BY</label>
+                                        <label class="input-group-text" for="doctype_selection">RECEIVED BY</label>
                                       </div>
-                                      <select class="custom-select" id="inputGroupSelect01">
+                                      <select class="custom-select" id="doctype_selection">
                                         <option selected>Choose...</option>
                                         <option value="1">DIVINE GRACE - M&E</option>
                                         <option value="2">AAAA</option>
@@ -924,8 +876,6 @@ $(document).ready(function() {
     $("#documentArchivingModal").modal("show");
   });
 
-
-
   //initialize text editor
   $(function () {
     // Summernote
@@ -940,6 +890,38 @@ $(document).ready(function() {
     });
   })
 
+  //on document type select
+  $(document).on('change','#doctype_selection',function(e){
+      e.preventDefault();
+      var doctype = $(this).val();
+      console.log(doctype);
+
+      $.ajax('<?=site_url('docEditorModalController/getFormConent')?>', { 
+        data: { 
+          doctype: doctype 
+        },
+          type: "POST",
+          beforeSend: function(xhr, opts) {
+            if (doctype == -1) {
+                xhr.abort();
+                console.log("send aborted");
+            }
+          },
+          error: function(data) {
+              console.log(data);
+              alert("Unerror has occured! Please contact aaquinones.fo12@gmail.com."); 
+          },
+          success: function(data) {
+              var obj = jQuery.parseJSON(data);
+              $('#form_object_container').html(obj.dom);
+              //console.log();
+
+
+          }
+      });
+
+
+  });
 
 
 });
