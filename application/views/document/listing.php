@@ -223,6 +223,7 @@
                           </div>
                           <!-- /.card-header -->
                           <div class="card-body">
+                            <form id="form_doc_editor">
 
                             <div class="row" >
                                <div class="col-lg-12">
@@ -231,7 +232,7 @@
                                       <div class="input-group-prepend">
                                         <label class="input-group-text" for="doctype_selection" style="min-width:120px;">DOC TYPE</label>
                                       </div>
-                                      <select class="custom-select" id="doctype_selection">
+                                      <select class="custom-select" id="doctype_selection" name="doctype_selection" curr-value='-1'>
                                         <option value="-1" selected>SELECT</option>
                                         <option value="1">MEMORANDUM</option>
                                         <option value="2">EXECUTIVE SUMMARY</option>
@@ -247,202 +248,17 @@
                                </div>
                             </div>
                             
-                            <div id="form_object_container">
-                              
-
-                            </div>
-                            
-                            <div class="row">
-                               <div class="col-lg-12">
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="min-width:120px;">DOC. TITLE</span>
-                                     </div>
-                                     <input type="text" class="form-control" placeholder="" name="doc_title" >
-                                  </div>                              
-                               </div>
-                            </div>
-
-                            <div class="row">
-                               <div class="col-lg-12">
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="min-width:120px;">REQUESTER</span>
-                                     </div>
-                                     <input type="text" class="form-control" placeholder="" name="doc_requester" >
-                                  </div>                              
-                               </div>
-                            </div>
-
-                            <div class="row">
-                               <div class="col-lg-12">
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="min-width:120px;">END-USER</span>
-                                     </div>
-                                     <input type="text" class="form-control" placeholder="">
-                                  </div>                              
-                               </div>
-                            </div>
-                            
-
-                            <div class="row">
-                                <div class="col-lg-6">
-
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="min-width:120px;">VENUE</span>
-                                     </div>
-                                     <input type="text" class="form-control" placeholder="">
-                                  </div>
-
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="min-width:120px;">AMOUNT</span>
-                                     </div>
-                                     <input type="text" class="form-control" placeholder="">
-                                  </div>
-
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="min-width:120px;">PARTICIPANTS</span>
-                                     </div>
-                                     <input type="text" class="form-control" placeholder="">
-                                  </div>
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" style="min-width:120px;">TARGET</span>
-                                     </div>
-                                     <input type="date" class="form-control" placeholder="">
-                                  </div> 
-                                </div>
-                                <div class="col-lg-6">
-                                    BREAKDOWN OF EXPENSES
-                                    <textarea style="height: 176px; width: 100%;" class="form-control">
-                                     
+                              <div id="form_object_container"></div>
+                              <div class="row invisible" id='form_editor_remarks_container'>
+                                 <div class="col-lg-12">
+                                    REMARKS
+                                    <textarea id="summernote" style="height: 200px;" rows="6">
+                                      <br><br><br><br><br><br><br><br>
                                     </textarea>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-lg-4">
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">DATE REVIEWED</span>
-                                     </div>
-                                     <input type="date" class="form-control" placeholder="">
-                                  </div> 
-                                </div>
-                                <div class="col-lg-4">
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">DATE INITIALED</span>
-                                     </div>
-                                     <input type="date" class="form-control" placeholder="">
-                                  </div> 
-                                </div>
-                                <div class="col-lg-4">
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">DATE RECEIVED</span>
-                                     </div>
-                                     <input type="date" class="form-control" placeholder="">
-                                  </div> 
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-lg-4">
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">DATE ENDORSED</span>
-                                     </div>
-                                     <input type="date" class="form-control" placeholder="">
-                                  </div> 
-                                </div>
-                                <div class="col-lg-4">
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">DATE ECMS RECEIVED</span>
-                                     </div>
-                                     <input type="date" class="form-control" placeholder="">
-                                  </div> 
-                                </div>
-                                <div class="col-lg-4">
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">TURNAROUND TIME</span>
-                                     </div>
-                                     <input type="date" class="form-control" placeholder="">
-                                  </div> 
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-8">
-
-                                    <div class="input-group mb-3">
-                                      <div class="input-group-prepend">
-                                        <label class="input-group-text" for="doctype_selection">RELEASED BY</label>
-                                      </div>
-                                      <select class="custom-select" id="doctype_selection">
-                                        <option selected>Choose...</option>
-                                        <option value="1">DIVINE GRACE - M&E</option>
-                                        <option value="2">AAAA</option>
-                                        <option value="3">BBBB</option>
-
-                                      </select>
-                                    </div>
-
-
-                                </div>
-                                <div class="col-lg-4">
-                                  <div class="input-group mb-3">
-                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">DATE RELEASED</span>
-                                     </div>
-                                     <input type="date" class="form-control" placeholder="">
-                                  </div> 
-                                </div>
-                            </div>
-
-
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="input-group mb-3">
-                                      <div class="input-group-prepend">
-                                        <label class="input-group-text" for="doctype_selection">SIGNED BY</label>
-                                      </div>
-                                      <select class="custom-select" id="doctype_selection">
-                                        <option selected>Choose...</option>
-                                        <option value="1">DIVINE GRACE - M&E</option>
-                                        <option value="2">AAAA</option>
-                                        <option value="3">BBBB</option>
-                                      </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="input-group mb-3">
-                                      <div class="input-group-prepend">
-                                        <label class="input-group-text" for="doctype_selection">RECEIVED BY</label>
-                                      </div>
-                                      <select class="custom-select" id="doctype_selection">
-                                        <option selected>Choose...</option>
-                                        <option value="1">DIVINE GRACE - M&E</option>
-                                        <option value="2">AAAA</option>
-                                        <option value="3">BBBB</option>
-                                      </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            REMARKS
-                            <textarea id="summernote" style="height: 200px;" rows="6">
-                              <br><br><br><br><br><br><br><br>
-                            </textarea>
-
-
-
+                                 </div>
+                              </div>
+                            </form>
                           </div> <!-- CARD BODY -->
 
 
@@ -565,7 +381,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save Changes</button>
+        <button type="button" class="btn btn-primary" id='button_save_form_editor'>Save Changes</button>
       </div>
     </div>
   </div>
@@ -894,7 +710,24 @@ $(document).ready(function() {
   $(document).on('change','#doctype_selection',function(e){
       e.preventDefault();
       var doctype = $(this).val();
-      console.log(doctype);
+      var curr_value = $(this).attr('curr-value');
+      var formData = $('#form_doc_editor').serializeArray();
+      var fn_drn = formData.find(element => element.name === 'fe_drn');
+      var fn_title = formData.find(element => element.name === 'fe_title');
+      if (fn_drn !== undefined || fn_title !== undefined) {
+          if (fn_drn.value !== '' || fn_title.value !== '') {
+            if (!confirm('The changes you made will be discarded. Do you want to continue?')) {
+              // Cancel the event handler and stop the event propagation
+              // $(document).off('change', '#doctype_selection');
+              e.stopPropagation();
+              this.value = curr_value;
+              return false;                
+            }
+          }
+
+      } else {
+          console.log('The "fn_drn" field is not found in the form data.');
+      }      
 
       $.ajax('<?=site_url('docEditorModalController/getFormConent')?>', { 
         data: { 
@@ -904,7 +737,9 @@ $(document).ready(function() {
           beforeSend: function(xhr, opts) {
             if (doctype == -1) {
                 xhr.abort();
-                console.log("send aborted");
+                console.log(" form content request aborted");
+                $('#form_object_container').html('');
+                $('#form_editor_remarks_container').addClass('invisible');
             }
           },
           error: function(data) {
@@ -912,16 +747,36 @@ $(document).ready(function() {
               alert("Unerror has occured! Please contact aaquinones.fo12@gmail.com."); 
           },
           success: function(data) {
+              // console.log(data);
               var obj = jQuery.parseJSON(data);
               $('#form_object_container').html(obj.dom);
-              //console.log();
-
-
+              $('#form_editor_remarks_container').removeClass('invisible');
+              $('#doctype_selection').attr('curr-value',doctype);
           }
       });
-
-
   });
+
+
+  $(document).on('change','#fe_drn',function(e){
+      e.preventDefault();
+      $('#doctype_selection').prop('readyonly', true);
+      alert(1);
+  });
+
+  // $(document).on('click', '#button_save_form_editor', function() {
+  //   $.ajax({
+  //     url: 'my-page.php',
+  //     type: 'POST',
+  //     data: $('#form_doc_editor').serialize(),
+  //     success: function(response) {
+  //       // Handle the response from the server
+  //     },
+  //     error: function(jqXHR, textStatus, errorThrown) {
+  //       // Handle errors
+  //     }
+  //   });
+  // });
+
 
 
 });

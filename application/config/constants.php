@@ -91,3 +91,10 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 */
 
 define('APP_TITLE','DMS v1.0');      
+define('DOC_TYPE_MEMO',1);      
+define('DOC_TYPE_ES',2);      
+define('DOC_TYPE_TRAVEL',3);      
+define('DOC_TYPE_COMMU',4);      
+define('DOC_TYPE_PROPOSAL',5);      
+define('DOC_TYPE_MEETING',6);      
+define('DOC_TYPE_DATA_REQUEST',7);      
