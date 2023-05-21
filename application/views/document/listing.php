@@ -60,71 +60,28 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                      <td>4PS-OPDA23-423023-12123123</td>
-                      <td>SAMPLE DOCUMENT TITLE
-                      </td>
-                      <td>2023-01-03</td>
-                      <td>ACTIVE</td>
-                      <td>
-                        <div class="dropdown">
-                          <button  style="width: 100%;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           <i class="fas fa-file-prescription"></i> Select
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#" id="btn_edit_entry"><i class="fas fa-edit"></i> Edit</a>
-                            <a class="dropdown-item" href="#" id="btn_route_entry"><i class="fas fa-route"></i> Route</a>
-                            <a class="dropdown-item" href="#" id="btn_archive_entry"><i class="fas fa-archive"></i> Archive</a>
-                          </div>
-                        </div>
+                      <?php foreach ($documents as $document) { ?>
+                          <tr>
+                              <td><?php echo $document->DRN; ?></td>
+                              <td><?php echo $document->SUBJECT; ?></td>
+                              <td><?php echo $document->DATE_POSTED=='0000-00-00 00:00:00'?'no-data':$document->DATE_POSTED; ?></td>
+                              <td><?php echo $document->STATUS; ?></td>
+                              <td>
+                                <div class="dropdown">
+                                  <button  style="width: 100%;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                   <i class="fas fa-file-prescription"></i> Select
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#" id="btn_edit_entry" doc_id=<?php echo $document->ID; ?>><i class="fas fa-edit"></i> Edit</a>
+                                    <a class="dropdown-item" href="#" id="btn_route_entry"><i class="fas fa-route"></i> Route</a>
+                                    <a class="dropdown-item" href="#" id="btn_archive_entry"><i class="fas fa-archive"></i> Archive</a>
+                                  </div>
+                                </div>
 
-                      </td>
-                    </tr>
+                              </td>
+                          </tr>
 
-
-                    <tr>
-                      <td>4PS-OPDA23-423023-12123123</td>
-                      <td>SAMPLE DOCUMENT TITLE
-                      </td>
-                      <td>2023-01-03</td>
-                      <td>ACTIVE</td>
-                      <td>
-                        <div class="dropdown">
-                          <button  style="width: 100%;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           <i class="fas fa-file-prescription"></i> Select
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#" id="btn_edit_entry"><i class="fas fa-edit"></i> Edit</a>
-                            <a class="dropdown-item" href="#" id="btn_route_entry"><i class="fas fa-route"></i> Route</a>
-                            <a class="dropdown-item" href="#" id="btn_archive_entry"><i class="fas fa-archive"></i> Archive</a>
-                          </div>
-                        </div>
-
-                      </td>
-                    </tr>
-
-
-
-                    <tr>
-                      <td>4PS-OPDA23-423023-12123123</td>
-                      <td>SAMPLE DOCUMENT TITLE
-                      </td>
-                      <td>2023-01-03</td>
-                      <td>ACTIVE</td>
-                      <td>
-                        <div class="dropdown">
-                          <button  style="width: 100%;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           <i class="fas fa-file-prescription"></i> Select
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#" id="btn_edit_entry"><i class="fas fa-edit"></i> Edit</a>
-                            <a class="dropdown-item" href="#" id="btn_route_entry"><i class="fas fa-route"></i> Route</a>
-                            <a class="dropdown-item" href="#" id="btn_archive_entry"><i class="fas fa-archive"></i> Archive</a>
-                          </div>
-                        </div>
-
-                      </td>
-                    </tr>
+                      <?php } ?>
 
 
                     </tbody>
@@ -247,15 +204,13 @@
                              
                                </div>
                             </div>
-                            
-                              <div id="form_object_container"></div>
-                              <div class="row invisible" id='form_editor_remarks_container'>
-                                 <div class="col-lg-12">
-                                    REMARKS
-                                    <textarea id="summernote" style="height: 200px;" rows="6">
-                                      <br><br><br><br><br><br><br><br>
-                                    </textarea>
+                              <div id="form_object_container">
 
+                              </div>
+                              <div class="row invisible" id='form_editor_remarks_container'>
+                             
+                                 <div class="col-lg-12">
+                                    REMARKS <textarea id="summernote" style="height: 400px; min-height: 400px;" rows="20"></textarea>
                                  </div>
                               </div>
                             </form>
@@ -679,7 +634,10 @@ $(document).ready(function() {
 
   // on edit document clicked
   $(document).on('click','#btn_edit_entry',function() {
-    $("#documentEntryEditorModal").modal("show");
+    var doc_id = $(this).attr('doc_id');
+    alert(doc_id);
+
+    //$("#documentEntryEditorModal").modal("show");
   });
 
   // on route document clicked
@@ -707,54 +665,64 @@ $(document).ready(function() {
   })
 
   //on document type select
-  $(document).on('change','#doctype_selection',function(e){
-      e.preventDefault();
-      var doctype = $(this).val();
-      var curr_value = $(this).attr('curr-value');
-      var formData = $('#form_doc_editor').serializeArray();
-      var fn_drn = formData.find(element => element.name === 'fe_drn');
-      var fn_title = formData.find(element => element.name === 'fe_title');
-      if (fn_drn !== undefined || fn_title !== undefined) {
-          if (fn_drn.value !== '' || fn_title.value !== '') {
-            if (!confirm('The changes you made will be discarded. Do you want to continue?')) {
-              // Cancel the event handler and stop the event propagation
-              // $(document).off('change', '#doctype_selection');
-              e.stopPropagation();
-              this.value = curr_value;
-              return false;                
-            }
-          }
+$(document).on('change', '#doctype_selection', function(e) {
+  e.preventDefault();
+  var doctype = $(this).val();
+  var curr_value = $(this).attr('curr-value');
+  var formData = $('#form_doc_editor').serializeArray();
+  var fn_drn = formData.find(element => element.name === 'fe_drn');
+  var fn_title = formData.find(element => element.name === 'fe_title');
 
-      } else {
-          console.log('The "fn_drn" field is not found in the form data.');
-      }      
+  if (fn_drn || fn_title) {
+    if (fn_drn?.value || fn_title?.value) {
+      if (!confirm('The changes you made will be discarded. Do you want to continue?')) {
+        e.stopPropagation();
+        this.value = curr_value;
+        return false;
+      }
+    }
+  } else {
+    console.log('The "fn_drn" field is not found in the form data.');
+  }
 
-      $.ajax('<?=site_url('docEditorModalController/getFormConent')?>', { 
-        data: { 
-          doctype: doctype 
-        },
-          type: "POST",
-          beforeSend: function(xhr, opts) {
-            if (doctype == -1) {
-                xhr.abort();
-                console.log(" form content request aborted");
-                $('#form_object_container').html('');
-                $('#form_editor_remarks_container').addClass('invisible');
-            }
-          },
-          error: function(data) {
-              console.log(data);
-              alert("Unerror has occured! Please contact aaquinones.fo12@gmail.com."); 
-          },
-          success: function(data) {
-              // console.log(data);
-              var obj = jQuery.parseJSON(data);
-              $('#form_object_container').html(obj.dom);
-              $('#form_editor_remarks_container').removeClass('invisible');
-              $('#doctype_selection').attr('curr-value',doctype);
-          }
-      });
-  });
+  // Show loading indicator
+  $('#form_object_container').html('<div id="loading_indicator" class="text-center"><img src="images/loading.gif" alt="Loading..." /></div>  ');
+  $('#form_editor_remarks_container').addClass('invisible');
+
+  //fetch data and objects; the timer is for testing only
+  setTimeout(function() {
+    $.ajax('<?=site_url('docEditorModalController/getFormConent')?>', {
+      data: {
+        doctype: doctype
+      },
+      type: "POST",
+      beforeSend: function(xhr, opts) {
+        if (doctype == -1) {
+          xhr.abort();
+          console.log(" form content request aborted");
+          $('#form_object_container').html('');
+          $('#form_editor_remarks_container').addClass('invisible');
+        }
+      },
+      error: function(data) {
+        console.log(data);
+        alert("An error has occurred! Please contact aaquinones.fo12@gmail.com.");
+      },
+      success: function(data) {
+        var obj = jQuery.parseJSON(data);
+        $('#form_object_container').html(obj.dom);
+        $('#form_editor_remarks_container').removeClass('invisible');
+        $('#doctype_selection').attr('curr-value', doctype);
+      },
+      complete: function() {
+        // Hide loading indicator
+        $('#form_editor_remarks_container').removeClass('loading');
+      }
+    });
+  }, 100);
+});
+
+
 
 
   $(document).on('change','#fe_drn',function(e){

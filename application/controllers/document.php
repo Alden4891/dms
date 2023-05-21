@@ -15,12 +15,21 @@ class document extends CI_Controller {
     }
     
 	public function listing($tag = ''){
+		$this->load->model('Documents_model');
+
 		$data['open_menu'] = 'document';
+		$data['documents'] = $this->Documents_model->get_list();
+
+		// print_r($data);
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar',$data);
 		$this->load->view('document/listing');
 		$this->load->view('templates/footer');
 	}
+
+	public function edit($doc_id){
+		
+	}	
 
 	public function upload(){
 

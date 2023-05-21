@@ -60,13 +60,7 @@ class docEditor_model extends CI_Model {
                                         <label class=\"input-group-text\" for=\"doctype_selection\" style=\"min-width:120px;\">OSBU</label>
                                       </div>
                                       <select class=\"custom-select\"  id=\"fe_osbu\" name=\"fe_osbu\">
-                                        <option value=\"1\" selected>PANTAWID - DC</option>
-                                        <option value=\"2\">PANTAWID - GRS</option>
-                                        <option value=\"3\">PANTAWID - IPD</option>
-                                        <option value=\"4\">PANTAWID - GRANTS</option>
-                                        <option value=\"5\">PANTAWID - CVS</option>
-                                        <option value=\"6\">PANTAWID - BDM</option>
-                                        <option value=\"7\">PANTAWID - COVENGENCE/RCM</option>
+                                        <option value=\"1\" selected>PANTAWID</option>
                                       </select>
                                     </div>
                                 </div>
@@ -108,16 +102,29 @@ class docEditor_model extends CI_Model {
 
       $this->requester = "
                             <div class=\"row\">
-                               <div class=\"col-lg-12\">
-                                  <div class=\"input-group mb-3\">
-                                     <div class=\"input-group-prepend\">
-                                        <span class=\"input-group-text\" style=\"min-width:120px;\">REQUESTER</span>
-                                     </div>
-                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"fe_requester\" name=\"fe_requester\" >
-                                  </div>                              
-                               </div>
-                            </div>
 
+
+                                 <div class=\"col-lg-12\">
+                                    <div class=\"input-group mb-3\">
+                                      <div class=\"input-group-prepend\">
+                                        <label class=\"input-group-text\" for=\"doctype_selection\" style=\"min-width:120px;\">REQUESTER</label>
+                                      </div>
+                                      <select class=\"custom-select\"  id=\"fe_status\" name=\"fe_requester\">
+                                        <option selected>Choose...</option>
+                                        <option value=\"1\">IN-PROGRESS</option>
+                                        <option value=\"2\">PENDING</option>
+                                        <option value=\"3\">FORWARDED</option>
+                                        <option value=\"4\">APPROVED</option>
+                                        <option value=\"5\">DONE/CONDUCTED</option>
+                                        <option value=\"6\">ON-HOLD</option>
+                                        <option value=\"7\">CANCELLED</option>
+                                        <option value=\"8\">ARCHIVED</option>
+                                      </select>
+                                      <span class=\"input-group-append\"><button type=\"button\" class=\"btn btn-info btn-flat\">+</button></span>
+                                    </div>
+                                </div>
+
+                            </div>
       ";
 
       $this->end_users = "
@@ -164,14 +171,12 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\" style=\"min-width:120px;\">TARGET</span>
                                      </div>
-                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"fe_target\" name=\"fe_target\">
+                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"fe_target\" name=\"fe_target\">
                                   </div> 
                                 </div>
                                 <div class=\"col-lg-6\">
                                     BREAKDOWN OF EXPENSES
-                                    <textarea style=\"height: 176px; width: 100%;\" class=\"form-control\" id=\"fe_breakdown_exp\" name=\"fe_breakdown_exp\">
-                                     
-                                    </textarea>
+                                    <textarea style=\"height: 176px; width: 100%;\" class=\"form-control\" id=\"fe_breakdown_exp\" name=\"fe_breakdown_exp\"></textarea>
                                 </div>
                             </div>
 
@@ -337,6 +342,7 @@ class docEditor_model extends CI_Model {
 	 	$this->htx .= $this->signed_by;
 	 	return $this->htx;
 	 }
+    
 	 public function get_data_request(){
 	 	$this->htx .= $this->requester;
 	 	$this->htx .= $this->date_endorsed;
