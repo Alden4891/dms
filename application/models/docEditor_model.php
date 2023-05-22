@@ -15,7 +15,11 @@ class docEditor_model extends CI_Model {
 	private $signed_by;
 
     public function __construct(){
-		
+        
+        $this->load->database();
+
+        $ds_participants = $this->db->select('`ID`,`NAME`')->order_by('`NAME` ASC')->get('lib_employees')->result();
+        $ds_obsu = $this->db->get('tbl_obsu')->result();
 
 
 		$this->drn = "
@@ -26,7 +30,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\" style=\"min-width:120px;\"><strong>DRN</strong></span>
                                      </div>
-                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"fe_drn\" name=\"fe_drn\">
+                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"DRN\" name=\"DRN\">
                                   </div>                              
                                </div>
                                <div class=\"col-lg-3\">
@@ -34,7 +38,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\">DATE</span>
                                      </div>
-                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"fe_date\" name=\"fe_date\">
+                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"DATE_POSTED\" name=\"DATE_POSTED\">
                                   </div>                               
                                 </div>
                                <div class=\"col-lg-3\">
@@ -43,7 +47,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\">TIME</span>
                                      </div>
-                                     <input type=\"time\" class=\"form-control\" placeholder=\"\" id=\"fe_time\" name=\"fe_time\">
+                                     <input type=\"time\" class=\"form-control\" placeholder=\"\" id=\"TIME_POSTED\" name=\"TIME_POSTED\">
                                   </div>                               
                                 </div>
                             </div>
@@ -57,9 +61,9 @@ class docEditor_model extends CI_Model {
 
                                     <div class=\"input-group mb-3\">
                                       <div class=\"input-group-prepend\">
-                                        <label class=\"input-group-text\" for=\"doctype_selection\" style=\"min-width:120px;\">OSBU</label>
+                                        <label class=\"input-group-text\" for=\"DOCUMENT_EDITOR\" style=\"min-width:120px;\">OSBU</label>
                                       </div>
-                                      <select class=\"custom-select\"  id=\"fe_osbu\" name=\"fe_osbu\">
+                                      <select class=\"custom-select\"  id=\"OBSU\" name=\"OBSU\">
                                         <option value=\"1\" selected>PANTAWID</option>
                                       </select>
                                     </div>
@@ -68,9 +72,9 @@ class docEditor_model extends CI_Model {
                                  <div class=\"col-lg-3\">
                                     <div class=\"input-group mb-3\">
                                       <div class=\"input-group-prepend\">
-                                        <label class=\"input-group-text\" for=\"doctype_selection\">STAT.</label>
+                                        <label class=\"input-group-text\" for=\"DOCUMENT_EDITOR\">STAT.</label>
                                       </div>
-                                      <select class=\"custom-select\"  id=\"fe_status\" name=\"fe_status\">
+                                      <select class=\"custom-select\"  id=\"STATUS\" name=\"STATUS\">
                                         <option selected>Choose...</option>
                                         <option value=\"1\">IN-PROGRESS</option>
                                         <option value=\"2\">PENDING</option>
@@ -94,7 +98,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\" style=\"min-width:120px;\">DOC. TITLE</span>
                                      </div>
-                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"fe_title\" name=\"fe_title\">
+                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"SUBJECT\" name=\"SUBJECT\">
                                   </div>                              
                                </div>
                             </div>
@@ -102,14 +106,12 @@ class docEditor_model extends CI_Model {
 
       $this->requester = "
                             <div class=\"row\">
-
-
                                  <div class=\"col-lg-12\">
                                     <div class=\"input-group mb-3\">
                                       <div class=\"input-group-prepend\">
-                                        <label class=\"input-group-text\" for=\"doctype_selection\" style=\"min-width:120px;\">REQUESTER</label>
+                                        <label class=\"input-group-text\" for=\"DOCUMENT_EDITOR\" style=\"min-width:120px;\">REQUESTER</label>
                                       </div>
-                                      <select class=\"custom-select\"  id=\"fe_status\" name=\"fe_requester\">
+                                      <select class=\"custom-select\"  id=\"STATUS\" name=\"HANDLER\">
                                         <option selected>Choose...</option>
                                         <option value=\"1\">IN-PROGRESS</option>
                                         <option value=\"2\">PENDING</option>
@@ -135,7 +137,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\" style=\"min-width:120px;\">END-USER</span>
                                      </div>
-                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"fe_enduser\" name=\"fe_enduser\">
+                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"END_USERS\" name=\"END_USERS\">
                                   </div>                              
                                </div>
                             </div>
@@ -151,32 +153,32 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\" style=\"min-width:120px;\">VENUE</span>
                                      </div>
-                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"fe_venue\" name=\"fe_venue\">
+                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"VENUE\" name=\"VENUE\">
                                   </div>
 
                                   <div class=\"input-group mb-3\">
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\" style=\"min-width:120px;\">AMOUNT</span>
                                      </div>
-                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"fe_amount\" name=\"fe_amount\">
+                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"AMOUNT\" name=\"AMOUNT\">
                                   </div>
 
                                   <div class=\"input-group mb-3\">
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\" style=\"min-width:120px;\">PARTICIPANTS</span>
                                      </div>
-                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"fe_paticipants\" name=\"fe_participants\">
+                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"PARTICIPANTS\" name=\"PARTICIPANTS\">
                                   </div>
                                   <div class=\"input-group mb-3\">
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\" style=\"min-width:120px;\">TARGET</span>
                                      </div>
-                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"fe_target\" name=\"fe_target\">
+                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"DATE_TARGET\" name=\"DATE_TARGET\">
                                   </div> 
                                 </div>
                                 <div class=\"col-lg-6\">
                                     BREAKDOWN OF EXPENSES
-                                    <textarea style=\"height: 176px; width: 100%;\" class=\"form-control\" id=\"fe_breakdown_exp\" name=\"fe_breakdown_exp\"></textarea>
+                                    <textarea style=\"height: 176px; width: 100%;\" class=\"form-control\" id=\"EXP_COMPUTATION\" name=\"EXP_COMPUTATION\"></textarea>
                                 </div>
                             </div>
 
@@ -188,7 +190,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\">DATE REVIEWED</span>
                                      </div>
-                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"fe_date_reviewed\" name=\"fe_date_reviewed\">
+                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"DATE_REVIEWED\" name=\"DATE_REVIEWED\">
                                   </div> 
                                 </div>
                                 <div class=\"col-lg-4\">
@@ -196,7 +198,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\">DATE INITIALED</span>
                                      </div>
-                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"fe_date_initialed\" name=\"fe_date_initialed\">
+                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"DATE_INITIALED\" name=\"DATE_INITIALED\">
                                   </div> 
                                 </div>
                                 <div class=\"col-lg-4\">
@@ -204,7 +206,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\">DATE RECEIVED</span>
                                      </div>
-                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"fe_date_received\" name=\"fe_date_received\">
+                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"DATE_RECEIVED_COPY\" name=\"DATE_RECEIVED_COPY\">
                                   </div> 
                                 </div>
                             </div>
@@ -217,7 +219,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\">DATE ENDORSED</span>
                                      </div>
-                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"fe_date_endorsed\" name=\"fe_date_endorsed\">
+                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"DATE_ENDORSED\" name=\"DATE_ENDORSED\">
                                   </div> 
                                 </div>
                                 <div class=\"col-lg-4\">
@@ -225,7 +227,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\">DATE CSMS RECEIVED</span>
                                      </div>
-                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"fe_date_cmsm_received\" name=\"fe_date_cmsm_received\">
+                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"DATE_CSMS_RECEIVED\" name=\"DATE_CSMS_RECEIVED\">
                                   </div> 
                                 </div>
                                 <div class=\"col-lg-4\">
@@ -233,7 +235,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\">TURNAROUND TIME</span>
                                      </div>
-                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"fe_turnaround_time\" name=\"fe_turnaround_time\">
+                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"TIME_TURNAROUND\" name=\"TIME_TURNAROUND\">
                                   </div> 
                                 </div>
                             </div>
@@ -246,9 +248,9 @@ class docEditor_model extends CI_Model {
 
                                     <div class=\"input-group mb-3\">
                                       <div class=\"input-group-prepend\">
-                                        <label class=\"input-group-text\" for=\"doctype_selection\">RELEASED BY</label>
+                                        <label class=\"input-group-text\" for=\"DOCUMENT_EDITOR\">RELEASED BY</label>
                                       </div>
-                                      <select class=\"custom-select\"  id=\"fe_released_by\" name=\"fe_released_by\">
+                                      <select class=\"custom-select\"  id=\"RELEASED_BY\" name=\"RELEASED_BY\">
                                         <option selected>Choose...</option>
                                         <option value=\"1\">DIVINE GRACE - M&E</option>
                                         <option value=\"2\">AAAA</option>
@@ -264,7 +266,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\">DATE RELEASED</span>
                                      </div>
-                                     <input type=\"date\" class=\"form-control\" placeholder=\"\"  id=\"fe_date_released\" name=\"fe_date_released\">
+                                     <input type=\"date\" class=\"form-control\" placeholder=\"\"  id=\"DATE_RELEASED\" name=\"DATE_RELEASED\">
                                   </div> 
                                 </div>
                             </div>
@@ -275,9 +277,9 @@ class docEditor_model extends CI_Model {
                                 <div class=\"col-lg-6\">
                                     <div class=\"input-group mb-3\">
                                       <div class=\"input-group-prepend\">
-                                        <label class=\"input-group-text\" for=\"doctype_selection\">SIGNED BY</label>
+                                        <label class=\"input-group-text\" for=\"DOCUMENT_EDITOR\">SIGNED BY</label>
                                       </div>
-                                      <select class=\"custom-select\"  id=\"fe_signed_by\" name=\"fe_signed_by\">
+                                      <select class=\"custom-select\"  id=\"SIGNED_BY\" name=\"SIGNED_BY\">
                                         <option selected>Choose...</option>
                                         <option value=\"1\">DIVINE GRACE - M&E</option>
                                         <option value=\"2\">AAAA</option>
@@ -288,9 +290,9 @@ class docEditor_model extends CI_Model {
                                 <div class=\"col-lg-6\">
                                     <div class=\"input-group mb-3\">
                                       <div class=\"input-group-prepend\">
-                                        <label class=\"input-group-text\" for=\"doctype_selection\">RECEIVED BY</label>
+                                        <label class=\"input-group-text\" for=\"DOCUMENT_EDITOR\">RECEIVED BY</label>
                                       </div>
-                                      <select class=\"custom-select\"  id=\"fe_received_by\" name=\"fe_received_by\">
+                                      <select class=\"custom-select\"  id=\"RECEIVED_BY\" name=\"RECEIVED_BY\">
                                         <option selected>Choose...</option>
                                         <option value=\"1\">DIVINE GRACE - M&E</option>
                                         <option value=\"2\">AAAA</option>

@@ -625,7 +625,8 @@
  <!-- /.documentArchivingModal -->
 
 
-<script>
+<script type="text/javascript">
+  
 $(document).ready(function() {
   // on new document clicked
   $("#btn_upload_document").click(function() {
@@ -635,9 +636,15 @@ $(document).ready(function() {
   // on edit document clicked
   $(document).on('click','#btn_edit_entry',function() {
     var doc_id = $(this).attr('doc_id');
-    alert(doc_id);
+    
+    //disable document type selection
+    $("#doctype_selection").val(3);
+    $('#doctype_selection').attr('disabled',true)
 
-    //$("#documentEntryEditorModal").modal("show");
+    
+
+
+    $("#documentEntryEditorModal").modal("show");
   });
 
   // on route document clicked
@@ -747,5 +754,6 @@ $(document).on('change', '#doctype_selection', function(e) {
 
 
 
-});
+});  
+
 </script>
