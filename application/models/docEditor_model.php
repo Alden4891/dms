@@ -13,14 +13,28 @@ class docEditor_model extends CI_Model {
 	private $date_endorsed;
 	private $released_by;
 	private $signed_by;
+    
+    private $ds_employees;
+    private $ds_obsu;
+    private $ds_status;
+
+    private $options_employees;
+    private $options_obsu;
+    private $options_status;
 
     public function __construct(){
         
         $this->load->database();
 
-        $ds_participants = $this->db->select('`ID`,`NAME`')->order_by('`NAME` ASC')->get('lib_employees')->result();
-        $ds_obsu = $this->db->get('tbl_obsu')->result();
+        //PREPARE OPTIONS DATASETS
+        $this->ds_employees = $this->db->select('`ID`,`NAME`')->order_by('`NAME` ASC')->get('lib_employees')->result();
+        $this->ds_obsu = $this->db->get('tbl_obsu')->result();
+        $this->ds_status = $this->db->get('tbl_status')->result();
 
+        //PRE-LOAD OPTIONS
+        $this->options_employees = implode('', array_map(fn($employee) => "<option value='{$employee->ID}'>{$employee->NAME}</option>", $this->ds_employees));
+        $this->options_obsu = implode('', array_map(fn($obsu) => "<option value='{$obsu->ID}'>{$obsu->OBSU}</option>", $this->ds_obsu));
+        $this->options_status = implode('', array_map(fn($status) => "<option value='{$status->ID}'>{$status->STATUS}</option>", $this->ds_status));
 
 		$this->drn = "
 
@@ -30,7 +44,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\" style=\"min-width:120px;\"><strong>DRN</strong></span>
                                      </div>
-                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"DRN\" name=\"DRN\">
+                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"DRN\" name=\"DRN\" required>
                                   </div>                              
                                </div>
                                <div class=\"col-lg-3\">
@@ -63,8 +77,8 @@ class docEditor_model extends CI_Model {
                                       <div class=\"input-group-prepend\">
                                         <label class=\"input-group-text\" for=\"DOCUMENT_EDITOR\" style=\"min-width:120px;\">OSBU</label>
                                       </div>
-                                      <select class=\"custom-select\"  id=\"OBSU\" name=\"OBSU\">
-                                        <option value=\"1\" selected>PANTAWID</option>
+                                      <select class=\"custom-select\"  id=\"OBSU\" name=\"OBSU\" required>
+                                        $this->options_obsu
                                       </select>
                                     </div>
                                 </div>
@@ -76,14 +90,7 @@ class docEditor_model extends CI_Model {
                                       </div>
                                       <select class=\"custom-select\"  id=\"STATUS\" name=\"STATUS\">
                                         <option selected>Choose...</option>
-                                        <option value=\"1\">IN-PROGRESS</option>
-                                        <option value=\"2\">PENDING</option>
-                                        <option value=\"3\">FORWARDED</option>
-                                        <option value=\"3\">APPROVED</option>
-                                        <option value=\"3\">DONE/CONDUCTED</option>
-                                        <option value=\"3\">ON-HOLD</option>
-                                        <option value=\"3\">CANCELLED</option>
-                                        <option value=\"3\">ARCHIVED</option>
+                                        $this->options_status
                                       </select>
                                     </div>
                                 </div>
@@ -98,7 +105,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\" style=\"min-width:120px;\">DOC. TITLE</span>
                                      </div>
-                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"SUBJECT\" name=\"SUBJECT\">
+                                     <input type=\"text\" class=\"form-control\" placeholder=\"\" id=\"SUBJECT\" name=\"SUBJECT\" required>
                                   </div>                              
                                </div>
                             </div>
@@ -111,16 +118,9 @@ class docEditor_model extends CI_Model {
                                       <div class=\"input-group-prepend\">
                                         <label class=\"input-group-text\" for=\"DOCUMENT_EDITOR\" style=\"min-width:120px;\">REQUESTER</label>
                                       </div>
-                                      <select class=\"custom-select\"  id=\"STATUS\" name=\"HANDLER\">
+                                      <select class=\"custom-select\"  id=\"HANDLER\" name=\"HANDLER\">
                                         <option selected>Choose...</option>
-                                        <option value=\"1\">IN-PROGRESS</option>
-                                        <option value=\"2\">PENDING</option>
-                                        <option value=\"3\">FORWARDED</option>
-                                        <option value=\"4\">APPROVED</option>
-                                        <option value=\"5\">DONE/CONDUCTED</option>
-                                        <option value=\"6\">ON-HOLD</option>
-                                        <option value=\"7\">CANCELLED</option>
-                                        <option value=\"8\">ARCHIVED</option>
+                                        $this->options_employees
                                       </select>
                                       <span class=\"input-group-append\"><button type=\"button\" class=\"btn btn-info btn-flat\">+</button></span>
                                     </div>
@@ -252,10 +252,7 @@ class docEditor_model extends CI_Model {
                                       </div>
                                       <select class=\"custom-select\"  id=\"RELEASED_BY\" name=\"RELEASED_BY\">
                                         <option selected>Choose...</option>
-                                        <option value=\"1\">DIVINE GRACE - M&E</option>
-                                        <option value=\"2\">AAAA</option>
-                                        <option value=\"3\">BBBB</option>
-
+                                        $this->options_employees
                                       </select>
                                     </div>
 
@@ -277,13 +274,11 @@ class docEditor_model extends CI_Model {
                                 <div class=\"col-lg-6\">
                                     <div class=\"input-group mb-3\">
                                       <div class=\"input-group-prepend\">
-                                        <label class=\"input-group-text\" for=\"DOCUMENT_EDITOR\">SIGNED BY</label>
+                                        <label class=\"input-group-text\" for=\"DOCUMENT_EDITOR\" style=\"min-width:120px;\">SIGNED BY</label>
                                       </div>
                                       <select class=\"custom-select\"  id=\"SIGNED_BY\" name=\"SIGNED_BY\">
                                         <option selected>Choose...</option>
-                                        <option value=\"1\">DIVINE GRACE - M&E</option>
-                                        <option value=\"2\">AAAA</option>
-                                        <option value=\"3\">BBBB</option>
+                                        $this->options_employees
                                       </select>
                                     </div>
                                 </div>
@@ -294,9 +289,7 @@ class docEditor_model extends CI_Model {
                                       </div>
                                       <select class=\"custom-select\"  id=\"RECEIVED_BY\" name=\"RECEIVED_BY\">
                                         <option selected>Choose...</option>
-                                        <option value=\"1\">DIVINE GRACE - M&E</option>
-                                        <option value=\"2\">AAAA</option>
-                                        <option value=\"3\">BBBB</option>
+                                        $this->options_employees
                                       </select>
                                     </div>
                                 </div>
@@ -310,8 +303,6 @@ class docEditor_model extends CI_Model {
 	 	$this->htx .= $this->doc_title;
 
     }
-
-
 
 	 public function get_memo(){
 	 	$this->htx .= $this->signed_by;
@@ -352,6 +343,13 @@ class docEditor_model extends CI_Model {
 	 	$this->htx .= $this->signed_by;
 	 	return $this->htx;
 	 }
+
+     public function test(){
+
+
+        return $this->options_employees; 
+
+     }
 	 
     
 }

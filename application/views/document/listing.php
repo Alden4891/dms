@@ -150,6 +150,7 @@
 
 <!-- .documentEntryEditorModal -->
 <div class="modal fade" id="documentEntryEditorModal" tabindex="-1" role="dialog" aria-labelledby="documentEntryEditorModalLabel" aria-hidden="true" data-backdrop="static">
+  <form id="form_doc_editor">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -180,8 +181,8 @@
                           </div>
                           <!-- /.card-header -->
                           <div class="card-body">
-                            <form id="form_doc_editor">
 
+                            <input type="hidden" id="ID" name="ID" value="0">
                             <div class="row" >
                                <div class="col-lg-12">
 
@@ -210,10 +211,10 @@
                               <div class="row invisible" id='form_editor_remarks_container'>
                              
                                  <div class="col-lg-12">
-                                    REMARKS <textarea id="summernote" style="height: 400px; min-height: 400px;" rows="20"></textarea>
+                                    REMARKS <textarea id="summernote" style="height: 400px; min-height: 400px;" rows="20">ASDASD</textarea>
                                  </div>
                               </div>
-                            </form>
+                           
                           </div> <!-- CARD BODY -->
 
 
@@ -336,10 +337,11 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id='button_save_form_editor'>Save Changes</button>
+        <button type="submit" class="btn btn-primary" id='button_save_form_editor'>Save</button>
       </div>
     </div>
   </div>
+  </form>
 </div>
  <!-- /.documentEntryEditorModal -->
 
@@ -635,13 +637,100 @@ $(document).ready(function() {
 
   // on edit document clicked
   $(document).on('click','#btn_edit_entry',function() {
+
+    //get doc_id
     var doc_id = $(this).attr('doc_id');
     
-    //disable document type selection
-    $("#doctype_selection").val(3);
-    $('#doctype_selection').attr('disabled',true)
+    //get doc data
+  setTimeout(function() {
+        $.ajax('<?=site_url('document/data/')?>'+doc_id, {
+          type: "POST",
+          error: function(data) {
+            console.log(data);
+            alert("An error has occurred! Please contact aaquinones.fo12@gmail.com.");
+          },
+          success: function(data) {
+            var obj_data = jQuery.parseJSON(data);
+            console.log(obj_data.DOC_TYPE);
 
-    
+            //load form controls
+            $.ajax('<?=site_url('docEditorModalController/getFormConent')?>', {
+              data: {
+                doctype: obj_data.DOC_TYPE
+              },
+              type: "POST",
+              // beforeSend: function(xhr, opts) {
+              //   if (doctype == -1) {
+              //     xhr.abort();
+              //     console.log(" form content request aborted");
+              //     $('#form_object_container').html('');
+              //     $('#form_editor_remarks_container').addClass('invisible');
+              //   }
+              // },
+              error: function(data) {
+                console.log(data);
+                alert("An error has occurred! Please contact aaquinones.fo12@gmail.com.");
+              },
+              success: function(data) {
+                var obj = jQuery.parseJSON(data);
+                $('#form_object_container').html(obj.dom);
+                $('#form_editor_remarks_container').removeClass('invisible');
+                $('#doctype_selection').attr('curr-value', obj_data.DOC_TYPE);
+
+                //disable document type selection
+                $("#doctype_selection").val(obj_data.DOC_TYPE);
+                $('#doctype_selection').attr('disabled',true)
+
+                //load data to the form controls
+
+                $('#ID').val(obj_data.ID);
+
+                $('#DRN').val(obj_data.DRN);
+                $('#DATE_POSTED').val(obj_data.DATE_POSTED.split(' ')[0]);
+                $('#TIME_POSTED').val(obj_data.DATE_POSTED.split(' ')[1]);
+                $('#OBSU').val(obj_data.OBSU);
+                $('#STATUS').val(obj_data.STATUS);
+                $('#SUBJECT').val(obj_data.SUBJECT);
+                $('#SIGNED_BY').val(obj_data.SIGNED_BY);
+                $('#RECEIVED_BY').val(obj_data.RECEIVED_BY);
+                $('#HANDLER').val(obj_data.HANDLER);
+
+                $('#END_USERS').val(obj_data.END_USERS);
+                $('#VENUE').val(obj_data.VENUE);
+                $('#AMOUNT').val(obj_data.AMOUNT);
+                $('#PARTICIPANTS').val(obj_data.PARTICIPANTS);
+                $('#DATE_TARGET').val(obj_data.DATE_TARGET);
+
+                $('#EXP_COMPUTATION').val(obj_data.EXP_COMPUTATION);
+                $('#DATE_REVIEWED').val(obj_data.DATE_REVIEWED.split(' ')[0]);
+                $('#DATE_INITIALED').val(obj_data.DATE_INITIALED.split(' ')[0]);
+                $('#DATE_RECEIVED_COPY').val(obj_data.DATE_RECEIVED_COPY.split(' ')[0]);
+
+            
+                // $('#summernote').text(obj_data.REMARKS);
+                $('#summernote').summernote('code', obj_data.REMARKS);
+
+
+              },
+              complete: function() {
+                // Hide loading indicator
+                $('#form_editor_remarks_container').removeClass('loading');
+              }
+            });
+
+          },
+          complete: function() {
+            // Hide loading indicator
+            $('#form_editor_remarks_container').removeClass('loading');
+          }
+        });
+      }, 100);
+
+
+
+    //load form controls
+
+    //set data
 
 
     $("#documentEntryEditorModal").modal("show");
@@ -738,19 +827,37 @@ $(document).on('change', '#doctype_selection', function(e) {
       alert(1);
   });
 
-  // $(document).on('click', '#button_save_form_editor', function() {
-  //   $.ajax({
-  //     url: 'my-page.php',
-  //     type: 'POST',
-  //     data: $('#form_doc_editor').serialize(),
-  //     success: function(response) {
-  //       // Handle the response from the server
-  //     },
-  //     error: function(jqXHR, textStatus, errorThrown) {
-  //       // Handle errors
-  //     }
-  //   });
-  // });
+  $('#form_doc_editor').submit(function(e) {
+      var formData = $(this).serialize();
+      var summernoteContent = $('#summernote').summernote('code');
+      formData = formData + '&REMARKS=' + summernoteContent;
+
+      $.ajax({
+        url: 'document/save',
+        type: 'POST',
+        data: formData,
+        beforeSend: function() {
+          // Code to run before the request is sent
+          console.log('Before sending the request...');
+        },
+        success: function(response) {
+          // Code to run when the request is successfully completed
+          console.log('Request succeeded!');
+          console.log(response);
+        },
+        error: function(xhr, status, error) {
+          // Code to run when the request encounters an error
+          console.log('Request failed!');
+          console.log('Error:', xhr);
+        },
+        complete: function() {
+          // Code to run regardless of success or failure
+          console.log('Request completed.');
+          e.preventDefault();
+        }
+      });      
+
+  });
 
 
 
