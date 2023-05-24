@@ -37,8 +37,63 @@ class document extends CI_Controller {
 		// 386
 	}
 
+    public function save() {
+    	$this->load->model('Documents_model');
+        // Check if files are uploaded
+        if(isset($_FILES['doc_files_upload']) && !empty($_FILES['doc_files_upload']['name'][0])) {
+            // Configure upload preferences
+            $config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'pdf|jpg';
+            $config['max_size'] = 5000; // 5MB
+            $config['file_name'] = 'images_'; // Prefix for file names
+
+            $this->load->library('upload', $config);
+
+            $files = $_FILES['doc_files_upload'];
+
+            // Upload each file
+            $fileNames = array();
+            for ($i = 0; $i < count($files['name']); $i++) {
+                $_FILES['doc_files_upload']['name'] = $files['name'][$i];
+                $_FILES['doc_files_upload']['type'] = $files['type'][$i];
+                $_FILES['doc_files_upload']['tmp_name'] = $files['tmp_name'][$i];
+                $_FILES['doc_files_upload']['error'] = $files['error'][$i];
+                $_FILES['doc_files_upload']['size'] = $files['size'][$i];
+
+                if ($this->upload->do_upload('doc_files_upload')) {
+                    $uploadData = $this->upload->data();
+                    $fileNames[] = $uploadData['file_name'];
+                } else {
+                    // Handle upload errors if needed
+                    $error = $this->upload->display_errors();
+                    echo $error;
+                    return;
+                }
+            }
+
+            // Process the rest of the form data
+			$form_data['DATE_POSTED'] = $form_data['DATE_POSTED'].' '.$form_data['TIME_POSTED'];
+			if (array_key_exists('TIME_POSTED', $form_data)) {
+			    unset($form_data['TIME_POSTED']);
+			}
+
+            // Save the data to the database or perform any other required operations
+			$this->Documents_model->save_document($form_data);
+
+            // Return a response 
+            $response = array('status' => 'success', 'fileNames' => $fileNames);
+            echo json_encode($response);
+
+        } else {
+            // Handle the case when no files are uploaded
+            $response = array('status' => 'error', 'message' => 'No files uploaded.');
+            echo json_encode($response);
+        }
+    }
+
+
 	public function save(){
-		$this->load->model('Documents_model');
+		
 		$form_data = $this->input->post();
 		$form_data['DATE_POSTED'] = $form_data['DATE_POSTED'].' '.$form_data['TIME_POSTED'];
 
@@ -47,8 +102,6 @@ class document extends CI_Controller {
 		}
 
 		$result = $this->Documents_model->save_document($form_data);
-
-
 	}	
 
 	public function upload(){

@@ -150,7 +150,7 @@
 
 <!-- .documentEntryEditorModal -->
 <div class="modal fade" id="documentEntryEditorModal" tabindex="-1" role="dialog" aria-labelledby="documentEntryEditorModalLabel" aria-hidden="true" data-backdrop="static">
-  <form id="form_doc_editor">
+  <form id="form_doc_editor"  enctype="multipart/form-data">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -314,8 +314,8 @@
 
                          <div class="form-group">
                             <div class="custom-file">
-                               <input type="file" class="custom-file-input" id="customFile">
-                               <label class="custom-file-label" for="customFile">Choose file</label>
+                               <input type="file" class="custom-file-input" id="doc_files_upload" name="doc_files_upload[]" multiple>
+                               <label class="custom-file-label" for="doc_files_upload">Choose file</label>
                             </div>
                          </div>
                          <div class="form-group"></div>

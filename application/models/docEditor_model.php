@@ -52,7 +52,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\">DATE</span>
                                      </div>
-                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"DATE_POSTED\" name=\"DATE_POSTED\">
+                                     <input type=\"date\" class=\"form-control\" placeholder=\"\" id=\"DATE_POSTED\" name=\"\">
                                   </div>                               
                                 </div>
                                <div class=\"col-lg-3\">
@@ -61,7 +61,7 @@ class docEditor_model extends CI_Model {
                                      <div class=\"input-group-prepend\">
                                         <span class=\"input-group-text\">TIME</span>
                                      </div>
-                                     <input type=\"time\" class=\"form-control\" placeholder=\"\" id=\"TIME_POSTED\" name=\"TIME_POSTED\">
+                                     <input type=\"time\" class=\"form-control\" placeholder=\"\" id=\"TIME_POSTED\" name=\"\">
                                   </div>                               
                                 </div>
                             </div>
