@@ -150,7 +150,7 @@
 
 <!-- .documentEntryEditorModal -->
 <div class="modal fade" id="documentEntryEditorModal" tabindex="-1" role="dialog" aria-labelledby="documentEntryEditorModalLabel" aria-hidden="true" data-backdrop="static">
-  <form id="form_doc_editor"  enctype="multipart/form-data">
+  <form id="form_doc_editor">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -250,53 +250,39 @@
 
                 <div class="card card-secondary">
                    <div class="card-header">
-                      <h3 class="card-title">TAGS</h3>
+                      <h3 class="card-title">OPTIONS</h3>
                    </div>
                    <div class="card-body">
                       <form>
                          <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                <div class="form-group">
                                   <div class="custom-control custom-checkbox">
-                                     <input class="custom-control-input" type="checkbox" id="customCheckbox1" value="option1" checked="">
-                                     <label for="customCheckbox1" class="custom-control-label">Pantawid</label>
+                                     <input class="custom-control-input" type="checkbox" id="customCheckbox1" >
+                                     <label for="customCheckbox1" class="custom-control-label">Public</label>
                                   </div>
                                   <div class="custom-control custom-checkbox">
-                                     <input class="custom-control-input" type="checkbox" id="customCheckbox2" checked="">
-                                     <label for="customCheckbox2" class="custom-control-label">Confidential</label>
+                                     <input class="custom-control-input" type="checkbox" id="customCheckbox2" >
+                                     <label for="customCheckbox2" class="custom-control-label">Internal User Only</label>
                                   </div>
                                   <div class="custom-control custom-checkbox">
-                                     <input class="custom-control-input custom-control-input-danger" type="checkbox" id="customCheckbox4" >
-                                     <label for="customCheckbox4" class="custom-control-label">COA-AOM</label>
+                                     <input class="custom-control-input custom-control-input-danger" type="checkbox" id="customCheckbox3" >
+                                     <label for="customCheckbox3" class="custom-control-label">Urgent</label>
                                   </div>
                                   <div class="custom-control custom-checkbox">
-                                     <input class="custom-control-input custom-control-input-danger custom-control-input-outline" type="checkbox" id="customCheckbox5" >
-                                     <label for="customCheckbox5" class="custom-control-label">8888 Complaint</label>
+                                     <input class="custom-control-input custom-control-input-danger" type="checkbox" id="customCheckbox4">
+                                     <label for="customCheckbox4" class="custom-control-label">Confidential</label>
+                                  </div>
+                                  <div class="custom-control custom-checkbox">
+                                     <input class="custom-control-input custom-control-input-danger" type="checkbox" id="customCheckbox5" >
+                                     <label for="customCheckbox5" class="custom-control-label">Restricted</label>
+                                  </div>
+                                  <div class="custom-control custom-checkbox">
+                                     <input class="custom-control-input custom-control-input-danger custom-control-input-outline" type="checkbox" id="customCheckbox6" >
+                                     <label for="customCheckbox6" class="custom-control-label">Top Secret</label>
                                   </div>
                                </div>
                             </div>
-                            <div class="col-sm-6">
-                               <div class="form-group">
-                                  <div class="custom-control custom-checkbox">
-                                     <input class="custom-control-input" type="checkbox" id="customCheckbox1b" value="option1" >
-                                     <label for="customCheckbox1b" class="custom-control-label">Directives</label>
-                                  </div>
-                                  <div class="custom-control custom-checkbox">
-                                     <input class="custom-control-input" type="checkbox" id="customCheckbox2b" >
-                                     <label for="customCheckbox2b" class="custom-control-label">Requests</label>
-                                  </div>
-                                  <div class="custom-control custom-checkbox">
-                                     <input class="custom-control-input custom-control-input-danger" type="checkbox" id="customCheckbox4b" disabled>
-                                     <label for="customCheckbox4b" class="custom-control-label">Routed</label>
-                                  </div>
-                                  <div class="custom-control custom-checkbox">
-                                     <input class="custom-control-input custom-control-input-danger custom-control-input-outline" type="checkbox" id="customCheckbox5b" disabled>
-                                     <label for="customCheckbox5b" class="custom-control-label">Archived</label>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-
 
                          <div class="form-group">
                             <div class="custom-control custom-switch">
@@ -305,20 +291,30 @@
                             </div>
                          </div>
                          <div class="form-group">
+                            <div class="custom-control custom-switch">
+                               <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                               <label class="custom-control-label" for="customSwitch2">Hold This document</label>
+                            </div>
+                         </div>
+                         <div class="form-group">
                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                <input type="checkbox" class="custom-control-input" id="customSwitch3">
-                               <label class="custom-control-label" for="customSwitch3">Allow anyone to send feedback on this document</label>
+                               <label class="custom-control-label" for="customSwitch3">Allow other OBSU to view documents</label>
                             </div>
                          </div>
 
+                          <div class="form-group">
+                              <div class="custom-file">
+                                  <input type="file" class="custom-file-input" id="customFile" multiple>
+                                  <label class="custom-file-label" for="customFile">Choose file</label>
+                              </div>
+                          </div>
 
+                          
                          <div class="form-group">
-                            <div class="custom-file">
-                               <input type="file" class="custom-file-input" id="doc_files_upload" name="doc_files_upload[]" multiple>
-                               <label class="custom-file-label" for="doc_files_upload">Choose file</label>
-                            </div>
+                           <ul id="selectedFilesList"></ul>
                          </div>
-                         <div class="form-group"></div>
+
                       </form>
                    </div>
                 </div>
@@ -630,6 +626,13 @@
 <script type="text/javascript">
   
 $(document).ready(function() {
+
+  //on file select
+  $('#customFile').on('change', function() {
+      displaySelectedFiles();
+  });
+
+
   // on new document clicked
   $("#btn_upload_document").click(function() {
     $("#documentEntryEditorModal").modal("show");
@@ -860,6 +863,37 @@ $(document).on('change', '#doctype_selection', function(e) {
   });
 
 
+      function displaySelectedFiles() {
+        const files = $('#customFile')[0].files;
+
+        const fileList = $('#selectedFilesList');
+        fileList.empty();
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const listItem = $('<li></li>');
+            const fileTypeIcon = getFileTypeIcon(file.type);
+
+            listItem.html(`<img src="${fileTypeIcon}" alt="${file.type} icon" class="file-icon"> ${file.name}`);
+            fileList.append(listItem);
+        }
+    }
+
+    function getFileTypeIcon(fileType) {
+        // Define icons for specific file types here
+        // For simplicity, let's assume three file types with corresponding icons
+        switch (fileType) {
+            case 'image/jpeg':
+            case 'image/png':
+                return 'image-icon.png';
+            case 'application/pdf':
+                return 'pdf-icon.png';
+            case 'text/plain':
+                return 'text-icon.png';
+            default:
+                return 'default-icon.png';
+        }
+    }
 
 });  
 

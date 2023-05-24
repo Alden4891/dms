@@ -92,17 +92,17 @@ class document extends CI_Controller {
     }
 
 
-	public function save(){
+	// public function save(){
 		
-		$form_data = $this->input->post();
-		$form_data['DATE_POSTED'] = $form_data['DATE_POSTED'].' '.$form_data['TIME_POSTED'];
+	// 	$form_data = $this->input->post();
+	// 	$form_data['DATE_POSTED'] = $form_data['DATE_POSTED'].' '.$form_data['TIME_POSTED'];
 
-		if (array_key_exists('TIME_POSTED', $form_data)) {
-		    unset($form_data['TIME_POSTED']);
-		}
+	// 	if (array_key_exists('TIME_POSTED', $form_data)) {
+	// 	    unset($form_data['TIME_POSTED']);
+	// 	}
 
-		$result = $this->Documents_model->save_document($form_data);
-	}	
+	// 	$result = $this->Documents_model->save_document($form_data);
+	// }	
 
 	public function upload(){
 
