@@ -150,7 +150,7 @@
 
 <!-- .documentEntryEditorModal -->
 <div class="modal fade" id="documentEntryEditorModal" tabindex="-1" role="dialog" aria-labelledby="documentEntryEditorModalLabel" aria-hidden="true" data-backdrop="static">
-  <form id="form_doc_editor">
+  <form id="form_doc_editor" method="post" enctype="multipart/form-data">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -258,27 +258,27 @@
                             <div class="col-sm-12">
                                <div class="form-group">
                                   <div class="custom-control custom-checkbox">
-                                     <input class="custom-control-input" type="checkbox" id="customCheckbox1" >
+                                     <input class="custom-control-input" type="checkbox" id="customCheckbox1" name="opt-public">
                                      <label for="customCheckbox1" class="custom-control-label">Public</label>
                                   </div>
                                   <div class="custom-control custom-checkbox">
-                                     <input class="custom-control-input" type="checkbox" id="customCheckbox2" >
+                                     <input class="custom-control-input" type="checkbox" id="customCheckbox2"  name="opt-internal-use-only">
                                      <label for="customCheckbox2" class="custom-control-label">Internal User Only</label>
                                   </div>
                                   <div class="custom-control custom-checkbox">
-                                     <input class="custom-control-input custom-control-input-danger" type="checkbox" id="customCheckbox3" >
+                                     <input class="custom-control-input custom-control-input-danger" type="checkbox" id="customCheckbox3"  name="opt-urgent">
                                      <label for="customCheckbox3" class="custom-control-label">Urgent</label>
                                   </div>
                                   <div class="custom-control custom-checkbox">
-                                     <input class="custom-control-input custom-control-input-danger" type="checkbox" id="customCheckbox4">
+                                     <input class="custom-control-input custom-control-input-danger" type="checkbox" id="customCheckbox4"  name="opt-confidential">
                                      <label for="customCheckbox4" class="custom-control-label">Confidential</label>
                                   </div>
                                   <div class="custom-control custom-checkbox">
-                                     <input class="custom-control-input custom-control-input-danger" type="checkbox" id="customCheckbox5" >
+                                     <input class="custom-control-input custom-control-input-danger" type="checkbox" id="customCheckbox5" name="opt-restricted">
                                      <label for="customCheckbox5" class="custom-control-label">Restricted</label>
                                   </div>
                                   <div class="custom-control custom-checkbox">
-                                     <input class="custom-control-input custom-control-input-danger custom-control-input-outline" type="checkbox" id="customCheckbox6" >
+                                     <input class="custom-control-input custom-control-input-danger custom-control-input-outline" type="checkbox" id="customCheckbox6"  name="opt-top-secret">
                                      <label for="customCheckbox6" class="custom-control-label">Top Secret</label>
                                   </div>
                                </div>
@@ -286,26 +286,26 @@
 
                          <div class="form-group">
                             <div class="custom-control custom-switch">
-                               <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                               <input type="checkbox" class="custom-control-input" id="customSwitch1" name="opt-dc-only">
                                <label class="custom-control-label" for="customSwitch1">Make it visible to the Division Chief Only</label>
                             </div>
                          </div>
                          <div class="form-group">
                             <div class="custom-control custom-switch">
-                               <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                               <input type="checkbox" class="custom-control-input" id="customSwitch2" name="opt-hold-doc">
                                <label class="custom-control-label" for="customSwitch2">Hold This document</label>
                             </div>
                          </div>
                          <div class="form-group">
                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                               <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                               <input type="checkbox" class="custom-control-input" id="customSwitch3" name="opt-allow-other-obsu">
                                <label class="custom-control-label" for="customSwitch3">Allow other OBSU to view documents</label>
                             </div>
                          </div>
 
                           <div class="form-group">
                               <div class="custom-file">
-                                  <input type="file" class="custom-file-input" id="customFile" multiple>
+                                  <input type="file" class="custom-file-input" id="customFile" name="attached-files[]" multiple>
                                   <label class="custom-file-label" for="customFile">Choose file</label>
                               </div>
                           </div>
@@ -638,6 +638,14 @@ $(document).ready(function() {
     $("#documentEntryEditorModal").modal("show");
   });
 
+function iferror(value,alt) {
+    try{
+        return value.split(' ')[0];
+    }catch{
+        return alt;
+    }
+}
+
   // on edit document clicked
   $(document).on('click','#btn_edit_entry',function() {
 
@@ -687,7 +695,7 @@ $(document).ready(function() {
                 //load data to the form controls
 
                 $('#ID').val(obj_data.ID);
-
+      
                 $('#DRN').val(obj_data.DRN);
                 $('#DATE_POSTED').val(obj_data.DATE_POSTED.split(' ')[0]);
                 $('#TIME_POSTED').val(obj_data.DATE_POSTED.split(' ')[1]);
@@ -702,12 +710,10 @@ $(document).ready(function() {
                 $('#VENUE').val(obj_data.VENUE);
                 $('#AMOUNT').val(obj_data.AMOUNT);
                 $('#PARTICIPANTS').val(obj_data.PARTICIPANTS);
-                $('#DATE_TARGET').val(obj_data.DATE_TARGET);
-
-                $('#EXP_COMPUTATION').val(obj_data.EXP_COMPUTATION);
-                $('#DATE_REVIEWED').val(obj_data.DATE_REVIEWED.split(' ')[0]);
-                $('#DATE_INITIALED').val(obj_data.DATE_INITIALED.split(' ')[0]);
-                $('#DATE_RECEIVED_COPY').val(obj_data.DATE_RECEIVED_COPY.split(' ')[0]);
+                $('#DATE_TARGET').val(obj_data.DATE_TARGET);                $('#EXP_COMPUTATION').val(obj_data.EXP_COMPUTATION);
+                $('#DATE_REVIEWED').val(iferror(obj_data.DATE_REVIEWED,''));
+                $('#DATE_INITIALED').val(iferror(obj_data.DATE_INITIALED,''));
+                $('#DATE_RECEIVED_COPY').val(iferror(obj_data.DATE_RECEIVED_COPY,''));
 
             
                 // $('#summernote').text(obj_data.REMARKS);
@@ -830,15 +836,36 @@ $(document).on('change', '#doctype_selection', function(e) {
       alert(1);
   });
 
-  $('#form_doc_editor').submit(function(e) {
-      var formData = $(this).serialize();
-      var summernoteContent = $('#summernote').summernote('code');
-      formData = formData + '&REMARKS=' + summernoteContent;
+   $('#form_doc_editor').submit(function(e) {
+      e.preventDefault();
+
+
+      // var formData = new FormData($('#form_doc_editor')[0]);
+
+      // $.ajax({
+      //   url: 'document/upload',
+      //   type: 'POST',
+      //   data: formData,
+      //   processData: false,
+      //   contentType: false,
+      //   success: function(response) {
+      //     // Handle the response
+      //   },
+      //   error: function(xhr, status, error) {
+      //     // Handle the error
+      //   }
+      // });
+
+      var formData = $('#form_doc_editor').serialize();
+      
 
       $.ajax({
         url: 'document/save',
         type: 'POST',
         data: formData,
+        processData: false,  // Prevent jQuery from processing the data
+        // contentType: false,  // Prevent jQuery from automatically setting the content type
+
         beforeSend: function() {
           // Code to run before the request is sent
           console.log('Before sending the request...');
@@ -863,37 +890,39 @@ $(document).on('change', '#doctype_selection', function(e) {
   });
 
 
-      function displaySelectedFiles() {
-        const files = $('#customFile')[0].files;
 
-        const fileList = $('#selectedFilesList');
-        fileList.empty();
 
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const listItem = $('<li></li>');
-            const fileTypeIcon = getFileTypeIcon(file.type);
+function displaySelectedFiles() {
+  const files = $('#customFile')[0].files;
 
-            listItem.html(`<img src="${fileTypeIcon}" alt="${file.type} icon" class="file-icon"> ${file.name}`);
-            fileList.append(listItem);
-        }
+  const fileList = $('#selectedFilesList');
+  fileList.empty();
+
+  for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const listItem = $('<li></li>');
+      const fileTypeIcon = getFileTypeIcon(file.type);
+
+      listItem.html(`<img src="${fileTypeIcon}" alt="${file.type} icon" class="file-icon"> ${file.name}`);
+      fileList.append(listItem);
+  }
+}
+
+function getFileTypeIcon(fileType) {
+    // Define icons for specific file types here
+    // For simplicity, let's assume three file types with corresponding icons
+    switch (fileType) {
+        case 'image/jpeg':
+        case 'image/png':
+            return 'image-icon.png';
+        case 'application/pdf':
+            return 'pdf-icon.png';
+        case 'text/plain':
+            return 'text-icon.png';
+        default:
+            return 'default-icon.png';
     }
-
-    function getFileTypeIcon(fileType) {
-        // Define icons for specific file types here
-        // For simplicity, let's assume three file types with corresponding icons
-        switch (fileType) {
-            case 'image/jpeg':
-            case 'image/png':
-                return 'image-icon.png';
-            case 'application/pdf':
-                return 'pdf-icon.png';
-            case 'text/plain':
-                return 'text-icon.png';
-            default:
-                return 'default-icon.png';
-        }
-    }
+}
 
 });  
 

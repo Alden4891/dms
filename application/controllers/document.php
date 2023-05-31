@@ -37,7 +37,29 @@ class document extends CI_Controller {
 		// 386
 	}
 
-    public function save() {
+	public function save(){
+		// $this->load->library('upload');
+		// $this->load->library('input');
+		// $this->load->library('Input');
+	   $id = $this->input->post('ID');
+	   $drn = $this->input->post('DRN');
+
+		print_r($this->input->post());
+		print_r($_FILES);
+		
+
+        // // Process the rest of the form data
+		// $form_data['DATE_POSTED'] = $form_data['DATE_POSTED'].' '.$form_data['TIME_POSTED'];
+		// if (array_key_exists('TIME_POSTED', $form_data)) {
+		//     unset($form_data['TIME_POSTED']);
+		// }
+
+        // // Save the data to the database or perform any other required operations
+		// $this->Documents_model->save_document($form_data);
+
+	}
+
+    public function upload() {
     	$this->load->model('Documents_model');
         // Check if files are uploaded
         if(isset($_FILES['doc_files_upload']) && !empty($_FILES['doc_files_upload']['name'][0])) {
@@ -71,14 +93,6 @@ class document extends CI_Controller {
                 }
             }
 
-            // Process the rest of the form data
-			$form_data['DATE_POSTED'] = $form_data['DATE_POSTED'].' '.$form_data['TIME_POSTED'];
-			if (array_key_exists('TIME_POSTED', $form_data)) {
-			    unset($form_data['TIME_POSTED']);
-			}
-
-            // Save the data to the database or perform any other required operations
-			$this->Documents_model->save_document($form_data);
 
             // Return a response 
             $response = array('status' => 'success', 'fileNames' => $fileNames);
@@ -104,9 +118,7 @@ class document extends CI_Controller {
 	// 	$result = $this->Documents_model->save_document($form_data);
 	// }	
 
-	public function upload(){
 
-	}
 	
 	public function archive(){
 
