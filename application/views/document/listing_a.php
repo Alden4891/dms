@@ -150,7 +150,7 @@
 
 <!-- .documentEntryEditorModal -->
 <div class="modal fade" id="documentEntryEditorModal" tabindex="-1" role="dialog" aria-labelledby="documentEntryEditorModalLabel" aria-hidden="true" data-backdrop="static">
-  <form id="form_doc_editor">
+  <form id="form_doc_editor" method="post" enctype="multipart/form-data">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -248,12 +248,12 @@
                 </p>
 
 
-                <div class="card card-secondary options-container">
+                <div class="card card-secondary">
                    <div class="card-header">
                       <h3 class="card-title">OPTIONS</h3>
                    </div>
                    <div class="card-body">
-<form>
+                      <form>
                          <div class="row">
                             <div class="col-sm-12">
                                <div class="form-group">
@@ -305,7 +305,7 @@
 
                           <div class="form-group">
                               <div class="custom-file">
-                                  <input type="file" class="custom-file-input" id="customFile" name="attached-files[]" multiple accept="application/pdf,image/png" />
+                                  <input type="file" class="custom-file-input" id="customFile" name="attached-files[]" multiple>
                                   <label class="custom-file-label" for="customFile">Choose file</label>
                               </div>
                           </div>
@@ -315,7 +315,7 @@
                            <ul id="selectedFilesList"></ul>
                          </div>
 
-                      </form>                      
+                      </form>
                    </div>
                 </div>
 
@@ -629,61 +629,14 @@ $(document).ready(function() {
 
   //on file select
   $('#customFile').on('change', function() {
-      const files = $('#customFile')[0].files;
-      const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-
-      for (let i = 0; i < files.length; i++) {
-          const file = files[i];
-          const fileType = file.type;
-
-          if (!allowedTypes.includes(fileType)) {
-              alert(`Invalid file type: ${fileType}. Only JPG, PNG, and PDF files are allowed.`);
-              $('#customFile').val('');
-              return;
-          }
-      }
-
       displaySelectedFiles();
   });
 
-  $(document).on('change','#fe_drn',function(e){
-      e.preventDefault();
-      $('#doctype_selection').prop('readyonly', true);
-      alert(1);
+
+  // on new document clicked
+  $("#btn_upload_document").click(function() {
+    $("#documentEntryEditorModal").modal("show");
   });
-
-  function displaySelectedFiles() {
-      const files = $('#customFile')[0].files;
-
-      const fileList = $('#selectedFilesList');
-      fileList.empty();
-
-      for (let i = 0; i < files.length; i++) {
-          const file = files[i];
-          const listItem = $('<li></li>');
-          const fileTypeIcon = getFileTypeIcon(file.type);
-
-          listItem.html(`<img src="images/${fileTypeIcon}" alt="${file.type} icon" class="file-icon" width="20px" height="20px"> <small>${file.name}</small>`);
-          fileList.append(listItem);
-      }
-  }
-
-  function getFileTypeIcon(fileType) {
-      // Define icons for specific file types here
-      // For simplicity, let's assume three file types with corresponding icons
-      switch (fileType) {
-          case 'image/jpeg':
-              return 'jpg-icon.png';
-          case 'image/png':
-              return 'png-icon.png';
-          case 'application/pdf':
-              return 'pdf-icon.png';
-          case 'text/plain':
-              return 'text-icon.png';
-          default:
-              return 'default-icon.png';
-      }
-  }
 
 function iferror(value,alt) {
     try{
@@ -692,19 +645,6 @@ function iferror(value,alt) {
         return alt;
     }
 }
-  // on new document clicked
-  $("#btn_upload_document").click(function() {
-    $('#summernote').summernote('code', '');
-    $("#doctype_selection").val(-1);
-    $('#doctype_selection').attr('disabled',false)
-    $('#form_object_container').html('');
-    $('#form_editor_remarks_container').addClass('invisible');
-    $('#doctype_selection').attr('curr-value', -1);
-    $('.options-container').addClass('invisible')
-
-    //show modal
-    $("#documentEntryEditorModal").modal("show");
-  });
 
   // on edit document clicked
   $(document).on('click','#btn_edit_entry',function() {
@@ -747,7 +687,6 @@ function iferror(value,alt) {
                 $('#form_object_container').html(obj.dom);
                 $('#form_editor_remarks_container').removeClass('invisible');
                 $('#doctype_selection').attr('curr-value', obj_data.DOC_TYPE);
-                $('.options-container').removeClass('invisible')
 
                 //disable document type selection
                 $("#doctype_selection").val(obj_data.DOC_TYPE);
@@ -756,6 +695,7 @@ function iferror(value,alt) {
                 //load data to the form controls
 
                 $('#ID').val(obj_data.ID);
+      
                 $('#DRN').val(obj_data.DRN);
                 $('#DATE_POSTED').val(obj_data.DATE_POSTED.split(' ')[0]);
                 $('#TIME_POSTED').val(obj_data.DATE_POSTED.split(' ')[1]);
@@ -770,8 +710,7 @@ function iferror(value,alt) {
                 $('#VENUE').val(obj_data.VENUE);
                 $('#AMOUNT').val(obj_data.AMOUNT);
                 $('#PARTICIPANTS').val(obj_data.PARTICIPANTS);
-                $('#DATE_TARGET').val(obj_data.DATE_TARGET);
-
+                $('#DATE_TARGET').val(obj_data.DATE_TARGET);                
                 $('#EXP_COMPUTATION').val(obj_data.EXP_COMPUTATION);
                 $('#DATE_REVIEWED').val(iferror(obj_data.DATE_REVIEWED,''));
                 $('#DATE_INITIALED').val(iferror(obj_data.DATE_INITIALED,''));
@@ -780,7 +719,6 @@ function iferror(value,alt) {
             
                 // $('#summernote').text(obj_data.REMARKS);
                 $('#summernote').summernote('code', obj_data.REMARKS);
-
 
               },
               complete: function() {
@@ -858,7 +796,7 @@ $(document).on('change', '#doctype_selection', function(e) {
 
   //fetch data and objects; the timer is for testing only
   setTimeout(function() {
-    $.ajax('docEditorModalController/getFormConent', {
+    $.ajax('<?=site_url('docEditorModalController/getFormConent')?>', {
       data: {
         doctype: doctype
       },
@@ -867,8 +805,6 @@ $(document).on('change', '#doctype_selection', function(e) {
         if (doctype == -1) {
           xhr.abort();
           console.log(" form content request aborted");
-          $('.options-container').addClass('invisible')
-
           $('#form_object_container').html('');
           $('#form_editor_remarks_container').addClass('invisible');
         }
@@ -882,8 +818,6 @@ $(document).on('change', '#doctype_selection', function(e) {
         $('#form_object_container').html(obj.dom);
         $('#form_editor_remarks_container').removeClass('invisible');
         $('#doctype_selection').attr('curr-value', doctype);
-        $('.options-container').removeClass('invisible')
-
       },
       complete: function() {
         // Hide loading indicator
@@ -892,9 +826,6 @@ $(document).on('change', '#doctype_selection', function(e) {
     });
   }, 100);
 });
-
-
-
 
   $(document).on('change','#fe_drn',function(e){
       e.preventDefault();
@@ -908,7 +839,7 @@ $(document).on('change', '#doctype_selection', function(e) {
       var formData = $('#form_doc_editor').serialize();
 
       $.ajax({
-        url: "document/save",
+        url: 'document/save',
         type: 'POST',
         data: formData,
         processData: false,  // Prevent jQuery from processing the data
@@ -956,6 +887,38 @@ $(document).on('change', '#doctype_selection', function(e) {
 
 
 
+
+function displaySelectedFiles() {
+  const files = $('#customFile')[0].files;
+
+  const fileList = $('#selectedFilesList');
+  fileList.empty();
+
+  for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const listItem = $('<li></li>');
+      const fileTypeIcon = getFileTypeIcon(file.type);
+
+      listItem.html(`<img src="images/${fileTypeIcon}" alt="${file.type} icon" class="file-icon"> ${file.name}`);
+      fileList.append(listItem);
+  }
+}
+
+function getFileTypeIcon(fileType) {
+    // Define icons for specific file types here
+    // For simplicity, let's assume three file types with corresponding icons
+    switch (fileType) {
+        case 'image/jpeg':
+        case 'image/png':
+            return 'image-icon.png';
+        case 'application/pdf':
+            return 'pdf-icon.png';
+        case 'text/plain':
+            return 'text-icon.png';
+        default:
+            return 'default-icon.png';
+    }
+}
 
 });  
 

@@ -38,15 +38,9 @@ class document extends CI_Controller {
 	}
 
 	public function save(){
-		// $this->load->library('upload');
-		// $this->load->library('input');
-		// $this->load->library('Input');
-	   $id = $this->input->post('ID');
-	   $drn = $this->input->post('DRN');
 
-		print_r($this->input->post());
-		print_r($_FILES);
-		
+		$form_data = $this->input->post();
+		print_r($form_data);
 
         // // Process the rest of the form data
 		// $form_data['DATE_POSTED'] = $form_data['DATE_POSTED'].' '.$form_data['TIME_POSTED'];
@@ -60,49 +54,55 @@ class document extends CI_Controller {
 	}
 
     public function upload() {
-    	$this->load->model('Documents_model');
-        // Check if files are uploaded
-        if(isset($_FILES['doc_files_upload']) && !empty($_FILES['doc_files_upload']['name'][0])) {
-            // Configure upload preferences
-            $config['upload_path'] = './uploads/';
-            $config['allowed_types'] = 'pdf|jpg';
-            $config['max_size'] = 5000; // 5MB
-            $config['file_name'] = 'images_'; // Prefix for file names
 
-            $this->load->library('upload', $config);
+    	print('uploading...');
+    	print_r($_FILES);
 
-            $files = $_FILES['doc_files_upload'];
+    	// $this->load->model('Documents_model');
+        // // Check if files are uploaded
+        // if(isset($_FILES['doc_files_upload']) && !empty($_FILES['doc_files_upload']['name'][0])) {
+        //     // Configure upload preferences
+        //     $config['upload_path'] = './uploads/';
+        //     $config['allowed_types'] = 'pdf|jpg';
+        //     $config['max_size'] = 5000; // 5MB
+        //     $config['file_name'] = 'images_'; // Prefix for file names
 
-            // Upload each file
-            $fileNames = array();
-            for ($i = 0; $i < count($files['name']); $i++) {
-                $_FILES['doc_files_upload']['name'] = $files['name'][$i];
-                $_FILES['doc_files_upload']['type'] = $files['type'][$i];
-                $_FILES['doc_files_upload']['tmp_name'] = $files['tmp_name'][$i];
-                $_FILES['doc_files_upload']['error'] = $files['error'][$i];
-                $_FILES['doc_files_upload']['size'] = $files['size'][$i];
+        //     $this->load->library('upload', $config);
 
-                if ($this->upload->do_upload('doc_files_upload')) {
-                    $uploadData = $this->upload->data();
-                    $fileNames[] = $uploadData['file_name'];
-                } else {
-                    // Handle upload errors if needed
-                    $error = $this->upload->display_errors();
-                    echo $error;
-                    return;
-                }
-            }
+        //     $files = $_FILES['doc_files_upload'];
+
+        //     // Upload each file
+        //     $fileNames = array();
+        //     for ($i = 0; $i < count($files['name']); $i++) {
+        //         $_FILES['doc_files_upload']['name'] = $files['name'][$i];
+        //         $_FILES['doc_files_upload']['type'] = $files['type'][$i];
+        //         $_FILES['doc_files_upload']['tmp_name'] = $files['tmp_name'][$i];
+        //         $_FILES['doc_files_upload']['error'] = $files['error'][$i];
+        //         $_FILES['doc_files_upload']['size'] = $files['size'][$i];
+
+        //         if ($this->upload->do_upload('doc_files_upload')) {
+        //             $uploadData = $this->upload->data();
+        //             $fileNames[] = $uploadData['file_name'];
+        //         } else {
+        //             // Handle upload errors if needed
+        //             $error = $this->upload->display_errors();
+        //             echo $error;
+        //             return;
+        //         }
+        //     }
 
 
-            // Return a response 
-            $response = array('status' => 'success', 'fileNames' => $fileNames);
-            echo json_encode($response);
+        //     // Return a response 
+        //     $response = array('status' => 'success', 'fileNames' => $fileNames);
+        //     echo json_encode($response);
 
-        } else {
-            // Handle the case when no files are uploaded
-            $response = array('status' => 'error', 'message' => 'No files uploaded.');
-            echo json_encode($response);
-        }
+        // } else {
+        //     // Handle the case when no files are uploaded
+        //     $response = array('status' => 'error', 'message' => 'No files uploaded.');
+        //     echo json_encode($response);
+        // }
+
+
     }
 
 

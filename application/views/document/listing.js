@@ -1,15 +1,183 @@
+  
 $(document).ready(function() {
+
+  //on file select
+  $('#customFile').on('change', function() {
+      const files = $('#customFile')[0].files;
+      const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+
+      for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const fileType = file.type;
+
+          if (!allowedTypes.includes(fileType)) {
+              alert(`Invalid file type: ${fileType}. Only JPG, PNG, and PDF files are allowed.`);
+              $('#customFile').val('');
+              return;
+          }
+      }
+
+      displaySelectedFiles();
+  });
+
+  $(document).on('change','#fe_drn',function(e){
+      e.preventDefault();
+      $('#doctype_selection').prop('readyonly', true);
+      alert(1);
+  });
+
+  function displaySelectedFiles() {
+      const files = $('#customFile')[0].files;
+
+      const fileList = $('#selectedFilesList');
+      fileList.empty();
+
+      for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const listItem = $('<li></li>');
+          const fileTypeIcon = getFileTypeIcon(file.type);
+
+          listItem.html(`<img src="${fileTypeIcon}" alt="${file.type} icon" class="file-icon"> ${file.name}`);
+          fileList.append(listItem);
+      }
+  }
+
+  function getFileTypeIcon(fileType) {
+      // Define icons for specific file types here
+      // For simplicity, let's assume three file types with corresponding icons
+      switch (fileType) {
+          case 'image/jpeg':
+          case 'image/png':
+              return 'image-icon.png';
+          case 'application/pdf':
+              return 'pdf-icon.png';
+          case 'text/plain':
+              return 'text-icon.png';
+          default:
+              return 'default-icon.png';
+      }
+  }
+
+function iferror(value,alt) {
+    try{
+        return value.split(' ')[0];
+    }catch{
+        return alt;
+    }
+}
   // on new document clicked
   $("#btn_upload_document").click(function() {
+    $('#summernote').summernote('code', '');
+    $("#doctype_selection").val(-1);
+    $('#doctype_selection').attr('disabled',false)
+    $('#form_object_container').html('');
+    $('#form_editor_remarks_container').addClass('invisible');
+    $('#doctype_selection').attr('curr-value', -1);
+    $('.options-container').addClass('invisible')
+
+    //show modal
     $("#documentEntryEditorModal").modal("show");
   });
 
   // on edit document clicked
   $(document).on('click','#btn_edit_entry',function() {
-    var doc_id = $(this).attr('doc_id');
-    alert(doc_id);
 
-    //$("#documentEntryEditorModal").modal("show");
+    //get doc_id
+    var doc_id = $(this).attr('doc_id');
+    
+    //get doc data
+  setTimeout(function() {
+        $.ajax('<?=site_url('document/data/')?>'+doc_id, {
+          type: "POST",
+          error: function(data) {
+            console.log(data);
+            alert("An error has occurred! Please contact aaquinones.fo12@gmail.com.");
+          },
+          success: function(data) {
+            var obj_data = jQuery.parseJSON(data);
+            console.log(obj_data.DOC_TYPE);
+
+            //load form controls
+            $.ajax('<?=site_url('docEditorModalController/getFormConent')?>', {
+              data: {
+                doctype: obj_data.DOC_TYPE
+              },
+              type: "POST",
+              // beforeSend: function(xhr, opts) {
+              //   if (doctype == -1) {
+              //     xhr.abort();
+              //     console.log(" form content request aborted");
+              //     $('#form_object_container').html('');
+              //     $('#form_editor_remarks_container').addClass('invisible');
+              //   }
+              // },
+              error: function(data) {
+                console.log(data);
+                alert("An error has occurred! Please contact aaquinones.fo12@gmail.com.");
+              },
+              success: function(data) {
+                var obj = jQuery.parseJSON(data);
+                $('#form_object_container').html(obj.dom);
+                $('#form_editor_remarks_container').removeClass('invisible');
+                $('#doctype_selection').attr('curr-value', obj_data.DOC_TYPE);
+                $('.options-container').removeClass('invisible')
+
+                //disable document type selection
+                $("#doctype_selection").val(obj_data.DOC_TYPE);
+                $('#doctype_selection').attr('disabled',true)
+
+                //load data to the form controls
+
+                $('#ID').val(obj_data.ID);
+                $('#DRN').val(obj_data.DRN);
+                $('#DATE_POSTED').val(obj_data.DATE_POSTED.split(' ')[0]);
+                $('#TIME_POSTED').val(obj_data.DATE_POSTED.split(' ')[1]);
+                $('#OBSU').val(obj_data.OBSU);
+                $('#STATUS').val(obj_data.STATUS);
+                $('#SUBJECT').val(obj_data.SUBJECT);
+                $('#SIGNED_BY').val(obj_data.SIGNED_BY);
+                $('#RECEIVED_BY').val(obj_data.RECEIVED_BY);
+                $('#HANDLER').val(obj_data.HANDLER);
+
+                $('#END_USERS').val(obj_data.END_USERS);
+                $('#VENUE').val(obj_data.VENUE);
+                $('#AMOUNT').val(obj_data.AMOUNT);
+                $('#PARTICIPANTS').val(obj_data.PARTICIPANTS);
+                $('#DATE_TARGET').val(obj_data.DATE_TARGET);
+
+                $('#EXP_COMPUTATION').val(obj_data.EXP_COMPUTATION);
+                $('#DATE_REVIEWED').val(iferror(obj_data.DATE_REVIEWED,''));
+                $('#DATE_INITIALED').val(iferror(obj_data.DATE_INITIALED,''));
+                $('#DATE_RECEIVED_COPY').val(iferror(obj_data.DATE_RECEIVED_COPY,''));
+
+            
+                // $('#summernote').text(obj_data.REMARKS);
+                $('#summernote').summernote('code', obj_data.REMARKS);
+
+
+              },
+              complete: function() {
+                // Hide loading indicator
+                $('#form_editor_remarks_container').removeClass('loading');
+              }
+            });
+
+          },
+          complete: function() {
+            // Hide loading indicator
+            $('#form_editor_remarks_container').removeClass('loading');
+          }
+        });
+      }, 100);
+
+
+
+    //load form controls
+
+    //set data
+
+
+    $("#documentEntryEditorModal").modal("show");
   });
 
   // on route document clicked
@@ -63,7 +231,7 @@ $(document).on('change', '#doctype_selection', function(e) {
 
   //fetch data and objects; the timer is for testing only
   setTimeout(function() {
-    $.ajax('<?=site_url('docEditorModalController/getFormConent')?>', {
+    $.ajax('docEditorModalController/getFormConent', {
       data: {
         doctype: doctype
       },
@@ -72,6 +240,8 @@ $(document).on('change', '#doctype_selection', function(e) {
         if (doctype == -1) {
           xhr.abort();
           console.log(" form content request aborted");
+          $('.options-container').addClass('invisible')
+
           $('#form_object_container').html('');
           $('#form_editor_remarks_container').addClass('invisible');
         }
@@ -85,6 +255,8 @@ $(document).on('change', '#doctype_selection', function(e) {
         $('#form_object_container').html(obj.dom);
         $('#form_editor_remarks_container').removeClass('invisible');
         $('#doctype_selection').attr('curr-value', doctype);
+        $('.options-container').removeClass('invisible')
+
       },
       complete: function() {
         // Hide loading indicator
@@ -103,20 +275,55 @@ $(document).on('change', '#doctype_selection', function(e) {
       alert(1);
   });
 
-  // $(document).on('click', '#button_save_form_editor', function() {
-  //   $.ajax({
-  //     url: 'my-page.php',
-  //     type: 'POST',
-  //     data: $('#form_doc_editor').serialize(),
-  //     success: function(response) {
-  //       // Handle the response from the server
-  //     },
-  //     error: function(jqXHR, textStatus, errorThrown) {
-  //       // Handle errors
-  //     }
-  //   });
-  // });
+   $('#form_doc_editor').submit(function(e) {
+      e.preventDefault();
+
+      var formData = $('#form_doc_editor').serialize();
+
+      $.ajax({
+        url: 'document/save',
+        type: 'POST',
+        data: formData,
+        processData: false,  // Prevent jQuery from processing the data
+        // contentType: false,  // Prevent jQuery from automatically setting the content type
+
+        beforeSend: function() {
+          // Code to run before the request is sent
+          console.log('Before sending the request...');
+        },
+        success: function(response) {
+
+            //upload documentns
+            var formData = new FormData($('#form_doc_editor')[0]);
+            $.ajax({
+              url: 'document/upload',
+              type: 'POST',
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function(response) {
+                // Handle the response
+              },
+              error: function(xhr, status, error) {
+                // Handle the error
+              }
+            });
 
 
+          console.log('Request succeeded!');
+          console.log(response);
+        },
+        error: function(xhr, status, error) {
+          // Code to run when the request encounters an error
+          console.log('Request failed!');
+          console.log('Error:', xhr);
+        },
+        complete: function() {
+          // Code to run regardless of success or failure
+          console.log('Request completed.');
+          e.preventDefault();
+        }
+      });      
 
-});
+  });
+
