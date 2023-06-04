@@ -22,11 +22,16 @@ class document extends CI_Controller {
 		$data['open_menu'] = 'document';
 		$data['documents'] = $this->Documents_model->get_list();
 
-		// print(base_url('assets/js/listing.js'));
-		// print_r($data);
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar',$data);
 		$this->load->view('document/listing');
+
+		$this->load->view('document/listing_doc_editor_modal');
+		$this->load->view('document/listing_doc_route_modal');
+		$this->load->view('document/listing_doc_archive_modal');
+		$this->load->view('document/listing_js');
+
+
 		$this->load->view('templates/footer');
 	}
 
@@ -40,67 +45,123 @@ class document extends CI_Controller {
 	public function save(){
 
 		$form_data = $this->input->post();
-		print_r($form_data);
+		
+		// Separate the specified elements into a separate array
+		$restrictions = array(
+		    'opt-public' => $form_data['opt-public'],
+		    'opt-internal-use-only' => $form_data['opt-internal-use-only'],
+		    'opt-urgent' => $form_data['opt-urgent'],
+		    'opt-confidential' => $form_data['opt-confidential'],
+		    'opt-restricted' => $form_data['opt-restricted'],
+		    'opt-top-secret' => $form_data['opt-top-secret'],
+		    'opt-dc-only' => $form_data['opt-dc-only'],
+		    'opt-hold-doc' => $form_data['opt-hold-doc'],
+		    'opt-allow-other-obsu' => $form_data['opt-allow-other-obsu']
+		);
 
-        // // Process the rest of the form data
-		// $form_data['DATE_POSTED'] = $form_data['DATE_POSTED'].' '.$form_data['TIME_POSTED'];
-		// if (array_key_exists('TIME_POSTED', $form_data)) {
-		//     unset($form_data['TIME_POSTED']);
-		// }
+		// Remove the specified elements from $form_data
+		unset(
+		    $form_data['opt-public'],
+		    $form_data['opt-internal-use-only'],
+		    $form_data['opt-urgent'],
+		    $form_data['opt-confidential'],
+		    $form_data['opt-restricted'],
+		    $form_data['opt-top-secret'],
+		    $form_data['opt-dc-only'],
+		    $form_data['opt-hold-doc'],
+		    $form_data['opt-allow-other-obsu']
+		);
 
-        // // Save the data to the database or perform any other required operations
-		// $this->Documents_model->save_document($form_data);
+		//convert to decstring
+		$restrictions_bin = implode('', $restrictions);
+		$restrictions_dec = bindec($restrictions_bin);
+		$form_data['RESTRICTIONS'] = $restrictions_dec;
 
+        // Save the data to the database or perform any other required operations
+        $this->load->model('Documents_model');
+		$doc_id = $this->Documents_model->save_document($form_data);
+
+		//return result
+		print_r(json_encode(array('doc_id'=>$doc_id)));
 	}
 
-    public function upload() {
+    public function upload($doc_id) {
 
-    	print('uploading...');
-    	print_r($_FILES);
+    	$fileName = "$doc_id";
 
-    	// $this->load->model('Documents_model');
-        // // Check if files are uploaded
-        // if(isset($_FILES['doc_files_upload']) && !empty($_FILES['doc_files_upload']['name'][0])) {
-        //     // Configure upload preferences
-        //     $config['upload_path'] = './uploads/';
-        //     $config['allowed_types'] = 'pdf|jpg';
-        //     $config['max_size'] = 5000; // 5MB
-        //     $config['file_name'] = 'images_'; // Prefix for file names
+	    // Delete existing files
+	    $filePattern = "./uploads/$doc_id*"; // Specify the pattern to match the filenames
+	    $existingFiles = glob($filePattern); // Find files matching the pattern
 
-        //     $this->load->library('upload', $config);
+	    foreach ($existingFiles as $file) {
+	        unlink($file); // Delete each file
+	    }
 
-        //     $files = $_FILES['doc_files_upload'];
+        if(isset($_FILES['attached-files']) && !empty($_FILES['attached-files']['name'][0])) {
+            // Configure upload preferences
+            $config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'pdf|jpg|jpeg|png';
+            $config['max_size'] = 5000; // 5MB
+            // $config['file_name'] = 'images_'; // Prefix for file names
 
-        //     // Upload each file
-        //     $fileNames = array();
-        //     for ($i = 0; $i < count($files['name']); $i++) {
-        //         $_FILES['doc_files_upload']['name'] = $files['name'][$i];
-        //         $_FILES['doc_files_upload']['type'] = $files['type'][$i];
-        //         $_FILES['doc_files_upload']['tmp_name'] = $files['tmp_name'][$i];
-        //         $_FILES['doc_files_upload']['error'] = $files['error'][$i];
-        //         $_FILES['doc_files_upload']['size'] = $files['size'][$i];
+            // $this->load->library('upload', $config);
+            // $this->upload->initialize($config);
+            $files = $_FILES['attached-files'];
 
-        //         if ($this->upload->do_upload('doc_files_upload')) {
-        //             $uploadData = $this->upload->data();
-        //             $fileNames[] = $uploadData['file_name'];
-        //         } else {
-        //             // Handle upload errors if needed
-        //             $error = $this->upload->display_errors();
-        //             echo $error;
-        //             return;
-        //         }
-        //     }
+            // Upload each file
+            $fileNames = array();
+            $this->load->library('upload', $config);
+            for ($i = 0; $i < count($files['name']); $i++) {
+                $_FILES['attached-files']['name'] = $files['name'][$i];
+                $_FILES['attached-files']['type'] = $files['type'][$i];
+                $_FILES['attached-files']['tmp_name'] = $files['tmp_name'][$i];
+                $_FILES['attached-files']['error'] = $files['error'][$i];
+                $_FILES['attached-files']['size'] = $files['size'][$i];
+
+		        // Generate custom file name
+		        $extension = pathinfo($_FILES['attached-files']['name'], PATHINFO_EXTENSION);
+		        $fileName = $doc_id . '(' . ($i + 1) . ').' . $extension;
+		        $config['file_name'] = $fileName;
+
+				$this->upload->initialize($config);
+
+                if ($this->upload->do_upload('attached-files')) {
+                    $uploadData = $this->upload->data();
+                    $fileNames[] = $uploadData['file_name'];
 
 
-        //     // Return a response 
-        //     $response = array('status' => 'success', 'fileNames' => $fileNames);
-        //     echo json_encode($response);
+			        // Save file details to the database
+			        $data = array(
+			            'doc_id' => $doc_id,
+			            'filename' => $fileName,
+			            'size' => $_FILES['attached-files']['size'],
+			            'mime_type' => $_FILES['attached-files']['type'],
+			            'datetime_uploaded' => date('Y-m-d H:i:s')
+			        );
 
-        // } else {
-        //     // Handle the case when no files are uploaded
-        //     $response = array('status' => 'error', 'message' => 'No files uploaded.');
-        //     echo json_encode($response);
-        // }
+			        // Save the data to the MySQL table 'tbl_uploads'
+			        $this->db->insert('tbl_uploads', $data);
+
+                } else {
+                    // Handle upload errors if needed
+                    $error = $this->upload->display_errors();
+                    echo $error;
+                    return;
+                }
+            }
+
+
+
+
+            // Return a response 
+            $response = array('status' => 'success', 'fileNames' => $fileNames);
+            echo json_encode($response);
+
+        } else {
+            // Handle the case when no files are uploaded
+            $response = array('status' => 'error', 'message' => 'No files uploaded.');
+            echo json_encode($response);
+        }
 
 
     }

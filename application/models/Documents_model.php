@@ -49,9 +49,12 @@ class Documents_model extends CI_Model {
             // Update the record if the ID exists
             $this->db->where('ID', $id);
             $this->db->update('tbl_documents', $data);
+            return $id;
         } else {
+            $data['DATA_POSTED'] = date('Y-m-d H:i:s');
             // Insert a new record if the ID doesn't exist
             $this->db->insert('tbl_documents', $data);
+            $this->db->insert_id();
         }
     }
 

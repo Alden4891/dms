@@ -1,3 +1,5 @@
+
+<script type="text/javascript">
   
 $(document).ready(function() {
 
@@ -37,7 +39,7 @@ $(document).ready(function() {
           const listItem = $('<li></li>');
           const fileTypeIcon = getFileTypeIcon(file.type);
 
-          listItem.html(`<img src="${fileTypeIcon}" alt="${file.type} icon" class="file-icon"> ${file.name}`);
+          listItem.html(`<img src="images/${fileTypeIcon}" alt="${file.type} icon" class="file-icon" width="20px" height="20px"> <small>${file.name}</small>`);
           fileList.append(listItem);
       }
   }
@@ -47,8 +49,9 @@ $(document).ready(function() {
       // For simplicity, let's assume three file types with corresponding icons
       switch (fileType) {
           case 'image/jpeg':
+              return 'jpg-icon.png';
           case 'image/png':
-              return 'image-icon.png';
+              return 'png-icon.png';
           case 'application/pdf':
               return 'pdf-icon.png';
           case 'text/plain':
@@ -65,6 +68,29 @@ function iferror(value,alt) {
         return alt;
     }
 }
+
+
+function decimalToBinary(decimal) {
+  var binaryArray = [];
+  
+  // Convert decimal to binary
+  while (decimal > 0) {
+    var remainder = decimal % 2;
+    binaryArray.unshift(remainder); // Add remainder to the beginning of the array
+    decimal = Math.floor(decimal / 2);
+  }
+  
+  // Handle the case when the input is 0
+  if (binaryArray.length === 0) {
+    binaryArray.push(0);
+  }
+  
+  return binaryArray;
+}
+
+
+
+
   // on new document clicked
   $("#btn_upload_document").click(function() {
     $('#summernote').summernote('code', '');
@@ -86,7 +112,7 @@ function iferror(value,alt) {
     var doc_id = $(this).attr('doc_id');
     
     //get doc data
-  setTimeout(function() {
+    setTimeout(function() {
         $.ajax('<?=site_url('document/data/')?>'+doc_id, {
           type: "POST",
           error: function(data) {
@@ -95,7 +121,7 @@ function iferror(value,alt) {
           },
           success: function(data) {
             var obj_data = jQuery.parseJSON(data);
-            console.log(obj_data.DOC_TYPE);
+           
 
             //load form controls
             $.ajax('<?=site_url('docEditorModalController/getFormConent')?>', {
@@ -149,12 +175,24 @@ function iferror(value,alt) {
                 $('#DATE_REVIEWED').val(iferror(obj_data.DATE_REVIEWED,''));
                 $('#DATE_INITIALED').val(iferror(obj_data.DATE_INITIALED,''));
                 $('#DATE_RECEIVED_COPY').val(iferror(obj_data.DATE_RECEIVED_COPY,''));
-
-            
+                
                 // $('#summernote').text(obj_data.REMARKS);
                 $('#summernote').summernote('code', obj_data.REMARKS);
 
-
+                //load options by Looping through the checkboxes
+                var binaryArray = decimalToBinary(obj_data.RESTRICTIONS);
+                $.each(binaryArray, function(index, value) {
+                   console.log(index + ' : ' + value);
+                  var checkboxClass = '.opt-bin-' + (index);
+                  var checkbox = $(checkboxClass);
+                  
+                  // Check the checkbox if the corresponding binary digit is 1
+                  if (value === 1) {
+                    checkbox.prop('checked', true);
+                  } else {
+                    checkbox.prop('checked', false);
+                  }
+                });
               },
               complete: function() {
                 // Hide loading indicator
@@ -281,7 +319,7 @@ $(document).on('change', '#doctype_selection', function(e) {
       var formData = $('#form_doc_editor').serialize();
 
       $.ajax({
-        url: 'document/save',
+        url: "document/save",
         type: 'POST',
         data: formData,
         processData: false,  // Prevent jQuery from processing the data
@@ -289,29 +327,36 @@ $(document).on('change', '#doctype_selection', function(e) {
 
         beforeSend: function() {
           // Code to run before the request is sent
-          console.log('Before sending the request...');
+          // console.log('Before sending the request...');
         },
         success: function(response) {
+            // console.log(response);
+            
+            //upload documents
+            var attachment_count = $('.attached-files')[0].files.length;
+            if (attachment_count !== 0) {
+              
+              var obj_data = jQuery.parseJSON(response);
+              var formData = new FormData($('#form_doc_editor')[0]);
+              $.ajax({
+                url: 'document/upload/'+obj_data.doc_id,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                  console.log(response);
+                },
+                error: function(xhr, status, error) {
+                  console.log(error);
+                }
+              });
+            }
+            
 
-            //upload documentns
-            var formData = new FormData($('#form_doc_editor')[0]);
-            $.ajax({
-              url: 'document/upload',
-              type: 'POST',
-              data: formData,
-              processData: false,
-              contentType: false,
-              success: function(response) {
-                // Handle the response
-              },
-              error: function(xhr, status, error) {
-                // Handle the error
-              }
-            });
-
-
-          console.log('Request succeeded!');
-          console.log(response);
+           $("#documentEntryEditorModal").modal("hide");
+          // console.log('Request succeeded!');
+          // console.log(response);
         },
         error: function(xhr, status, error) {
           // Code to run when the request encounters an error
@@ -320,10 +365,16 @@ $(document).on('change', '#doctype_selection', function(e) {
         },
         complete: function() {
           // Code to run regardless of success or failure
-          console.log('Request completed.');
+          // console.log('Request completed.');
           e.preventDefault();
         }
       });      
 
   });
 
+
+
+
+});  
+
+</script>
