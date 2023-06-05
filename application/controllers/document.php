@@ -6,7 +6,7 @@ class document extends CI_Controller {
         parent::__construct();
         //redirect to login if session expired
 		if(!$this->session->userdata('user_id'))
-		redirect(site_url('user/login'), 'refresh');
+		// redirect(site_url('user/login'), 'refresh');
 
 		$this->load->helper('url');
     }
@@ -27,8 +27,10 @@ class document extends CI_Controller {
 		$this->load->view('document/listing');
 
 		$this->load->view('document/listing_doc_editor_modal');
+		$this->load->view('document/listing_doc_viewer_modal');
 		$this->load->view('document/listing_doc_route_modal');
 		$this->load->view('document/listing_doc_archive_modal');
+
 		$this->load->view('document/listing_js');
 
 
@@ -41,6 +43,62 @@ class document extends CI_Controller {
 		print_r(json_encode($data));
 		// 386
 	}
+
+    public function formatBytes($bytes) {
+        if ($bytes < 1024) {
+            return $bytes . ' bytes';
+        } elseif ($bytes < 1048576) {
+            return round($bytes / 1024, 2) . ' KB';
+        } elseif ($bytes < 1073741824) {
+            return round($bytes / 1048576, 2) . ' MB';
+        } else {
+            return round($bytes / 1073741824, 2) . ' GB';
+        }
+    }
+
+	public function get_upload_listing($doc_id){
+		$this->load->model('Documents_model');
+		$dataset = $this->Documents_model->get_upload_listing($doc_id);
+		// print('<pre>');
+		// print_r($dataset);
+		// print('</pre>');
+
+		$row_template = '';
+		foreach($dataset as $row) {
+			$doc_id = str_pad($row->id, 5, '0', STR_PAD_LEFT);
+			$row_template .= "
+	            <tr>
+	              <td style=\"\">$doc_id</td>
+	              <td style=\"\">$row->filename</td>
+	              <td style=\"\">".$this->formatBytes($row->size)."</td>
+	              <td style=\"\">
+	                <div class=\"btn-group btn-group-sm\">
+	                  <a class=\"btn btn-secondary\">
+	                    <i class=\"fa fa-download\"></i>
+	                  </a>
+	                  <a class=\"btn btn-secondary\" id =\"btn_document_preview\" attachment-id=$row->id>
+	                    <i class=\"fa fa-eye\"></i>
+	                  </a>
+	                  <button type=\"button\" class=\"btn btn-secondary\">
+	                    <i class=\"fa fa-print\"></i>
+	                  </button>
+	                </div>
+	              </td>
+	            </tr>
+			";		
+		}
+		print($row_template);
+	}
+
+	 public function get_document_instance($file_id) {
+	  	$this->load->model('Documents_model');
+	  	$data = $this->Documents_model->get_file_details($file_id);
+		header('Content-type: '. $data->mime_type);
+		header('Content-Disposition: inline; filename="' . basename($data->filename) . '"');
+		header('Content-Transfer-Encoding: binary');
+		header('Accept-Ranges: bytes');
+		readfile(site_url("uploads/$data->filename"));
+	 }
 
 	public function save(){
 
@@ -87,11 +145,13 @@ class document extends CI_Controller {
 
     public function upload($doc_id) {
 
-    	$fileName = "$doc_id";
+    	$fileName = "doc_$doc_id"."_a";
 
 	    // Delete existing files
-	    $filePattern = "./uploads/$doc_id*"; // Specify the pattern to match the filenames
+	    $filePattern = "./uploads/$fileName*"; // Specify the pattern to match the filenames
 	    $existingFiles = glob($filePattern); // Find files matching the pattern
+        $this->db->where('`doc_id`',$doc_id);
+        $this->db->delete('tbl_uploads');
 
 	    foreach ($existingFiles as $file) {
 	        unlink($file); // Delete each file
@@ -100,8 +160,8 @@ class document extends CI_Controller {
         if(isset($_FILES['attached-files']) && !empty($_FILES['attached-files']['name'][0])) {
             // Configure upload preferences
             $config['upload_path'] = './uploads/';
-            $config['allowed_types'] = 'pdf|jpg|jpeg|png';
-            $config['max_size'] = 5000; // 5MB
+            $config['allowed_types'] = 'pdf';
+            $config['max_size'] = 10000; // 5MB
             // $config['file_name'] = 'images_'; // Prefix for file names
 
             // $this->load->library('upload', $config);
@@ -120,7 +180,7 @@ class document extends CI_Controller {
 
 		        // Generate custom file name
 		        $extension = pathinfo($_FILES['attached-files']['name'], PATHINFO_EXTENSION);
-		        $fileName = $doc_id . '(' . ($i + 1) . ').' . $extension;
+		        $fileName = "doc_$doc_id"."_a" . '(' . ($i + 1) . ').' . $extension;
 		        $config['file_name'] = $fileName;
 
 				$this->upload->initialize($config);
@@ -128,7 +188,6 @@ class document extends CI_Controller {
                 if ($this->upload->do_upload('attached-files')) {
                     $uploadData = $this->upload->data();
                     $fileNames[] = $uploadData['file_name'];
-
 
 			        // Save file details to the database
 			        $data = array(
@@ -149,9 +208,6 @@ class document extends CI_Controller {
                     return;
                 }
             }
-
-
-
 
             // Return a response 
             $response = array('status' => 'success', 'fileNames' => $fileNames);

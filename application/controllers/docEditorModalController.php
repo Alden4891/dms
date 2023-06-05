@@ -17,15 +17,16 @@ class docEditorModalController extends CI_Controller {
 
     }
 	
+    
 
    public function getFormConent(){
 		$data = $this->input->post();
 
-      if ($data['doctype']==DOC_TYPE_MEMO) {
+      // // if ($data['doctype']==DOC_TYPE_MEMO) {
          
-      }else{
+      // // }else{
 
-      }
+      // // }
 
       switch ($data['doctype']) {
          case DOC_TYPE_MEMO:
@@ -56,6 +57,7 @@ class docEditorModalController extends CI_Controller {
 
 
 		print_r(json_encode(array('dom'=>$this->htx)));
+   
 
 	}
 

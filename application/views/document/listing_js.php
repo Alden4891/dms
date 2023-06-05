@@ -88,7 +88,24 @@ function decimalToBinary(decimal) {
   return binaryArray;
 }
 
+  function options_clear() {
+      var binaryArray = ["0", "0", "0", "0", "0", "0", "0", "0", "0"];
+      $.each(binaryArray, function(index, value) {
+          var checkboxClass = '.opt-bin-' + index;
+          // Uncheck the checkbox that matches the checkboxClass
+          $(checkboxClass).prop('checked', false);
+          console.log('clearing: ' + checkboxClass);
+      });
+  }
 
+  //on view btn_document_preview clicked
+  $(document).on('click','#btn_document_preview', function(e){
+      e.preventDefault();
+      var attachment_id = $(this).attr('attachment-id');
+      alert(attachment_id);
+      $('#prev_pdf').attr('src','document/get_document_instance/'+attachment_id+'#view=FitH');
+      $('#listing_doc_viewer_modal').modal('show');
+  });
 
 
   // on new document clicked
@@ -100,7 +117,8 @@ function decimalToBinary(decimal) {
     $('#form_editor_remarks_container').addClass('invisible');
     $('#doctype_selection').attr('curr-value', -1);
     $('.options-container').addClass('invisible')
-
+    options_clear();
+    $('.uploaded_file_container').html('');
     //show modal
     $("#documentEntryEditorModal").modal("show");
   });
@@ -121,7 +139,6 @@ function decimalToBinary(decimal) {
           },
           success: function(data) {
             var obj_data = jQuery.parseJSON(data);
-           
 
             //load form controls
             $.ajax('<?=site_url('docEditorModalController/getFormConent')?>', {
@@ -142,6 +159,7 @@ function decimalToBinary(decimal) {
                 alert("An error has occurred! Please contact aaquinones.fo12@gmail.com.");
               },
               success: function(data) {
+
                 var obj = jQuery.parseJSON(data);
                 $('#form_object_container').html(obj.dom);
                 $('#form_editor_remarks_container').removeClass('invisible');
@@ -152,8 +170,10 @@ function decimalToBinary(decimal) {
                 $("#doctype_selection").val(obj_data.DOC_TYPE);
                 $('#doctype_selection').attr('disabled',true)
 
-                //load data to the form controls
+                //clear options
+                options_clear();
 
+                //load data to the form controls
                 $('#ID').val(obj_data.ID);
                 $('#DRN').val(obj_data.DRN);
                 $('#DATE_POSTED').val(obj_data.DATE_POSTED.split(' ')[0]);
@@ -193,6 +213,27 @@ function decimalToBinary(decimal) {
                     checkbox.prop('checked', false);
                   }
                 });
+
+               
+                //load uploaded files
+                $.ajax({
+                  url: 'document/get_upload_listing/'+obj_data.ID,
+                  type: 'POST',
+                  processData: false,
+                  contentType: false,
+                  success: function(response) {
+
+                    $('.uploaded_file_container').html(response);
+                  },
+                  error: function(xhr, status, error) {
+                    console.log(error);
+                  }
+                });
+              
+
+                
+
+
               },
               complete: function() {
                 // Hide loading indicator

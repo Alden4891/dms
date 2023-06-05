@@ -79,4 +79,21 @@ class Documents_model extends CI_Model {
         $this->db->where('ID', $id);
         return $this->db->get('tbl_documents')->row();
     }
+
+    /**
+     * Get uploaded documents by ID.
+     *
+     * @param int $id ID of the document to retrieve.
+     * @return mixed Result of the single document.
+     */
+    public function get_upload_listing($doc_id) {
+        $this->db->where('doc_id', $doc_id);
+        return $this->db->get('tbl_uploads')->result();
+    }
+
+    public function get_file_details($upload_id) {
+        $this->db->where('id', $upload_id);
+        return $this->db->get('tbl_uploads')->row();
+    }
+
 }

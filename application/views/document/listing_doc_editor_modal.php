@@ -74,36 +74,38 @@
                             <strong>ATTACHMENTS</strong>
                             <div>
                               
-<table class="table">
-  <thead>
-    <tr>
-      <th style="width: 50px">doc_id</th>
-      <th style="width: 100%">filename</th>
-      <th style="width: 50px">size</th>
-      <th style="width: 80px">options</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="width: 50px">0001</td>
-      <td style="width: 100%">document1.pdf</td>
-      <td style="width: 50px">2.3 MB</td>
-      <td style="width: 80px">
-        <div class="btn-group btn-group-sm">
-          <button type="button" class="btn btn-secondary">
-            <i class="fa fa-download"></i>
-          </button>
-          <button type="button" class="btn btn-secondary">
-            <i class="fa fa-eye"></i>
-          </button>
-          <button type="button" class="btn btn-secondary">
-            <i class="fa fa-print"></i>
-          </button>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+                                <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th style="width: 100px">ID</th>
+                                      <th style="">FILE</th>
+                                      <th style="width: 100px">TYPE</th>
+                                      <th style="width: 100px">OPTIONS</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody class="uploaded_file_container">
+
+                                    <tr>
+                                      <td style="">0001</td>
+                                      <td style="">document1.pdf</td>
+                                      <td style="">2.3 MB</td>
+                                      <td style="">
+                                        <div class="btn-group btn-group-sm">
+                                          <button type="button" class="btn btn-secondary">
+                                            <i class="fa fa-download"></i>
+                                          </button>
+                                          <button type="button" class="btn btn-secondary">
+                                            <i class="fa fa-eye"></i>
+                                          </button>
+                                          <button type="button" class="btn btn-secondary">
+                                            <i class="fa fa-print"></i>
+                                          </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+
+                                  </tbody>
+                                </table>
 
 
                             </div>
@@ -201,7 +203,7 @@
 
                           <div class="form-group">
                               <div class="custom-file">
-                                  <input type="file" class="custom-file-input attached-files" id="customFile" name="attached-files[]" multiple accept="application/pdf,image/png,image/jpg,image/jpeg" />
+                                  <input type="file" class="custom-file-input attached-files" id="customFile" name="attached-files[]" multiple accept="application/pdf" />
                                   <label class="custom-file-label" for="customFile">Choose file</label>
                               </div>
                           </div>
