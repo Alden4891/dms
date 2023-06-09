@@ -25,7 +25,6 @@ $(document).ready(function() {
   $(document).on('change','#fe_drn',function(e){
       e.preventDefault();
       $('#doctype_selection').prop('readyonly', true);
-      alert(1);
   });
 
   function displaySelectedFiles() {
@@ -102,10 +101,20 @@ function decimalToBinary(decimal) {
   $(document).on('click','#btn_document_preview', function(e){
       e.preventDefault();
       var attachment_id = $(this).attr('attachment-id');
-      alert(attachment_id);
       $('#prev_pdf').attr('src','document/get_document_instance/'+attachment_id+'#view=FitH');
       $('#listing_doc_viewer_modal').modal('show');
   });
+
+  function printPDF(url) {
+    var iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = url;
+    document.body.appendChild(iframe);
+    
+    iframe.onload = function() {
+      iframe.contentWindow.print();
+    };
+  }
 
 
   // on new document clicked
@@ -351,7 +360,6 @@ $(document).on('change', '#doctype_selection', function(e) {
   $(document).on('change','#fe_drn',function(e){
       e.preventDefault();
       $('#doctype_selection').prop('readyonly', true);
-      alert(1);
   });
 
    $('#form_doc_editor').submit(function(e) {

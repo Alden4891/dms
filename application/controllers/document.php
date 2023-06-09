@@ -6,7 +6,7 @@ class document extends CI_Controller {
         parent::__construct();
         //redirect to login if session expired
 		if(!$this->session->userdata('user_id'))
-		// redirect(site_url('user/login'), 'refresh');
+		redirect(site_url('user/login'), 'refresh');
 
 		$this->load->helper('url');
     }
@@ -73,15 +73,15 @@ class document extends CI_Controller {
 	              <td style=\"\">".$this->formatBytes($row->size)."</td>
 	              <td style=\"\">
 	                <div class=\"btn-group btn-group-sm\">
-	                  <a class=\"btn btn-secondary\">
+	                  <a class=\"btn btn-secondary\" href=\"document/get_document_instance/$doc_id\"  download >
 	                    <i class=\"fa fa-download\"></i>
 	                  </a>
 	                  <a class=\"btn btn-secondary\" id =\"btn_document_preview\" attachment-id=$row->id>
 	                    <i class=\"fa fa-eye\"></i>
 	                  </a>
-	                  <button type=\"button\" class=\"btn btn-secondary\">
+	                  <a type=\"button\" class=\"btn btn-secondary\" href=\"javascript:printPDF('document/get_document_instance/$doc_id')\">
 	                    <i class=\"fa fa-print\"></i>
-	                  </button>
+	                  </a>
 	                </div>
 	              </td>
 	            </tr>
