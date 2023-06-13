@@ -1,5 +1,13 @@
 <?php
-class Ldap_auth_model extends CI_Model {
+class User_auth_model extends CI_Model {
+
+    public function db_auth($username, $password) {
+        $this->load->database();
+        $user_data = $this->db->get_where('users', array('username' => $username))->row_array();
+        print_r(password_verify($password, $user_data['password']));
+        return ($user_data && password_verify($password, $user_data['password']));
+
+    }
 
     public function ldap_auth($username, $password) {
         $this->load->library('encryption');
@@ -24,7 +32,8 @@ class Ldap_auth_model extends CI_Model {
             }
                
             $userDn = $info[0]["distinguishedname"][0];
-            $ad_data['password'] = $this->encryption->encrypt($password);
+            // $ad_data['password']   = $this->encryption->encrypt($password);
+            $ad_data['password']   = password_hash($password, PASSWORD_DEFAULT);
             $ad_data['firstname']  = $info[0]["givenname"][0];
             $ad_data['middlename'] = $info[0]["initials"][0];
             $ad_data['lastname']   = $info[0]["sn"][0];
