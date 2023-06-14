@@ -1,6 +1,6 @@
 
 <script type="text/javascript">
-  
+
 $(document).ready(function() {
 
   //on file select
@@ -71,19 +71,19 @@ function iferror(value,alt) {
 
 function decimalToBinary(decimal) {
   var binaryArray = [];
-  
+
   // Convert decimal to binary
   while (decimal > 0) {
     var remainder = decimal % 2;
     binaryArray.unshift(remainder); // Add remainder to the beginning of the array
     decimal = Math.floor(decimal / 2);
   }
-  
+
   // Handle the case when the input is 0
   if (binaryArray.length === 0) {
     binaryArray.push(0);
   }
-  
+
   return binaryArray;
 }
 
@@ -101,8 +101,21 @@ function decimalToBinary(decimal) {
   $(document).on('click','#btn_document_preview', function(e){
       e.preventDefault();
       var attachment_id = $(this).attr('attachment-id');
-      $('#prev_pdf').attr('src','document/get_document_instance/'+attachment_id+'#view=FitH');
+      $('#prev_pdf').attr('src',"<?=site_url('document/get_document_instance/')?>"+attachment_id+'#view=FitH');
       $('#listing_doc_viewer_modal').modal('show');
+  });
+
+  $(document).on('click','.print_pdf',function(e){
+      e.preventDefault();
+      var link = $(this).attr('href');
+      var iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = link;
+      document.body.appendChild(iframe);
+
+      iframe.onload = function() {
+        iframe.contentWindow.print();
+      };
   });
 
   function printPDF(url) {
@@ -110,7 +123,7 @@ function decimalToBinary(decimal) {
     iframe.style.display = 'none';
     iframe.src = url;
     document.body.appendChild(iframe);
-    
+
     iframe.onload = function() {
       iframe.contentWindow.print();
     };
@@ -137,7 +150,7 @@ function decimalToBinary(decimal) {
 
     //get doc_id
     var doc_id = $(this).attr('doc_id');
-    
+
     //get doc data
     setTimeout(function() {
         $.ajax('<?=site_url('document/data/')?>'+doc_id, {
@@ -204,7 +217,7 @@ function decimalToBinary(decimal) {
                 $('#DATE_REVIEWED').val(iferror(obj_data.DATE_REVIEWED,''));
                 $('#DATE_INITIALED').val(iferror(obj_data.DATE_INITIALED,''));
                 $('#DATE_RECEIVED_COPY').val(iferror(obj_data.DATE_RECEIVED_COPY,''));
-                
+
                 // $('#summernote').text(obj_data.REMARKS);
                 $('#summernote').summernote('code', obj_data.REMARKS);
 
@@ -214,7 +227,7 @@ function decimalToBinary(decimal) {
                    console.log(index + ' : ' + value);
                   var checkboxClass = '.opt-bin-' + (index);
                   var checkbox = $(checkboxClass);
-                  
+
                   // Check the checkbox if the corresponding binary digit is 1
                   if (value === 1) {
                     checkbox.prop('checked', true);
@@ -223,24 +236,24 @@ function decimalToBinary(decimal) {
                   }
                 });
 
-               
+
                 //load uploaded files
+
                 $.ajax({
-                  url: 'document/get_upload_listing/'+obj_data.ID,
+                  url: "<?=site_url('document/get_upload_listing/')?>"+obj_data.ID,
                   type: 'POST',
                   processData: false,
                   contentType: false,
                   success: function(response) {
-
                     $('.uploaded_file_container').html(response);
                   },
                   error: function(xhr, status, error) {
                     console.log(error);
                   }
                 });
-              
 
-                
+
+
 
 
               },
@@ -281,8 +294,21 @@ function decimalToBinary(decimal) {
   //initialize text editor
   $(function () {
     // Summernote
-    $('#summernote').summernote()
-    $('#summernote2').summernote()
+    $('.summernote').summernote(
+      {
+          toolbar: [
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['table', ['table']],
+            ['link', ['link']],
+            ['video', ['video']],
+            ['undo', ['undo']],
+            ['redo', ['redo']]
+          ]
+        }
+      );
 
 
     // CodeMirror
@@ -365,8 +391,29 @@ $(document).on('change', '#doctype_selection', function(e) {
    $('#form_doc_editor').submit(function(e) {
       e.preventDefault();
 
-      var formData = $('#form_doc_editor').serialize();
+      // var formData = $('#form_doc_editor').serialize();
+      // var summernoteContent = $('#summernote').summernote('getCode');
 
+
+      // Get the serialized form data
+      var formData = $('#form_doc_editor').serializeArray();
+
+      // Get the content from Summernote
+      var summernoteContent = $('#summernote').summernote('code');
+     
+      // Add summernoteContent to formData
+      formData.push({
+        name: 'REMARKS',
+        value: summernoteContent
+      });
+
+      // Convert the formData array back to serialized form data
+      formData = $.param(formData);
+
+      console.log(formData);
+      
+
+     
       $.ajax({
         url: "document/save",
         type: 'POST',
@@ -380,13 +427,14 @@ $(document).on('change', '#doctype_selection', function(e) {
         },
         success: function(response) {
             // console.log(response);
-            
+
             //upload documents
             var attachment_count = $('.attached-files')[0].files.length;
             if (attachment_count !== 0) {
-              
+
               var obj_data = jQuery.parseJSON(response);
               var formData = new FormData($('#form_doc_editor')[0]);
+
               $.ajax({
                 url: 'document/upload/'+obj_data.doc_id,
                 type: 'POST',
@@ -401,7 +449,7 @@ $(document).on('change', '#doctype_selection', function(e) {
                 }
               });
             }
-            
+
 
            $("#documentEntryEditorModal").modal("hide");
           // console.log('Request succeeded!');
@@ -417,13 +465,13 @@ $(document).on('change', '#doctype_selection', function(e) {
           // console.log('Request completed.');
           e.preventDefault();
         }
-      });      
+      });
 
   });
 
 
 
 
-});  
+});
 
 </script>

@@ -42,6 +42,7 @@ class Documents_model extends CI_Model {
      * @return void
      */
     public function save_document($data) {
+
         $id = $data['ID'];
         unset($data['ID']);
 

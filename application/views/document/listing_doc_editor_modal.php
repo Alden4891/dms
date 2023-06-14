@@ -11,7 +11,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" disabled=disabled>
 
         <!-- Default box -->
         <div class="card">
@@ -22,7 +22,7 @@
 
                 <div class="row">
                   <div class="col-12">
-                      
+
                     <div class="row">
                       <div class="col-md-12">
                         <div class="card card-outline card-info">
@@ -54,26 +54,26 @@
                                       </select>
                                     </div>
 
-                             
+
                                </div>
                             </div>
                               <div id="form_object_container">
 
                               </div>
                               <div class="row invisible" id='form_editor_remarks_container'>
-                             
+
                                  <div class="col-lg-12">
-                                    REMARKS <textarea id="summernote" style="height: 400px; min-height: 400px;" rows="20">ASDASD</textarea>
+                                    REMARKS <textarea class="summernote" id="summernote" style="height: 400px; min-height: 400px;" rows="20"></textarea>
                                  </div>
                               </div>
-                           
+
                           </div> <!-- CARD BODY -->
 
 
                           <div class="card-footer">
                             <strong>ATTACHMENTS</strong>
                             <div>
-                              
+
                                 <table class="table">
                                   <thead>
                                     <tr>
@@ -123,16 +123,16 @@
                 <h3 class="text-primary"><i class="fas fa-paint-brush"></i>Note:</h3>
 
                 <p class="text-muted">
-                Document tagging in digitization is the process of categorizing and labeling documents 
-                with relevant keywords or metadata to make them easily searchable and retrievable. 
-                It involves assigning descriptive information to a document, such as its title, author, date, and subject matter, 
+                Document tagging in digitization is the process of categorizing and labeling documents
+                with relevant keywords or metadata to make them easily searchable and retrievable.
+                It involves assigning descriptive information to a document, such as its title, author, date, and subject matter,
                 as well as adding tags or keywords that describe its content, format, and other relevant characteristics.
                 </p>
 
                 <p class="text-muted">
-                Tagging documents is a crucial part of digitalization because it makes it easier to manage and 
-                find information in a digital environment. By adding tags or metadata to documents, 
-                they can be organized into categories, searched, and retrieved based on specific criteria, 
+                Tagging documents is a crucial part of digitalization because it makes it easier to manage and
+                find information in a digital environment. By adding tags or metadata to documents,
+                they can be organized into categories, searched, and retrieved based on specific criteria,
                 making them more accessible and useful to users.
                 </p>
 
@@ -208,7 +208,7 @@
                               </div>
                           </div>
 
-                          
+
                          <div class="form-group">
                            <ul id="selectedFilesList"></ul>
                          </div>
@@ -238,4 +238,3 @@
   </form>
 </div>
  <!-- /.documentEntryEditorModal -->
-

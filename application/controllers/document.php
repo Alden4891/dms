@@ -5,18 +5,18 @@ class document extends CI_Controller {
     public function __construct() {
         parent::__construct();
         //redirect to login if session expired
-		if(!$this->session->userdata('user_id'))
-		redirect(site_url('user/login'), 'refresh');
+    		if(!$this->session->userdata('user_id'))
+    		redirect(site_url('user/login'), 'refresh');
 
-		$this->load->helper('url');
+    		$this->load->helper('url');
     }
 
     public function index(){
     	$this->listing();
     }
-    
+
 	public function listing($tag = ''){
-		
+
 		$this->load->model('Documents_model');
 
 		$data['open_menu'] = 'document';
@@ -26,10 +26,10 @@ class document extends CI_Controller {
 		$this->load->view('templates/sidebar',$data);
 		$this->load->view('document/listing');
 
+    $this->load->view('document/listing_doc_route_modal');
 		$this->load->view('document/listing_doc_editor_modal');
 		$this->load->view('document/listing_doc_viewer_modal');
-		$this->load->view('document/listing_doc_route_modal');
-		$this->load->view('document/listing_doc_archive_modal');
+		// $this->load->view('document/listing_doc_archive_modal');
 
 		$this->load->view('document/listing_js');
 
@@ -73,19 +73,19 @@ class document extends CI_Controller {
 	              <td style=\"\">".$this->formatBytes($row->size)."</td>
 	              <td style=\"\">
 	                <div class=\"btn-group btn-group-sm\">
-	                  <a class=\"btn btn-secondary\" href=\"document/get_document_instance/$doc_id\"  download >
+	                  <a class=\"btn btn-secondary\" href=\"".site_url('document/get_document_instance/').$doc_id."\"  download >
 	                    <i class=\"fa fa-download\"></i>
 	                  </a>
 	                  <a class=\"btn btn-secondary\" id =\"btn_document_preview\" attachment-id=$row->id>
 	                    <i class=\"fa fa-eye\"></i>
 	                  </a>
-	                  <a type=\"button\" class=\"btn btn-secondary\" href=\"javascript:printPDF('document/get_document_instance/$doc_id')\">
+	                  <a type=\"button\" class=\"btn btn-secondary print_pdf\" href=\"".site_url('document/get_document_instance/').$doc_id."\">
 	                    <i class=\"fa fa-print\"></i>
 	                  </a>
 	                </div>
 	              </td>
 	            </tr>
-			";		
+			";
 		}
 		print($row_template);
 	}
@@ -103,7 +103,7 @@ class document extends CI_Controller {
 	public function save(){
 
 		$form_data = $this->input->post();
-		
+
 		// Separate the specified elements into a separate array
 		$restrictions = array(
 		    'opt-public' => $form_data['opt-public'],
@@ -209,7 +209,7 @@ class document extends CI_Controller {
                 }
             }
 
-            // Return a response 
+            // Return a response
             $response = array('status' => 'success', 'fileNames' => $fileNames);
             echo json_encode($response);
 
@@ -224,7 +224,7 @@ class document extends CI_Controller {
 
 
 	// public function save(){
-		
+
 	// 	$form_data = $this->input->post();
 	// 	$form_data['DATE_POSTED'] = $form_data['DATE_POSTED'].' '.$form_data['TIME_POSTED'];
 
@@ -233,10 +233,10 @@ class document extends CI_Controller {
 	// 	}
 
 	// 	$result = $this->Documents_model->save_document($form_data);
-	// }	
+	// }
 
 
-	
+
 	public function archive(){
 
 	}

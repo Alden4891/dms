@@ -7,7 +7,7 @@ class docEditorModalController extends CI_Controller {
 
    public function __construct() {
       parent::__construct();
-   
+
       //redirect to login if session expired
 		if(!$this->session->userdata('user_id'))
 		redirect(site_url('user/login'), 'refresh');
@@ -16,18 +16,11 @@ class docEditorModalController extends CI_Controller {
       $this->load->model('docEditor_model');
 
     }
-	
-    
+
+
 
    public function getFormConent(){
 		$data = $this->input->post();
-
-      // // if ($data['doctype']==DOC_TYPE_MEMO) {
-         
-      // // }else{
-
-      // // }
-
       switch ($data['doctype']) {
          case DOC_TYPE_MEMO:
              $this->htx = $this->docEditor_model->get_memo();
@@ -57,7 +50,7 @@ class docEditorModalController extends CI_Controller {
 
 
 		print_r(json_encode(array('dom'=>$this->htx)));
-   
+
 
 	}
 

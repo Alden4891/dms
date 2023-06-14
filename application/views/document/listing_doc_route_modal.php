@@ -39,15 +39,15 @@
                                         <span class="input-group-text">SUBJECT</span>
                                      </div>
                                      <input type="text" class="form-control" placeholder="" value="RE: Umnibus guideline on the utiliztion of document management system">
-                                  </div>                               
+                                  </div>
                                 </div>
                             </div>
-                            
+
                             <br>
                             Document Description
-                            <textarea id="summernote2" style="height: 200px;" rows="6">
+                            <textarea class="summernote" id="summernote2" style="height: 200px;" rows="6">
                               Good day, <br><br>
-                              Please provide feedback on the attached document within 7 days to comply with our agency's policy. 
+                              Please provide feedback on the attached document within 7 days to comply with our agency's policy.
                               <br><br>
                               Thank you.
                               <br><br>
@@ -72,9 +72,9 @@
 
                 <p class="text-muted">
 
-                      Document routing refers to the process of sending a document or piece of information from one place to another within an organization. 
-                      It helps ensure that important documents are sent to the right people for review 
-                      or action. You can view all routed document  <a href="<?=site_url('document/routelist')?>">list of routed documents</a>. The system will automatically capture email responses.   
+                      Document routing refers to the process of sending a document or piece of information from one place to another within an organization.
+                      It helps ensure that important documents are sent to the right people for review
+                      or action. You can view all routed document  <a href="<?=site_url('document/routelist')?>">list of routed documents</a>. The system will automatically capture email responses.
 
 
                 </p>
@@ -99,7 +99,7 @@
                              <li>
                                 <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-envelope"></i> <strong>SUBJECT</strong>: Umnibus guideline on the utiliztion of document management system</a>
                              </li>
-                          </ul>                      
+                          </ul>
                          <div class="form-group"></div>
                       </form>
 
@@ -123,7 +123,7 @@
                              <li>
                                 <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
                              </li>
-                          </ul>                      
+                          </ul>
                          <div class="form-group"></div>
                       </form>
 
@@ -152,4 +152,3 @@
   </div>
 </div>
  <!-- /.documentRoutingModal -->
-
