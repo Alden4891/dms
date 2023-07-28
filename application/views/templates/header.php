@@ -42,6 +42,8 @@
   <link rel="stylesheet" href="<?=site_url('assets')?>/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="<?=site_url('assets')?>/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
+   <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">

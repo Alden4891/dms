@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -540,4 +543,5 @@ $config['proxy_ips'] = '';
 |--------------------------------------------------------------------------
 */
 
+date_default_timezone_set('Asia/Manila');
 $config['ldap_server'] = '172.16.10.10';

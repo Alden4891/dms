@@ -24,7 +24,7 @@ $(document).ready(function() {
 
   $(document).on('change','#fe_drn',function(e){
       e.preventDefault();
-      $('#doctype_selection').prop('readyonly', true);
+      $('#DOC_TYPE').prop('readyonly', true);
   });
 
   function displaySelectedFiles() {
@@ -133,11 +133,11 @@ function decimalToBinary(decimal) {
   // on new document clicked
   $("#btn_upload_document").click(function() {
     $('#summernote').summernote('code', '');
-    $("#doctype_selection").val(-1);
-    $('#doctype_selection').attr('disabled',false)
+    $("#DOC_TYPE").val(-1);
+    $('#DOC_TYPE').attr('disabled',false)
     $('#form_object_container').html('');
     $('#form_editor_remarks_container').addClass('invisible');
-    $('#doctype_selection').attr('curr-value', -1);
+    $('#DOC_TYPE').attr('curr-value', -1);
     $('.options-container').addClass('invisible')
     options_clear();
     $('.uploaded_file_container').html('');
@@ -185,12 +185,12 @@ function decimalToBinary(decimal) {
                 var obj = jQuery.parseJSON(data);
                 $('#form_object_container').html(obj.dom);
                 $('#form_editor_remarks_container').removeClass('invisible');
-                $('#doctype_selection').attr('curr-value', obj_data.DOC_TYPE);
+                $('#DOC_TYPE').attr('curr-value', obj_data.DOC_TYPE);
                 $('.options-container').removeClass('invisible')
 
                 //disable document type selection
-                $("#doctype_selection").val(obj_data.DOC_TYPE);
-                $('#doctype_selection').attr('disabled',true)
+                $("#DOC_TYPE").val(obj_data.DOC_TYPE);
+                $('#DOC_TYPE').attr('disabled',true)
 
                 //clear options
                 options_clear();
@@ -319,7 +319,7 @@ function decimalToBinary(decimal) {
   })
 
   //on document type select
-$(document).on('change', '#doctype_selection', function(e) {
+$(document).on('change', '#DOC_TYPE', function(e) {
   e.preventDefault();
   var doctype = $(this).val();
   var curr_value = $(this).attr('curr-value');
@@ -368,7 +368,7 @@ $(document).on('change', '#doctype_selection', function(e) {
         var obj = jQuery.parseJSON(data);
         $('#form_object_container').html(obj.dom);
         $('#form_editor_remarks_container').removeClass('invisible');
-        $('#doctype_selection').attr('curr-value', doctype);
+        $('#DOC_TYPE').attr('curr-value', doctype);
         $('.options-container').removeClass('invisible')
 
       },
@@ -385,7 +385,7 @@ $(document).on('change', '#doctype_selection', function(e) {
 
   $(document).on('change','#fe_drn',function(e){
       e.preventDefault();
-      $('#doctype_selection').prop('readyonly', true);
+      $('#DOC_TYPE').prop('readyonly', true);
   });
 
    $('#form_doc_editor').submit(function(e) {

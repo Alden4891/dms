@@ -40,9 +40,9 @@
 
                                     <div class="input-group mb-3">
                                       <div class="input-group-prepend">
-                                        <label class="input-group-text" for="doctype_selection" style="min-width:120px;">DOC TYPE</label>
+                                        <label class="input-group-text" for="DOC_TYPE" style="min-width:120px;">DOC TYPE</label>
                                       </div>
-                                      <select class="custom-select" id="doctype_selection" name="doctype_selection" curr-value='-1'>
+                                      <select class="custom-select" id="DOC_TYPE" name="DOC_TYPE" curr-value='-1'>
                                         <option value="-1" selected>SELECT</option>
                                         <option value="1">MEMORANDUM</option>
                                         <option value="2">EXECUTIVE SUMMARY</option>
