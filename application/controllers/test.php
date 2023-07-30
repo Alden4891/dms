@@ -13,8 +13,17 @@ class test extends CI_Controller {
     }
     
 	public function index(){
-        $this->load->view('aaaa');
+        $this->load->model("Google_contacts_model");
+        $data = $this->Google_contacts_model->fetch_contacts();
+        print_r($data);        
     }
 
+    //GMAIL IS WORKING 2023-07-30
+    public function gmail(){
+        $this->load->model('Gmail_model');
+        $data = $this->Gmail_model->get_mails();
+        print_r($data);
+
+    }
 
 }
