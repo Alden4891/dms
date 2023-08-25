@@ -302,14 +302,12 @@ function get_email_by_id($emailId) {
         return $emails; // Return the emails array outside of the foreach loop
     }
 
-
-
     public function delete_email($message_id) {
         return $this->service->users_messages->trash("me", $message_id);
     }
 
     public function getLabels(){
-        
+
         $labels = $this->service->users_labels->listUsersLabels('me');
 
         // Loop through the labels and create an array of label IDs and captions
@@ -322,7 +320,6 @@ function get_email_by_id($emailId) {
 
     public function set_label($messageId,$labelId ) {
        
-     
         // Create a ModifyMessageRequest object to specify the label to add
         $modifyRequest = new Google_Service_Gmail_ModifyMessageRequest();
         $modifyRequest->setAddLabelIds(array($labelId));
@@ -332,7 +329,6 @@ function get_email_by_id($emailId) {
     }
 
     public function add_label($labelName,$userId = "me") {
-
        
         //WARNING: REQUIRES MODIFY
         // Create the label
@@ -345,7 +341,6 @@ function get_email_by_id($emailId) {
     }
 
     public function send_email($to, $subject, $body, $attachments = array()){
-
 
         // Replace with the email address of the sender.
         $from = 'aaquinones.fo12@dswd.gov.ph';

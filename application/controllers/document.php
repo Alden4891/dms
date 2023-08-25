@@ -26,13 +26,11 @@ class document extends CI_Controller {
 		$this->load->view('templates/sidebar',$data);
 		$this->load->view('document/listing');
 
-    $this->load->view('document/listing_doc_route_modal');
+		$this->load->view('document/jsloader.php');
+
+    	$this->load->view('document/listing_doc_route_modal');
 		$this->load->view('document/listing_doc_editor_modal');
 		$this->load->view('document/listing_doc_viewer_modal');
-		// $this->load->view('document/listing_doc_archive_modal');
-
-		$this->load->view('document/listing_js');
-
 
 		$this->load->view('templates/footer');
 	}
@@ -90,15 +88,22 @@ class document extends CI_Controller {
 		print($row_template);
 	}
 
-	 public function get_document_instance($file_id) {
-	  	$this->load->model('Documents_model');
-	  	$data = $this->Documents_model->get_file_details($file_id);
+	public function get_document_instance($file_id) {
+		$this->load->model('Documents_model');
+		$data = $this->Documents_model->get_file_details($file_id);
+
 		header('Content-type: '. $data->mime_type);
-		header('Content-Disposition: inline; filename="' . basename($data->filename) . '"');
+		header('Content-Disposition: inline; filename="' . basename($data->org_filename) . '"');
 		header('Content-Transfer-Encoding: binary');
 		header('Accept-Ranges: bytes');
 		readfile(site_url("uploads/$data->filename"));
-	 }
+	}
+
+	public function get_attachments($doc_id) {
+		$this->load->model('Documents_model');
+		$dataSet = $this->Documents_model->get_upload_listing($doc_id);
+		print(json_encode($dataSet));
+	}
 
 	public function save(){
 

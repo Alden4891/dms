@@ -1,0 +1,1 @@
+<script src="<?=site_url('assets/js/listing.js')?>"></script>

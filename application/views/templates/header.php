@@ -27,7 +27,7 @@
   <!-- iCheck -->
   <link rel="stylesheet" href="<?=site_url('assets')?>/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- JQVMap -->
-  <link rel="stylesheet" href="<?=site_url('assets')?>/plugins/jqvmap/jqvmap.min.css">
+  <!-- <link rel="stylesheet" href="<?=site_url('assets')?>/plugins/jqvmap/jqvmap.min.css"> -->
   <!-- Theme style -->
   <link rel="stylesheet" href="<?=site_url('assets')?>/dist/css/adminlte.min.css">
   <!-- overlayScrollbars -->
@@ -42,7 +42,9 @@
   <link rel="stylesheet" href="<?=site_url('assets')?>/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="<?=site_url('assets')?>/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
-   <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+
+  <base url="<?=base_url()?>"/>
 
 
 </head>

@@ -16,7 +16,7 @@
 
           <div class="card-body">
             <div class="row">
-              <div class="col-12 col-md-12 col-lg-9 order-2 order-md-1">
+              <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
 
                 <div class="row">
                   <div class="col-12">
@@ -28,7 +28,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12 col-md-12 col-lg-3 order-1 order-md-2">
+<!--               <div class="col-12 col-md-12 col-lg-3 order-1 order-md-2">
                 <h3 class="text-primary"><i class="fas fa-paint-brush"></i>Document Information:</h3>
 
                 <p class="text-muted">
@@ -36,11 +36,7 @@
                     
                 </p>
 
-                <!-- <div class="text-center mt-5 mb-3">
-                  <a href="#" class="btn btn-sm btn-primary">Add files</a>
-                  <a href="#" class="btn btn-sm btn-warning">Report contact</a>
-                </div> -->
-              </div>
+              </div> -->
             </div>
           </div>
           <!-- /.card-body -->

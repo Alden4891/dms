@@ -1,8 +1,6 @@
 
-<script type="text/javascript">
-
 $(document).ready(function() {
-
+var base = $('base').attr('url');
   //on file select
   $('#customFile').on('change', function() {
       const files = $('#customFile')[0].files;
@@ -101,7 +99,7 @@ function decimalToBinary(decimal) {
   $(document).on('click','#btn_document_preview', function(e){
       e.preventDefault();
       var attachment_id = $(this).attr('attachment-id');
-      $('#prev_pdf').attr('src',"<?=site_url('document/get_document_instance/')?>"+attachment_id+'#view=FitH');
+      $('#prev_pdf').attr('src',base+"document/get_document_instance/"+attachment_id+"#view=FitH");
       $('#listing_doc_viewer_modal').modal('show');
   });
 
@@ -149,21 +147,22 @@ function decimalToBinary(decimal) {
   $(document).on('click','#btn_edit_entry',function() {
 
     //get doc_id
-    var doc_id = $(this).attr('doc_id');
+    // var doc_id = $(this).attr('doc_id');
+    var doc_id = $(this).closest('tr').attr('doc_id');
 
     //get doc data
     setTimeout(function() {
-        $.ajax('<?=site_url('document/data/')?>'+doc_id, {
+        $.ajax(base+'document/data/'+doc_id, {
           type: "POST",
           error: function(data) {
             console.log(data);
-            alert("An error has occurred! Please contact aaquinones.fo12@gmail.com.");
+            alert("[1] An error has occurred! Please contact aaquinones.fo12@dswd.gov.ph");
           },
           success: function(data) {
             var obj_data = jQuery.parseJSON(data);
 
             //load form controls
-            $.ajax('<?=site_url('docEditorModalController/getFormConent')?>', {
+            $.ajax(base+'docEditorModalController/getFormConent', {
               data: {
                 doctype: obj_data.DOC_TYPE
               },
@@ -178,7 +177,7 @@ function decimalToBinary(decimal) {
               // },
               error: function(data) {
                 console.log(data);
-                alert("An error has occurred! Please contact aaquinones.fo12@gmail.com.");
+                alert("[2] An error has occurred! Please contact aaquinones.fo12@dswd.gov.ph");
               },
               success: function(data) {
 
@@ -240,7 +239,7 @@ function decimalToBinary(decimal) {
                 //load uploaded files
 
                 $.ajax({
-                  url: "<?=site_url('document/get_upload_listing/')?>"+obj_data.ID,
+                  url: base+"document/get_upload_listing/"+obj_data.ID,
                   type: 'POST',
                   processData: false,
                   contentType: false,
@@ -251,10 +250,6 @@ function decimalToBinary(decimal) {
                     console.log(error);
                   }
                 });
-
-
-
-
 
               },
               complete: function() {
@@ -283,7 +278,58 @@ function decimalToBinary(decimal) {
 
   // on route document clicked
   $(document).on('click','#btn_route_entry',function() {
-    $("#documentRoutingModal").modal("show");
+    var doc_id = $(this).closest('tr').attr('doc_id');
+
+    //get doc data
+    setTimeout(function() {
+        $.ajax(base+'document/data/'+doc_id, {
+          type: "POST",
+          error: function(data) {
+            console.log(data);
+            alert("[3] An error has occurred! Please contact aaquinones.fo12@dswd.gov.ph.com.");
+          },
+          success: function(data) {
+            var obj_data = jQuery.parseJSON(data);
+
+            //load document information (main form)
+            $('.routing-form-subject').val(obj_data.SUBJECT);
+
+            //load document information (details)
+            $('.routing-form-drn').html(obj_data.DRN);
+            $('.routing-form-date-posted').html(obj_data.DATE_POSTED);
+            $('.routing-form-subject').html('re: ' + obj_data.SUBJECT);
+
+            //load document attachments
+            $.ajax(base+'document/get_attachments/'+doc_id,{
+                type: "POST",
+                error: function(data) {
+                  console.log(data);
+                  alert("[4] An error has occurred! Please contact aaquinones.fo12@dswd.gov.ph.com.");
+                },
+                success: function (attachment_data) {
+                  var obj_att = jQuery.parseJSON(attachment_data);
+                  var ht_attachment = "";
+                  $('.routing-attachment-container').html(''); //clear entry
+                  $.each(obj_att, function(index, row){
+                    ht_attachment = "<li><a href='"+base+"document/get_document_instance/"+row.id+"' target=_BLANK class='btn-link text-secondary'><i class='far fa-fw fa-file-word'></i>"+row.org_filename+"</a></li>";
+                    $('.routing-attachment-container').append(ht_attachment);
+
+                  });
+                }
+            });
+
+
+            // 
+
+            $("#documentRoutingModal").modal("show");
+          },
+          complete: function() {
+            // Hide loading indicator
+            // $('#form_editor_remarks_container').removeClass('loading');
+          }
+        });
+      }, 100);
+
   });
 
   // on archive document clicked
@@ -312,10 +358,11 @@ function decimalToBinary(decimal) {
 
 
     // CodeMirror
-    CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
-      mode: "htmlmixed",
-      theme: "monokai"
-    });
+    // CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
+    //   mode: "htmlmixed",
+    //   theme: "monokai"
+    // });
+
   })
 
   //on document type select
@@ -345,7 +392,7 @@ $(document).on('change', '#DOC_TYPE', function(e) {
 
   //fetch data and objects; the timer is for testing only
   setTimeout(function() {
-    $.ajax('docEditorModalController/getFormConent', {
+    $.ajax(base+'docEditorModalController/getFormConent', {
       data: {
         doctype: doctype
       },
@@ -362,7 +409,7 @@ $(document).on('change', '#DOC_TYPE', function(e) {
       },
       error: function(data) {
         console.log(data);
-        alert("An error has occurred! Please contact aaquinones.fo12@gmail.com.");
+        alert("[5] An error has occurred! Please contact aaquinones.fo12@dswd.gov.ph");
       },
       success: function(data) {
         var obj = jQuery.parseJSON(data);
@@ -415,7 +462,7 @@ $(document).on('change', '#DOC_TYPE', function(e) {
 
      
       $.ajax({
-        url: "document/save",
+        url: base+"document/save",
         type: 'POST',
         data: formData,
         processData: false,  // Prevent jQuery from processing the data
@@ -436,7 +483,7 @@ $(document).on('change', '#DOC_TYPE', function(e) {
               var formData = new FormData($('#form_doc_editor')[0]);
 
               $.ajax({
-                url: 'document/upload/'+obj_data.doc_id,
+                url: base+'document/upload/'+obj_data.doc_id,
                 type: 'POST',
                 data: formData,
                 processData: false,
@@ -469,9 +516,5 @@ $(document).on('change', '#DOC_TYPE', function(e) {
 
   });
 
-
-
-
 });
 
-</script>

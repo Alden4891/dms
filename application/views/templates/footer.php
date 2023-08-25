@@ -32,8 +32,8 @@
 <!-- Sparkline -->
 <script src="<?=site_url('assets')?>/plugins/sparklines/sparkline.js"></script>
 <!-- JQVMap -->
-<script src="<?=site_url('assets')?>/plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="<?=site_url('assets')?>/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<!-- <script src="<?=site_url('assets')?>/plugins/jqvmap/jquery.vmap.min.js"></script> -->
+<!-- <script src="<?=site_url('assets')?>/plugins/jqvmap/maps/jquery.vmap.usa.js"></script> -->
 <!-- jQuery Knob Chart -->
 <script src="<?=site_url('assets')?>/plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
@@ -50,7 +50,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="<?=site_url('assets')?>/dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="<?=site_url('assets')?>/dist/js/pages/dashboard.js"></script>
+<!-- <script src="<?=site_url('assets')?>/dist/js/pages/dashboard.js"></script> -->
 <!-- CodeMirror -->
 <script src="<?=site_url('assets')?>/plugins/codemirror/codemirror.js"></script>
 <script src="<?=site_url('assets')?>/plugins/codemirror/mode/css/css.js"></script>

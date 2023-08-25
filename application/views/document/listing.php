@@ -49,7 +49,7 @@
               <div class="row">
                 <div class="col-12">
 
-                  <table id="example1" class="table table-bordered table-striped">
+                  <table id="example1" class="table table-bordered table-striped table-sm">
                     <thead>
                     <tr>
                       <th>DTX</th>
@@ -61,18 +61,18 @@
                     </thead>
                     <tbody>
                       <?php foreach ($documents as $document) { ?>
-                          <tr>
+                          <tr doc_id=<?php echo $document->ID; ?>>
                               <td><?php echo $document->DRN; ?></td>
                               <td><?php echo $document->SUBJECT; ?></td>
                               <td><?php echo $document->DATE_POSTED=='0000-00-00 00:00:00'?'no-data':$document->DATE_POSTED; ?></td>
                               <td><?php echo $document->STATUS; ?></td>
                               <td>
                                 <div class="dropdown">
-                                  <button  style="width: 100%;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <button  style="width: 100%;" class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                    <i class="fas fa-file-prescription"></i> Select
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#" id="btn_edit_entry" doc_id=<?php echo $document->ID; ?>><i class="fas fa-edit"></i> Edit</a>
+                                    <a class="dropdown-item" href="#" id="btn_edit_entry" ><i class="fas fa-edit"></i> Edit</a>
                                     <a class="dropdown-item" href="#" id="btn_route_entry"><i class="fas fa-route"></i> Route</a>
                                     <a class="dropdown-item" href="#" id="btn_archive_entry"><i class="fas fa-archive"></i> Archive</a>
                                   </div>
