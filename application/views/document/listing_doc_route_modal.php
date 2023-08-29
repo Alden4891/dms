@@ -1,6 +1,14 @@
 
 <!-- .documentRoutingModal -->
 <div class="modal fade" id="documentRoutingModal" tabindex="-1" role="dialog" aria-labelledby="documentRoutingModalLabel" aria-hidden="true" data-backdrop="static">
+
+      <div class="dim-overlay"></div>
+  
+  <div class="email-loading-container">
+    <img src="mail-download.gif" alt="Loading...">
+  </div>
+
+  
   <form class="routing-form" doc_id="">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
       <div class="modal-content">
@@ -49,7 +57,7 @@
                                         <div class="input-group-append">
                                           <label class="input-group-text" for="routing-subject" >S</label>
                                         </div>
-                                       <input type="text" id="routing-subject" name="routing-subject" class="form-control routing-form-subject" placeholder="" value="">
+                                       <input type="text" id="routing-subject" name="routing_subject" class="form-control routing-form-subject" placeholder="" value="">
                                       </div>
                                     </div>
                                   </div>
@@ -161,6 +169,8 @@
 
 
 
+
+
   <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
   <script>
     // Custom validation function to check if the input is a valid email address
@@ -263,7 +273,45 @@
   </script>
 
 
+<style>
+
+.dim-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+}
+
+.email-loading-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+
+</style>
+
   <script type="text/javascript">
+$(document).ready(function() {
+
+
+
+    // Show loading overlay
+    function email_sending_loading_show() {
+        $('.dim-overlay').show();
+        $('.email-loading-container').show();
+    }
+
+    // Hide loading overlay
+    function email_sending_loading_hide() {
+        $('.dim-overlay').hide();
+        $('.email-loading-container').hide();
+    }
+
 
     $(document).on('click','.btn-route-send',function(e){
       e.preventDefault();
@@ -279,29 +327,53 @@
         return  
       }
       routing_form_data = routing_form_data + "&doc_id=" + doc_id + "&message="+message;
-      console.log(routing_form_data);
-      //send email 
+      alert(1);
+      email_sending_loading_show();
       setTimeout(function() {
-          $.ajax(base + 'routing/send/', {
-              type: "POST",
-              data: routing_form_data,
-              error: function(data) {
-                console.log(data);
-                alert("[document-routing] An error has occurred! Please contact aaquinones.fo12@dswd.gov.ph.com.");
-              },
-              success: function(data) {
-                  // var obj_data = jQuery.parseJSON(data);
-                alert(data);
-                console.log(data);
+          // $.ajax(base + 'routing/send/', {
+          //     type: "POST",
+          //     data: routing_form_data,
+          //     error: function(data) {
+          //       console.log(data);
+          //       alert("[document-routing] An error has occurred! Please contact aaquinones.fo12@dswd.gov.ph.com.");
+          //     },
+          //     success: function(data) {
+          //       var response = jQuery.parseJSON(data);
+          //       if (response.result == 'failed') {
+          //           alert(response.error);
+          //           return;
+          //       }else{
+          //           $(location).attr('href',base+'routing'); //redirect to routed list page
+          //           $("#documentRoutingModal").modal("hide");
 
-              },
-              complete: function() {
+          //       }
+          //     },
+          //     complete: function() {
+          //     }
+          // });    
+        // email_sending_loading_hide();
+        alert(2);
+      }, 1000);
 
-              }
-          });
-      }, 100);
 
     });
+
+
+
+    // // Simulate loading for 3 seconds (replace with your actual loading logic)
+    // function simulateLoading() {
+    //     email_sending_loading_show();
+    //     setTimeout(function() {
+    //       email_sending_loading_hide();
+    //     }, 3000);
+    // }
+
+
+});
+
+
+
+
 
 
   </script>

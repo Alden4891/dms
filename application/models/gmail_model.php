@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // require_once APPPATH . 'libraries/google-api/vendor/autoload.php';
 include_once APPPATH . "libraries/vendor/autoload.php";
 
-class gmail_model extends CI_Model {
+class Gmail_model extends CI_Model {
 
     private $client;
 
@@ -340,21 +340,25 @@ function get_email_by_id($emailId) {
         return $createdLabel->getId();
     }
 
-    public function send_email($to, $subject, $body, $attachments = array()){
+    public function send_email($to_array, $subject, $body, $attachments = array()){
 
         // Replace with the email address of the sender.
         $from = 'aaquinones.fo12@dswd.gov.ph';
+
+        // Convert the recipients array to a comma-separated string.
+        $to_string = implode(', ', $to_array);
 
         // Create the message with the attachments.
         $message = new Google_Service_Gmail_Message();
         $boundary = uniqid(rand(), true);
         $message_text = "MIME-Version: 1.0\n";
         $message_text .= "From: " . $from . "\n";
-        $message_text .= "To: " . $to . "\n";
+        $message_text .= "To: " . $to_string . "\n";
         $message_text .= "Subject: " . $subject . "\n";
         $message_text .= "Content-Type: multipart/mixed; boundary=" . $boundary . "\n\n";
         $message_text .= "--" . $boundary . "\n";
-        $message_text .= "Content-Type: text/plain; charset=UTF-8\n";
+        // $message_text .= "Content-Type: text/plain; charset=UTF-8\n";
+        $message_text .= "Content-Type: text/html; charset=UTF-8\n";
         $message_text .= "Content-Transfer-Encoding: 7bit\n\n";
         $message_text .= $body . "\n\n";
 

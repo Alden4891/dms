@@ -306,12 +306,12 @@ $(document).ready(function() {
                             $.each(obj_att, function(index, row) {
                                 ht_attachment = "<li><a href='" + base + "document/get_document_instance/" + row.id + "' target=_BLANK class='btn-link text-secondary'><i class='far fa-fw fa-file-word'></i>" + row.org_filename + "</a></li>";
                                 $('.routing-attachment-container').append(ht_attachment);
-
                             });
+                            $("#documentRoutingModal").modal("show");
                         }
                     });
 
-                    $("#documentRoutingModal").modal("show");
+                    
                 },
                 complete: function() {
                     // Hide loading indicator

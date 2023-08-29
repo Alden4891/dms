@@ -9,7 +9,7 @@ class routing extends CI_Controller {
 		if(!$this->session->userdata('user_id'))
 		redirect(site_url('user/login'), 'refresh');
 
-		$this->load->model("gmail_model");
+		$this->load->model("Gmail_model");
 		$this->load->model('Documents_model');
 
     }
@@ -31,22 +31,28 @@ class routing extends CI_Controller {
 		$dataSet = $this->Documents_model->get_upload_listing($form_data->doc_id);
 
 		//create a new array containing attachments
-		$attachments = [];
+		$arr_attachments = [];
 		foreach ($dataSet as $item) {
-		    $attachments[] = FCPATH.'uploads/'.$item->filename;
+		    $arr_attachments[] = FCPATH.'uploads/'.$item->filename;
 		}
-		print_r($attachments);
-		print(FCPATH.'uploads/');
 		
-		// send_email($to, $subject, $body, $attachments = array()){
-		$this->Gmail_model->send_email(to:1, $subject, $body, $attachments);
+		//send email
+		$message_id = $this->Gmail_model->send_email($form_data->emails, $form_data->routing_subject, $form_data->message, $arr_attachments) or die(json_encode(['result'=>'failed','error'=>'Email send failed','message_id'=>0]));
 
-	
+		//save the email transaction to database
+		$data = array(
+		    'DOC_ID' => $form_data->doc_id,
+		    'DATE_ROUTE' => date('Y-m-d H:i:s'),
+		    'SUBJECT' => $form_data->routing_subject,
+		    'MESSAGE' => $form_data->message,
+		    'RECEPIENT_EMAIL' => implode(',', $form_data->emails),
+		    'GMAIL_MESSAGE_ID' => $message_id,
+		    'RSTATUS' => 1 //[0=>'draft',1=>'sent', 2=>'with_replies',3=>'closed']
+		);
+		$this->db->insert('tbl_routes', $data) or die(json_encode(['result'=>'failed','error'=>'An error occurred while saving routing information in database','message_id'=>0]));
 
-		// print_r($attachments);
-		
-
-
+		# RETURN RESULT
+		print(json_encode(['result'=>'success','message_id'=>$message_id]));
 
 	}
 	
