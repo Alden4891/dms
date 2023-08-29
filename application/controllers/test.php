@@ -9,8 +9,8 @@ class test extends CI_Controller {
 
 
     public function data(){
-
-        print_r('[{"id":1,"name":"Juna Dela Cruz","email":"js@gmail.com"},{"id":2,"name":"John Smith","email":"john.smith@example.com"},{"id":3,"name":"Jane Doe","email":"jane.doe@example.com"},{"id":4,"name":"Michael Johnson","email":"michael.johnson@example.com"},{"id":5,"name":"Sarah Lee","email":"sarah.lee@example.com"},{"id":6,"name":"Robert Wang","email":"robert.wang@example.com"},{"id":7,"name":"Emily Kim","email":"emily.kim@example.com"},{"id":8,"name":"David Chen","email":"david.chen@example.com"},{"id":9,"name":"Lisa Nguyen","email":"lisa.nguyen@example.com"},{"id":10,"name":"Daniel Garcia","email":"daniel.garcia@example.com"}]');
+        print(FCPATH.'attachments');
+       
 
     }
     
@@ -27,7 +27,19 @@ class test extends CI_Controller {
     public function gmail(){
         $this->load->model('Gmail_model');
         $data = $this->Gmail_model->get_mails();
+        print("<pre>");
         print_r($data);
+        print("<pre>");
+    }
+
+    public function getthread()
+    {
+        
+        $this->load->model('Gmail_model');
+        $data = $this->Gmail_model->get_email_by_threadID("18a30bf178551479");
+        print("<pre>");
+        print_r($data);
+        print("<pre>");
 
     }
 

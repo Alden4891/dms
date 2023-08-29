@@ -468,9 +468,17 @@ function get_email_by_id($emailId) {
                         // Write the attachment data to a file  
                         $dl_path = "attachments/".$messageId."_".$filename;
                         if (!file_exists($dl_path)) {
-                           $handle = fopen($dl_path, 'wb');
-                           fwrite($handle, base64_decode(strtr($attachment->getData(), '-_', '+/')));          
-                           fclose($handle);                        
+
+                            try {
+                               $handle = fopen(FCPATH.$dl_path, 'wb');
+                               fwrite($handle, base64_decode(strtr($attachment->getData(), '-_', '+/')));          
+                               fclose($handle); 
+
+                            } catch (Exception $e) {
+                                // Handle the exception, log an error, or take appropriate action
+                                echo 'An error occurred: ' . $e->getMessage();
+                            }
+                       
                         }
      
                     }   

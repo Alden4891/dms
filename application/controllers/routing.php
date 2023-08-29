@@ -27,6 +27,11 @@ class routing extends CI_Controller {
 	}
 
 	public function send(){
+
+
+		print(json_encode(['result'=>'success']));
+		return;
+
 		$form_data = (object) $this->input->post();
 		$dataSet = $this->Documents_model->get_upload_listing($form_data->doc_id);
 
@@ -37,7 +42,8 @@ class routing extends CI_Controller {
 		}
 		
 		//send email
-		$message_id = $this->Gmail_model->send_email($form_data->emails, $form_data->routing_subject, $form_data->message, $arr_attachments) or die(json_encode(['result'=>'failed','error'=>'Email send failed','message_id'=>0]));
+		$message_id = $this->Gmail_model->send_email($form_data->emails, $form_data->routing_subject, $form_data->message, $arr_attachments) 
+					  or die(json_encode(['result'=>'failed','error'=>'Email send failed','message_id'=>0]));
 
 		//save the email transaction to database
 		$data = array(
