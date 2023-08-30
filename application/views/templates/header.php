@@ -10,6 +10,10 @@
   <link rel="stylesheet" href="<?=site_url('assets')?>/plugins/codemirror/codemirror.css">
   <link rel="stylesheet" href="<?=site_url('assets')?>/plugins/codemirror/theme/monokai.css">
 
+  <!-- Sweetalert -->
+  <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.all.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/dist/sweetalert2.min.css" rel="stylesheet">
 
   <!-- jquery cdn -->
   <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
@@ -43,6 +47,11 @@
   <link rel="stylesheet" href="<?=site_url('assets')?>/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
   <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+
+
+  <!-- TOM SELECT -->
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
 
   <base url="<?=base_url()?>"/>
 

@@ -37,7 +37,7 @@
                                       <div class="form-group">
                                         <label for="email_recepients">@ Email address</label>
                                         <!-- <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email"> -->
-                                         <select class="" id="email_recepients" name="emails[]" multiple data-placeholder="add email recipients"></select>
+                                         <select class="" id="email_recepients" name="emails[]" multiple data-placeholder="add email recipients" required></select>
                                       </div>
                                     </div>
                                     
@@ -47,9 +47,9 @@
                                     <div class="col-lg-12">
                                       <div class="input-group mb-3">
                                         <div class="input-group-append">
-                                          <label class="input-group-text" for="routing-subject" >S</label>
+                                          <label class="input-group-text" for="routing_subject" >S</label>
                                         </div>
-                                       <input type="text" id="routing-subject" name="routing-subject" class="form-control routing-form-subject" placeholder="" value="">
+                                       <input type="text" id="routing_subject" name="routing_subject" class="form-control routing-form-subject" placeholder="" value="">
                                       </div>
                                     </div>
                                   </div>
@@ -145,164 +145,3 @@
 </div>
  <!-- /.documentRoutingModal -->
 
-
-
-  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
-  <script>
-    // Custom validation function to check if the input is a valid email address
-    function isValidEmail(input) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(input);
-    }
-
-    // Custom rendering function for the dropdown options
-    function renderOption(data, escape) {
-        // Customize the appearance of the options here
-        return `<div>${escape(data.text)} - ${escape(data.value)}</div>`;
-    }
-
-    // Initialize Tom Select with the options
-    const select = new TomSelect("#email_recepients", {
-        create: function(input, callback) {
-            // Check if the input is a valid email address
-            if (isValidEmail(input)) {
-                // If valid, add the new option
-                callback({
-                    value: input,
-                    text: input
-                });
-            } else {
-                // If not valid, show an error message (optional)
-                alert("Please enter a valid email address.");
-            }
-        },
-        sortField: "text", // Sort options alphabetically by their text
-        preload: true, // Preload options to improve performance
-        onChange: function(value) {
-            // Your real-time update logic goes here
-            console.log("Selected values:", value);
-        },
-        plugins: {
-            remove_button: {
-                title: 'Remove this item',
-            }
-        },
-        onDelete: function(values) {
-            return confirm(values.length > 1 ? 'Are you sure you want to remove these ' + values.length + ' items?' : 'Are you sure you want to remove "' + values[0] + '"?');
-        },
-        load: function(query, callback) {
-            // Simulate fetching options from the server
-            // Replace this with your actual data retrieval logic
-
-            setTimeout(function() {
-                $.ajax('contacts/fetch_list', {
-                    type: "POST",
-                    error: function(data) {
-                      console.log(data);
-                      alert("[contacts-fetch] An error has occurred! Please contact aaquinones.fo12@dswd.gov.ph.com.");
-                    },
-                    success: function(data) {
-                        var options = jQuery.parseJSON(data);
-
-                        // Filter options based on the user's input
-                        const filteredOptions = options.filter((option) =>
-                            option.text.toLowerCase().includes(query.toLowerCase())
-                        );
-
-                        // Call the callback function with the filtered options
-                        callback(filteredOptions);
-
-                    },
-                    complete: function() {
-
-                    }
-                });
-            }, 100);
-
-        },
-
-        render: {
-            option: function(data, escape) {
-                return '<div>' +
-                    '<span class="title"><strong>' + escape(data.text) + '</strong></span><br>' +
-                    '<span class="url"><small>' + escape(data.value) + '</small></span>' +
-                    '</div>';
-            },
-            item: function(data, escape) {
-
-
-                return '<button type="button" class="btn btn-outline-dark btn-xs">' + escape(data.text).toUpperCase() + '</button>'
-                // return '<span href="#" class="email-entry  badge badge-primary">      '+escape(data.text).toUpperCase()+' </span> &nbsp;&nbsp;&nbsp;';
-
-
-                // return '<span href="#" class="email-entry badge badge-info badge-pill"> '+escape(data.text).toUpperCase()+' </span> &nbsp;&nbsp;&nbsp;';
-
-                //   return '<div class="alert alert-success" role="alert">' +
-                // '    <strong>Hello geeks!</strong>' +
-                // '    <button type="button" class="btn close" data-dismiss="alert" aria-label="Close">' +
-                // '        <span aria-hidden="true">×</span>' +
-                // '    </button>' +
-                // '</div>';
-
-            }
-        },
-    });
-  </script>
-
-
-  <script type="text/javascript">
-
-    $(document).on('click','.btn-route-send',function(e){
-      e.preventDefault();
-      var base = $('base').attr('url');
-      var doc_id = $('.routing-form').attr('doc_id');
-      var message = $('#summernote2').summernote('code');
-
-      //load forms
-      var form = $('.routing-form');
-      var routing_form_data = form.serialize();
-      if (routing_form_data == '' || message=='') {
-        alert('Email recepient(s) and message body is required!');
-        return  
-      }
-      routing_form_data = routing_form_data + "&doc_id=" + doc_id + "&message="+message;
-      console.log(routing_form_data);
-
-      //sending mode
-      var self = $(this);
-      self.attr('disabled','disabled');
-      self.html('Sending... Please wait!');
-      self.addClass('btn-success').removeClass('btn-primary');
-      
-      //send email 
-      setTimeout(function() {
-          $.ajax(base + 'routing/send/', {
-              type: "POST",
-              data: routing_form_data,
-              error: function(data) {
-                alert("[document-routing] An error has occurred! Please contact aaquinones.fo12@dswd.gov.ph.com.");
-              },
-              success: function(data) {
-                var send_mail_result = jQuery.parseJSON(data);
-                if (send_mail_result.result == 'success') {
-                  alert("Email sent!")
-
-                  //sent mode
-                  self.attr('disabled','disabled');
-                  self.html('Email Sent!');
-                  // self.addClass('btn-success').removeClass('btn-primary');
-
-                }else{
-                  alert("[document-routing] An error has occurred! Please contact aaquinones.fo12@dswd.gov.ph.com.");
-                }
-              },
-              complete: function() {
-
-              }
-          });
-      }, 2000);
-
-    });
-
-
-  </script>

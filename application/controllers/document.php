@@ -21,12 +21,13 @@ class document extends CI_Controller {
 
 		$data['open_menu'] = 'document';
 		$data['documents'] = $this->Documents_model->get_list();
+		$data['ctlr_name'] = $this->router->fetch_class();
 
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar',$data);
 		$this->load->view('document/listing');
 
-		$this->load->view('document/jsloader.php');
+		$this->load->view('document/jsloader.php',$data);
 
     	$this->load->view('document/listing_doc_route_modal');
 		$this->load->view('document/listing_doc_editor_modal');

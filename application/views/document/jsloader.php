@@ -1,2 +1,12 @@
-<script src="<?=site_url('assets/dist/js/listing.js')?>"></script>
-<link rel="stylesheet" href="<?=site_url('assets/dist/css/main.css')?>"/>
+
+<?php if ($ctlr_name=="document") { ?>
+	<script src="<?=site_url('assets/dist/js/listing.js')?>"></script>
+	<script src="<?=site_url('assets/dist/js/routing_modal.js')?>"></script>
+	<link rel="stylesheet" href="<?=site_url('assets/dist/css/main.css')?>"/>
+<?php } ?>
+
+<?php if ($ctlr_name=="routing") { ?>
+
+<?php } ?>
+
+

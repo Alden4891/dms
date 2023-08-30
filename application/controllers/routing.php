@@ -19,18 +19,17 @@ class routing extends CI_Controller {
     }
     
 	public function listing($tag = ''){
+
+		$data['ctlr_name'] = $this->router->fetch_class();
 		$data['open_menu'] = 'document';
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar',$data);
-		// $this->load->view('route/listing');
+		$this->load->view('document/routing');
+		$this->load->view('document/jsloader.php',$data);
 		$this->load->view('templates/footer');
 	}
 
 	public function send(){
-
-
-		print(json_encode(['result'=>'success']));
-		return;
 
 		$form_data = (object) $this->input->post();
 		$dataSet = $this->Documents_model->get_upload_listing($form_data->doc_id);
@@ -41,6 +40,9 @@ class routing extends CI_Controller {
 		    $arr_attachments[] = FCPATH.'uploads/'.$item->filename;
 		}
 		
+		print(json_encode(['result'=>'success']));
+		return;
+
 		//send email
 		$message_id = $this->Gmail_model->send_email($form_data->emails, $form_data->routing_subject, $form_data->message, $arr_attachments) 
 					  or die(json_encode(['result'=>'failed','error'=>'Email send failed','message_id'=>0]));

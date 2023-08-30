@@ -26,7 +26,7 @@
 
       <?=form_open('user/authenticate')?>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="username" name="username" value="<?=@$username?>" required>
+          <input type="text" class="form-control" placeholder="username" name="username" value="aaquinones" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-key"></span>
@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" name="password" value="<?=@$password?>" required>
+          <input type="password" class="form-control" placeholder="Password" name="password" value="protectme@4891021408271209" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
