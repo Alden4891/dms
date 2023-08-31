@@ -1,0 +1,72 @@
+{
+    "response": [
+        {
+            "messageId": "18a45215b0bc153e",
+            "subject": "THIS IS A TEST 9",
+            "senderName": "me",
+            "senderEmail": "me",
+            "dateSent": "2023-08-30 14:28:48",
+            "formattedBody": "",
+            "has_attachments": 1,
+            "attachments": [
+                {
+                    "attachmentId": "ANGjdJ9Oh4bcfX1lnfRCuDD4qrkd2ycdi77j2l1o0-hSWLL8EBKXDxILVwchYpONkcjBS5CmaUQFaIpmi52By3T0lO5b9-H9xeqYr0dBFjt3MMv8SSGdGnkIC0fA-Sc6f0tIN57c_Q6svRE9oNUJdrwnKpKjd4w9fHmwsaT8l5BetPNTiUoH6K3G5Q8ObCAx57SLPDBU9CMqQGK35OCWGP6JHfWOngSF1W7fFBn4U4Gx8AtUzSp5ucOy_dprDEiZcRN16fdOV_55gWNAZjzRzcLzgR1jYzJIt3h6k6dnR1AAZ9Ias6YXKn9w6jmZLGeK4_0lVnR5fKF52eal8vlo4acSV3kIGB7YXLbd02v_YsbwgxTY6JR4TLDvyayVoiN9EYHYKEHzzZmBR0zCjvS9",
+                    "filename": "doc_566_a(1).pdf",
+                    "dl_filename": "18a45215b0bc153e_doc_566_a(1).pdf",
+                    "dl_link": "<a href = \"http:\/\/localhost\/dms\/attachments\/18a45215b0bc153e_doc_566_a(1).pdf\" >http:\/\/localhost\/dms\/attachments\/18a45215b0bc153e_doc_566_a(1).pdf<\/a>",
+                    "mime_type": "application\/pdf"
+                },
+                {
+                    "attachmentId": "ANGjdJ__TFIKyGAMhM3OmIOYqqBis7cQWrg57V1_49RMWLIgdERYri-HaJ0AzlE0iMhay4eCYFtlHh1mvRW0m21AgKhCOkdSX5b8OniGcn4YEdIBvcgesjSuCz6gA9xffiOy6V0D3UVxpNX8VieAaZWgLtPY6e4RE8d-xyhgSfiL6jZhqkmySpmxbSW89cEEyTglhb47mHAtyud4uvWtcfFuPLdROCBYpFvCKZyvw-HslMcyNaYOPeb2m24BkdyE49FRPYW9RsnYS8JXT1Ftn5eN9OqEoJoO-c3X-8nYR0bqJWQZRFTnfg5GSMhHQ_fJBTuDaFv5tqyL7qqrn7M55B6w3jCwvW5qvLrw14BTRqEL8GMhu4Z3pPmLvrJ03vOH9WQYSb84S0YXf6KthdGxU-G8a3rh4WQa3lQWDDIt1w",
+                    "filename": "doc_566_a(2).pdf",
+                    "dl_filename": "18a45215b0bc153e_doc_566_a(2).pdf",
+                    "dl_link": "<a href = \"http:\/\/localhost\/dms\/attachments\/18a45215b0bc153e_doc_566_a(2).pdf\" >http:\/\/localhost\/dms\/attachments\/18a45215b0bc153e_doc_566_a(2).pdf<\/a>",
+                    "mime_type": "application\/pdf"
+                }
+            ]
+        },
+        {
+            "messageId": "18a498d74be1332c",
+            "subject": "Re: THIS IS A TEST 9",
+            "senderName": "\"Alden Qui\u00f1ones\"",
+            "senderEmail": "alden.roxy@gmail.com",
+            "dateSent": "2023-08-31 11:05:09",
+            "formattedBody": "",
+            "has_attachments": 1,
+            "attachments": [
+                {
+                    "attachmentId": "ANGjdJ9ZEm76ed1N9CPmH82yJbvs_29CZLyie6HPe7dBGwLWcqoYtl6LU_W_SFY_5WChx7Ls4sKR1ZNcbbZzPlf1SuFuLIYBmli7EzSIS_u8DgjdY1gnDoxoUYVwwfV2PIpeDlHDUCEfqdmKyNrDTzKWgtoMqbWeuiSMulktUOBqGzFgm7KjpuHAr1DFyfm0cote65bsGfmp5-sJK-Y_doFmakppJFxCjekaZpvVDjhFqRiEOOBsD0qeWkHRYohS5HJ1oZJxfXJEUxHAv5A0pagF6_na-lNdQrwLl6M2yZ5h11OcC6hZh2dGvb-1oUSBJdzKn_iHz1w0eiNWoFy9GdBBKR8E8ZFKeSA3TPDhe3Bqnr0dTzTiAW2Vm2s0Wwh92EqiaJG2tzAex9jjeB-U",
+                    "filename": "a.pdf",
+                    "dl_filename": "18a498d74be1332c_a.pdf",
+                    "dl_link": "<a href = \"http:\/\/localhost\/dms\/attachments\/18a498d74be1332c_a.pdf\" >http:\/\/localhost\/dms\/attachments\/18a498d74be1332c_a.pdf<\/a>",
+                    "mime_type": "application\/pdf"
+                },
+                {
+                    "attachmentId": "ANGjdJ_AIK0tCupYyMrhf10gv9Wm-Ma3iNDTqexzSjoRu6CMXUGeUhXkqmCWhxtAXoOmkilZ_OIuIzKkztj6dO2ynlGqJZqtAU9bZ_3OphR2WxtlOkCN1ZCY_rknouSCAbRhMaG7pSRM7JGiHNW1VCExQ11sVIcemtTd979ZN5p-VkqCy4JkfAu0Efm2to9CGok_vo4WhgIoyJa0IC98I0L0vb3p34aRPK_-rhf49KkB6i4fXbQ4Cp0k7XPcGk1QeOF4SFFM6YwlwYpj35X2OitHwlKc9WEP5v_HViKOjhOTu__BGPYJGipc82n3mvrnJBj3VydUHi45TrFiz-35MEnM2_dwgXnWhVWD4_vxFnRGNK6fcKr8PZcJv92HmZviOSPGfkrGSwRsUZ4FyYM6",
+                    "filename": "b.pdf",
+                    "dl_filename": "18a498d74be1332c_b.pdf",
+                    "dl_link": "<a href = \"http:\/\/localhost\/dms\/attachments\/18a498d74be1332c_b.pdf\" >http:\/\/localhost\/dms\/attachments\/18a498d74be1332c_b.pdf<\/a>",
+                    "mime_type": "application\/pdf"
+                },
+                {
+                    "attachmentId": "ANGjdJ8PRXZZTkK8DR17qkaYbZ-pldTsuBDHNy0FCD8dkirU6OyeFm_3VQ50p1pu8uTwdyiqdCFDrGu9xih942ENJt-VBm4SZKx5r4F54A6VYQbXXMuPaAWFWmU4SMaCaEgw2eNmQonz7VJYRSJAAOJji4alDBq5NtBHgRlPBP1_9qSw8fjVfAVvAKcHFNhPRGYJX2a30IVwbV8yq_kNIQEA2JRbAZVlHrW1BivocDyFyAVM8OP18gB-AI6Hxt1sf0R79fENpTZUa16dEcUpKxk-LFAcJmx2cle3-H_GUzWaWUvK-Y4GFnzq6xCOAPYpaGYTsK7uYtHvBBMoVlOgrdvDiyfYQCkZYUAp2M509CAHzzo7Zkxj_rESnUXCfMSyL6BAA78qTNp2bq43e1wW",
+                    "filename": "c.pdf",
+                    "dl_filename": "18a498d74be1332c_c.pdf",
+                    "dl_link": "<a href = \"http:\/\/localhost\/dms\/attachments\/18a498d74be1332c_c.pdf\" >http:\/\/localhost\/dms\/attachments\/18a498d74be1332c_c.pdf<\/a>",
+                    "mime_type": "application\/pdf"
+                }
+            ]
+        },
+        {
+            "messageId": "18a4991ef7296bf7",
+            "subject": "Re: THIS IS A TEST 9",
+            "senderName": "\"Alden Qui\u00f1ones\"",
+            "senderEmail": "alden.roxy@gmail.com",
+            "dateSent": "2023-08-31 11:10:03",
+            "formattedBody": "<div dir=\"ltr\"><div>This is another response test without attachments.<\/div><br clear=\"all\"><div><div dir=\"ltr\" class=\"gmail_signature\" data-smartmail=\"gmail_signature\"><div dir=\"ltr\"><div dir=\"ltr\"><div dir=\"ltr\"><div dir=\"ltr\"><div dir=\"ltr\"><p class=\"MsoNormal\" style=\"margin-bottom:0.0001pt;line-height:normal;background-image:initial;background-position:initial;background-repeat:initial\"><b><span lang=\"EN-US\" style=\"font-size:12.0pt;font-family:&quot;Lucida Handwriting&quot;;color:#1f4e79\">Alden A. Qui\u00f1ones<\/span><\/b><span style=\"font-size:13.0pt;font-family:&quot;Arial&quot;,sans-serif;color:#222222\"><\/span><\/p><\/div><div dir=\"ltr\"><span style=\"color:rgb(255,255,255)\"><br>\u00a4\u00f8\u201e\u00b8\u00b8\u201e\u00f8\u00a4\u00ba\u00b0\u00a8\u00b8\u201e\u00f8\u00a4\u00ba\u00b0\u00a8<br>\u00a8\u00b0\u00ba\u00a4\u00f8\u201e\u00b8 rOXy \u201e\u00f8\u00a4\u00ba\u00b0\u00a8<br>\u00b8\u201e\u00f8\u00a4\u00ba\u00b0\u00a8alDEn ``\u00b0\u00ba\u00a4\u00f8\u201e\u00b8<br>\u00b8\u201e\u00f8\u00a4\u00ba\u00b0\u00a8\u00b8\u201e\u00f8\u00a4\u00ba\u00b0\u00a8\u00a8\u00b0<\/span><span style=\"color:rgb(255,255,255)\">\u00ba<\/span><span style=\"background-color:rgb(255,255,255)\"><br><\/span><\/div><div dir=\"ltr\"><span style=\"color:rgb(127,127,127);font-family:Arial,sans-serif;font-size:13.3333px\"><br><\/span><\/div><div dir=\"ltr\"><div><br><\/div><\/div><\/div><\/div><\/div><\/div><\/div><\/div><br><\/div><br><div class=\"gmail_quote\"><div dir=\"ltr\" class=\"gmail_attr\">On Thu, Aug 31, 2023 at 11:05\u202fAM Alden Qui\u00f1ones &lt;<a href=\"mailto:alden.roxy@gmail.com\">alden.roxy@gmail.com<\/a>&gt; wrote:<br><\/div><blockquote class=\"gmail_quote\" style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\"><div dir=\"ltr\"><div>this is a sample <b><u>response <\/u><\/b>1<\/div><div><br><\/div><br clear=\"all\"><div><div dir=\"ltr\" class=\"gmail_signature\"><div dir=\"ltr\"><div dir=\"ltr\"><div dir=\"ltr\"><div dir=\"ltr\"><div dir=\"ltr\"><p class=\"MsoNormal\" style=\"margin-bottom:0.0001pt;line-height:normal;background-image:initial;background-position:initial;background-repeat:initial\"><b><span lang=\"EN-US\" style=\"font-size:12pt;font-family:&quot;Lucida Handwriting&quot;;color:rgb(31,78,121)\">Alden A. Qui\u00f1ones<\/span><\/b><span style=\"font-size:13pt;font-family:Arial,sans-serif;color:rgb(34,34,34)\"><\/span><\/p><\/div><div dir=\"ltr\"><span style=\"color:rgb(255,255,255)\"><br>\u00a4\u00f8\u201e\u00b8\u00b8\u201e\u00f8\u00a4\u00ba\u00b0\u00a8\u00b8\u201e\u00f8\u00a4\u00ba\u00b0\u00a8<br>\u00a8\u00b0\u00ba\u00a4\u00f8\u201e\u00b8 rOXy \u201e\u00f8\u00a4\u00ba\u00b0\u00a8<br>\u00b8\u201e\u00f8\u00a4\u00ba\u00b0\u00a8alDEn ``\u00b0\u00ba\u00a4\u00f8\u201e\u00b8<br>\u00b8\u201e\u00f8\u00a4\u00ba\u00b0\u00a8\u00b8\u201e\u00f8\u00a4\u00ba\u00b0\u00a8\u00a8\u00b0<\/span><span style=\"color:rgb(255,255,255)\">\u00ba<\/span><span style=\"background-color:rgb(255,255,255)\"><br><\/span><\/div><div dir=\"ltr\"><span style=\"color:rgb(127,127,127);font-family:Arial,sans-serif;font-size:13.3333px\"><br><\/span><\/div><div dir=\"ltr\"><div><br><\/div><\/div><\/div><\/div><\/div><\/div><\/div><\/div><br><\/div><br><div class=\"gmail_quote\"><div dir=\"ltr\" class=\"gmail_attr\">On Wed, Aug 30, 2023 at 2:28\u202fPM &lt;<a href=\"mailto:aaquinones.fo12@dswd.gov.ph\" target=\"_blank\">aaquinones.fo12@dswd.gov.ph<\/a>&gt; wrote:<br><\/div><blockquote class=\"gmail_quote\" style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">                                Good day, <br><br>\r\n                                Please provide feedback on the attached document within 7 days to comply with our agency&#39;s policy.\r\n                                <br><br>\r\n                                Thank you.\r\n                                <br><br>\r\n                                <br><br>\r\n                                <br><br>\r\n                                <br><br>\r\n                                <br>\r\n                              \r\n<\/blockquote><\/div>\r\n<\/blockquote><\/div>\r\n",
+            "has_attachments": 0,
+            "attachments": []
+        }
+    ],
+    "date": "2023-08-31 13:29:44"
+}

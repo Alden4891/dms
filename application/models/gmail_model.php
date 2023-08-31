@@ -420,6 +420,9 @@ function get_email_by_id($emailId) {
                     $subject = $header->getValue();
                     // break;
                 }
+                if ($header->getName() == 'Date') { // Adding this block to extract date sent
+                    $dateSent = date('Y-m-d H:i:s', strtotime($header->getValue()));
+                }
             }
 
             // Get the name and email address of the sender
@@ -495,6 +498,7 @@ function get_email_by_id($emailId) {
                     , "subject" => $subject
                     , "senderName" => $senderName
                     , "senderEmail" => $senderEmail
+                    , "dateSent" => $dateSent // Adding the date sent to the array
                     , "formattedBody" => $fbody
                     , "has_attachments" => ($hasAttachments == true ? 1 : 0)
                     , "attachments" => $arr_attachment

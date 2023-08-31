@@ -4,7 +4,11 @@ class User_auth_model extends CI_Model {
     public function db_auth($username, $password) {
         $this->load->database();
         $user_data = $this->db->get_where('users', array('username' => $username))->row_array();
-        print_r(password_verify($password, $user_data['password']));
+
+
+        print('a');
+        print_r($user_data && password_verify($password, $user_data['password']));
+
         return ($user_data && password_verify($password, $user_data['password']));
 
     }

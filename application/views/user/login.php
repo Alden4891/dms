@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Log in</title>
+  <title>DIMS V0.1 | Log in</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -17,7 +17,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="<?=site_url('')?>"><b>DSWD XII</b>| DMS v0.1 (beta)</a>
+    <a href="<?=site_url('')?>"><b>DSWD XII</b>| DIMS v0.1 (beta)</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -73,7 +73,7 @@
         <a href="<?=site_url('user/passwordrecovery')?>">I forgot my password</a>
       </p>
       <p class="mb-0">
-        <a href="<?=site_url('user/regitration')?>" class="text-center">register</a>
+        <!-- <a href="<?=site_url('user/regitration')?>" class="text-center">register</a> -->
       </p>
 
 

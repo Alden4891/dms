@@ -23,6 +23,7 @@ class user extends CI_Controller {
 
     //try direct authentication
     else{
+
       if ($this->User_auth_model->db_auth($login_data['username'],$login_data['password'])) {
         redirect(site_url(),'refresh');
       }else{

@@ -9,7 +9,8 @@ class test extends CI_Controller {
 
 
     public function data(){
-        print(FCPATH.'attachments');
+        // print(FCPATH.'attachments');
+        $this->load->view('test');
        
 
     }
@@ -32,15 +33,9 @@ class test extends CI_Controller {
         print("<pre>");
     }
 
-    public function getthread()
-    {
+    public function get_route_listing($value=''){
         
-        $this->load->model('Gmail_model');
-        $data = $this->Gmail_model->get_email_by_threadID("18a30bf178551479");
-        print("<pre>");
-        print_r($data);
-        print("<pre>");
-
     }
+
 
 }

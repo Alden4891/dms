@@ -1,4 +1,4 @@
-
+<?php $ctlr_name = $this->router->fetch_class();?>
 <?php if ($ctlr_name=="document") { ?>
 	<script src="<?=site_url('assets/dist/js/listing.js')?>"></script>
 	<script src="<?=site_url('assets/dist/js/routing_modal.js')?>"></script>

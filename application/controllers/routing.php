@@ -15,63 +15,109 @@ class routing extends CI_Controller {
     }
 
     public function index(){
-    	$this->listing();
-    }
-    
-	public function listing($tag = ''){
+		$data['open_menu'] = 'routing';
+		$data['route_listing'] = $this->get_list();
 
-		$data['ctlr_name'] = $this->router->fetch_class();
-		$data['open_menu'] = 'document';
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar',$data);
 		$this->load->view('document/routing');
-		$this->load->view('document/jsloader.php',$data);
+		$this->load->view('document/jsloader.php');
 		$this->load->view('templates/footer');
-	}
+    }
+    
+    private function check_cache($message_id) {
+		$json_path=FCPATH."cache/gmail_responses/$message_id.json";
+		return file_exists($json_path);
+    }
 
-	public function send(){
+	public function get_list(){
 
-		$form_data = (object) $this->input->post();
-		$dataSet = $this->Documents_model->get_upload_listing($form_data->doc_id);
+		$query = $this->db->select(
+							"`tbl_routes`.`ID`
+							,`tbl_documents`.`DRN`
+							,`tbl_routes`.`GMAIL_MESSAGE_ID`
+							,`tbl_routes`.`SUBJECT`
+							,`tbl_routes`.`DATE_ROUTE`
+							,`tbl_routes`.`RSTATUS`
+							, `tbl_routes`.`DOC_ID`
+							, CONCAT(TIMESTAMPDIFF(DAY, DATE_ROUTE, NOW()),' day(s) ',TIMESTAMPDIFF(HOUR, DATE_ROUTE, NOW()) % 24,' hr(s)') as AGE
+							, TIMESTAMPDIFF(DAY, DATE_ROUTE, NOW()) as 'DAY_DURATION'
+							")
+							->from('`db_dms`.`tbl_routes`')
+							->join('`db_dms`.`tbl_documents`', '(`tbl_routes`.`DOC_ID` = `tbl_documents`.`ID`)')
+							->get();
+		$result = $query->result();
 
-		//create a new array containing attachments
-		$arr_attachments = [];
-		foreach ($dataSet as $item) {
-		    $arr_attachments[] = FCPATH.'uploads/'.$item->filename;
+		$table_content = "";
+		foreach ($result as $row) {
+
+
+			//PREPARE TABLE
+			$table_content .= "
+              <tr doc_id=$row->DOC_ID >
+                  <td>$row->DRN</td>
+                  <td>$row->SUBJECT</td>
+                  <td>$row->DATE_ROUTE</td>
+                  <td>$row->AGE</td>
+                  <td>sample2</td>
+                  <td>
+                  	".($row->DAY_DURATION >= 7 ? "<i class='fa fa-flag fa-sm' style='color: #ff0000;'></i>":"" )."
+                  	".($this->check_cache($row->GMAIL_MESSAGE_ID) ? "<i class='fa fa-registered'></i>":"" )."
+
+                  </td>
+                  <td>
+                    <div class='dropdown btn-sm'>
+                      <button  style='width: 100%;' class='btn btn-secondary dropdown-toggle btn-sm' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                       <i class='fas fa-file-prescription'></i> Select
+                      </button>
+                      <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
+                        <a class='dropdown-item' href='#' id='btn_route_view_response'><i class='fas fa-edit'></i> View Responses</a>
+                        <a class='dropdown-item' href='#' id='btn_route_send_followup'><i class='fas fa-route'></i> Send a followup response</a>
+
+                        <a class='dropdown-item' href='#' id='btn_route_send_followup'><i class='fas fa-route'></i> Force Update</a>
+                        <a class='dropdown-item' href='#' id='btn_route_send_followup'><i class='fas fa-route'></i> Mark Done</a>
+                        <a class='dropdown-item' href='#' id='btn_route_send_followup'><i class='fas fa-route'></i> Delete</a>
+
+
+                      </div>
+                    </div>
+
+                  </td>
+              </tr>
+			";
 		}
-		
-		print(json_encode(['result'=>'success']));
-		return;
+		return $table_content;
+		// print_r(json_encode(['rows'=>$table_content]));
 
-		//send email
-		$message_id = $this->Gmail_model->send_email($form_data->emails, $form_data->routing_subject, $form_data->message, $arr_attachments) 
-					  or die(json_encode(['result'=>'failed','error'=>'Email send failed','message_id'=>0]));
-
-		//save the email transaction to database
-		$data = array(
-		    'DOC_ID' => $form_data->doc_id,
-		    'DATE_ROUTE' => date('Y-m-d H:i:s'),
-		    'SUBJECT' => $form_data->routing_subject,
-		    'MESSAGE' => $form_data->message,
-		    'RECEPIENT_EMAIL' => implode(',', $form_data->emails),
-		    'GMAIL_MESSAGE_ID' => $message_id,
-		    'RSTATUS' => 1 //[0=>'draft',1=>'sent', 2=>'with_replies',3=>'closed']
-		);
-		$this->db->insert('tbl_routes', $data) or die(json_encode(['result'=>'failed','error'=>'An error occurred while saving routing information in database','message_id'=>0]));
-
-		# RETURN RESULT
-		print(json_encode(['result'=>'success','message_id'=>$message_id]));
-
-	}
-	
-	public function open($message_id){
 
 	}
 
-	public function get_recepient_response($message_id){
-		// code...
-	}
+    public function get_recepient_response($message_id){
 
+        // $message_id = "18a45215b0bc153e";
+        $json_path=FCPATH."cache/gmail_responses/$message_id.json";
+
+        // LOAD CACHE IF EXISTS
+        $cache_date = new DateTime("1900-01-01 12:00:00"); //initialize datetime 
+        $currentDate = new DateTime();
+        $response_data = array();
+        if (file_exists($json_path)) {
+            $jsonData = file_get_contents($json_path);
+            $response_data = json_decode($jsonData, true); 
+            $cache_date = new DateTime($response_data['date']);
+        }
+        $interval = $currentDate->diff($cache_date);
+        $hoursDifference = $interval->h + $interval->days * 24;
+
+        if ($hoursDifference >= 3) {
+            $this->load->model('Gmail_model');
+            $response_data['response'] = $this->Gmail_model->get_email_by_threadID($message_id);
+            $response_data['date'] =  date('Y-m-d H:i:s');
+            file_put_contents($json_path, json_encode($response_data, JSON_PRETTY_PRINT));   
+        }  
+
+        print_r($response_data); 
+    }
 	
 
 
