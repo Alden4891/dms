@@ -1,7 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-
 class routing extends CI_Controller {
     public function __construct() {
         parent::__construct();
@@ -15,7 +14,7 @@ class routing extends CI_Controller {
     }
 
     public function index(){
-		$data['open_menu'] = 'routing';
+		$data['open_menu'] = 'document';
 		$data['route_listing'] = $this->get_list();
 
 		$this->load->view('templates/header');
@@ -119,6 +118,36 @@ class routing extends CI_Controller {
         print_r($response_data); 
     }
 	
+
+    public function send(){
+
+        $form_data = (object) $this->input->post();
+        $dataSet = $this->Documents_model->get_upload_listing($form_data->doc_id);
+
+        $arr_attachments = [];
+        foreach ($dataSet as $item) {
+            $arr_attachments[] = FCPATH.'uploads/'.$item->filename;
+        }
+
+        //send email
+        $message_id = $this->Gmail_model->send_email($form_data->emails, $form_data->routing_subject, $form_data->message, $arr_attachments) 
+                      or die(json_encode(['result'=>'failed','error'=>'Email send failed','message_id'=>0]));
+
+        //save the email transaction to database
+        $data = array(
+            'DOC_ID' => $form_data->doc_id,
+            'DATE_ROUTE' => date('Y-m-d H:i:s'),
+            'SUBJECT' => $form_data->routing_subject,
+            'MESSAGE' => $form_data->message,
+            'RECEPIENT_EMAIL' => implode(',', $form_data->emails),
+            'GMAIL_MESSAGE_ID' => $message_id,
+            'RSTATUS' => 1 //[0=>'draft',1=>'sent', 2=>'with_replies',3=>'closed']
+        );
+        $this->db->insert('tbl_routes', $data) or die(json_encode(['result'=>'failed','error'=>'An error occurred while saving routing information in database','message_id'=>0]));
+
+        # RETURN RESULT
+        print(json_encode(['result'=>'success','message_id'=>$message_id]));
+    }
 
 
 }

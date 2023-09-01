@@ -271,7 +271,7 @@ $(document).ready(function() {
     // on route document clicked
     $(document).on('click', '#btn_route_entry', function() {
         var doc_id = $(this).closest('tr').attr('doc_id');
-
+        
         //get doc data
         setTimeout(function() {
             $.ajax(base + 'document/data/' + doc_id, {
@@ -284,7 +284,7 @@ $(document).ready(function() {
                     var obj_data = jQuery.parseJSON(data);
 
                     //load document information (main form)
-                    $('.routing-form-subject').val(obj_data.SUBJECT);
+                    $('#routing_subject').val('re: '+obj_data.SUBJECT);
                     $('.routing-form').attr('doc_id',doc_id);
 
                     //load document information (details)

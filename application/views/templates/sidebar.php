@@ -60,7 +60,7 @@
               <li class="nav-item ">
                 <a href="<?=site_url('document/listing')?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Indexing</p>
+                  <p>Catalogue</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -72,7 +72,7 @@
               <li class="nav-item">
                 <a href="<?=site_url('archive')?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Archived</p>
+                  <p>Archive</p>
                 </a>
               </li>
 

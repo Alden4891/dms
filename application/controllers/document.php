@@ -185,7 +185,9 @@ class document extends CI_Controller {
 
 		        // Generate custom file name
 		        $extension = pathinfo($_FILES['attached-files']['name'], PATHINFO_EXTENSION);
+		        $org_filename = pathinfo($_FILES['attached-files']['name'], PATHINFO_BASENAME);
 		        $fileName = "doc_$doc_id"."_a" . '(' . ($i + 1) . ').' . $extension;
+		        
 		        $config['file_name'] = $fileName;
 
 				$this->upload->initialize($config);
@@ -200,7 +202,8 @@ class document extends CI_Controller {
 			            'filename' => $fileName,
 			            'size' => $_FILES['attached-files']['size'],
 			            'mime_type' => $_FILES['attached-files']['type'],
-			            'datetime_uploaded' => date('Y-m-d H:i:s')
+			            'datetime_uploaded' => date('Y-m-d H:i:s'),
+			            'org_filename' => $org_filename
 			        );
 
 			        // Save the data to the MySQL table 'tbl_uploads'

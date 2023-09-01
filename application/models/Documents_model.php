@@ -29,7 +29,8 @@ class Documents_model extends CI_Model {
         return $this->db->select('`tbl_documents`.`ID`,`tbl_documents`.`DRN`,`tbl_documents`.`SUBJECT`,`tbl_status`.`STATUS`,`tbl_documents`.`DATE_POSTED`')
                 ->from('`db_dms`.`tbl_documents`')
                 ->join('`db_dms`.`tbl_status`', '(`tbl_documents`.`STATUS` = `tbl_status`.`ID`)', 'LEFT')
-                ->where('`tbl_documents`.`ID`', 566) //FOR TESTING ONLY  
+                // ->where('`tbl_documents`.`ID`', 566) //FOR TESTING ONLY   567
+                ->where_in('`tbl_documents`.`ID`', array(566, 567, 568))
                 ->order_by('`tbl_documents`.`ID` ASC')->get()->result();
     }
 

@@ -20,8 +20,8 @@ class test extends CI_Controller {
         // $data = $this->Google_contacts_model->fetch_contacts();
         // print_r($data);        
 
-        $to_string = implode(",",['aaa','bbbb']);
-        print($to_string);
+        $pathinfo = pathinfo('./index.php',PATHINFO_BASENAME);
+        print($pathinfo);
     }
 
     //GMAIL IS WORKING 2023-07-30
