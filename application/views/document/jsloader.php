@@ -6,6 +6,7 @@
 <?php } ?>
 
 <?php if ($ctlr_name=="routing") { ?>
+	<script src="<?=site_url('assets/dist/js/routing.js')?>"></script>
 
 <?php } ?>
 

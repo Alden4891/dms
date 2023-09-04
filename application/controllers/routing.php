@@ -19,9 +19,10 @@ class routing extends CI_Controller {
 
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar',$data);
-		$this->load->view('document/routing');
+        $this->load->view('document/routing');
+        $this->load->view('document/routing_trends_viewer_modal');
+        $this->load->view('templates/footer');
 		$this->load->view('document/jsloader.php');
-		$this->load->view('templates/footer');
     }
     
     private function check_cache($message_id) {
@@ -70,7 +71,7 @@ class routing extends CI_Controller {
                        <i class='fas fa-file-prescription'></i> Select
                       </button>
                       <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
-                        <a class='dropdown-item' href='#' id='btn_route_view_response'><i class='fas fa-edit'></i> View Responses</a>
+                        <a class='dropdown-item' href='#' id='btn_route_view_trend'><i class='fas fa-edit'></i> View Responses</a>
                         <a class='dropdown-item' href='#' id='btn_route_send_followup'><i class='fas fa-route'></i> Send a followup response</a>
 
                         <a class='dropdown-item' href='#' id='btn_route_send_followup'><i class='fas fa-route'></i> Force Update</a>

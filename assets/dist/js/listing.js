@@ -443,9 +443,7 @@ $(document).ready(function() {
         formData = $.param(formData);
 
         console.log(formData);
-
-
-
+        
         $.ajax({
             url: base + "document/save",
             type: 'POST',
@@ -482,8 +480,18 @@ $(document).ready(function() {
                     });
                 }
 
+                swal.fire({
+                    title: "Congratulation!",
+                    text: "You have routed the document successfully!",
+                    icon: "success"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirect to your desired page
+                        $("#documentEntryEditorModal").modal("hide");
+                    }
+                });
 
-                $("#documentEntryEditorModal").modal("hide");
+
                 // console.log('Request succeeded!');
                 // console.log(response);
             },
