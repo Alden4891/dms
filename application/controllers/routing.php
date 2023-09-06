@@ -10,7 +10,7 @@ class routing extends CI_Controller {
 
 		$this->load->model("Gmail_model");
 		$this->load->model('Documents_model');
-
+        $this->load->model("Routing_model");
     }
 
     public function index(){
@@ -88,35 +88,140 @@ class routing extends CI_Controller {
 		}
 		return $table_content;
 		// print_r(json_encode(['rows'=>$table_content]));
-
-
 	}
 
-    public function get_recepient_response($message_id){
+    private function remove_section_from_gmail_body($html,$class = 'gmail_signature') {
 
-        // $message_id = "18a45215b0bc153e";
-        $json_path=FCPATH."cache/gmail_responses/$message_id.json";
+        // Create a DOMDocument object
+        $dom = new DOMDocument();
 
-        // LOAD CACHE IF EXISTS
-        $cache_date = new DateTime("1900-01-01 12:00:00"); //initialize datetime 
-        $currentDate = new DateTime();
-        $response_data = array();
-        if (file_exists($json_path)) {
-            $jsonData = file_get_contents($json_path);
-            $response_data = json_decode($jsonData, true); 
-            $cache_date = new DateTime($response_data['date']);
+        // print("[");
+        // print($html);
+        // print("]");
+
+        if ($html === '') {
+            return "";
         }
-        $interval = $currentDate->diff($cache_date);
-        $hoursDifference = $interval->h + $interval->days * 24;
 
-        if ($hoursDifference >= 3) {
-            $this->load->model('Gmail_model');
-            $response_data['response'] = $this->Gmail_model->get_email_by_threadID($message_id);
-            $response_data['date'] =  date('Y-m-d H:i:s');
-            file_put_contents($json_path, json_encode($response_data, JSON_PRETTY_PRINT));   
-        }  
+        $dom->loadHTML($html);
 
-        print_r($response_data); 
+        // Create a DOMXPath object to query the DOMDocument
+        $xpath = new DOMXPath($dom);
+
+        // Find all div elements with class 'gmail_signature' and remove them
+        $nodes = $xpath->query('//div[@class="'.$class.'"]');
+        foreach ($nodes as $node) {
+            $node->parentNode->removeChild($node);
+        }
+
+        // Get the modified HTML
+        $modifiedHtml = $dom->saveHTML();
+
+        return $modifiedHtml;
+
+    }
+
+    public function get_trend_viewer_data($message_id){
+
+        //LOAD TRENDS
+       
+        $trend_data = $this->Routing_model->get_trend_responses($message_id);
+        $route_data = $this->Routing_model->get_route_info($message_id);
+        $resposes   = $trend_data ['response'];
+
+        $htx = "";
+        $prev_sent_date = "";
+       
+
+        foreach ($resposes as $respose) {
+            $r = (object) $respose;
+
+            $messageId = $r->messageId;
+            $senderName = $r->senderName;
+            $senderEmail = $r->senderEmail;
+            
+            $formattedBody  = $r->formattedBody;
+
+            $formattedBody = $this->remove_section_from_gmail_body($formattedBody,"gmail_signature");
+            $formattedBody = $this->remove_section_from_gmail_body($formattedBody,"gmail_quote");
+
+
+
+            $has_attachments = $r->has_attachments;
+            $attachments = $r->attachments;
+
+            $dateSent = new DateTime($r->dateSent);
+            $sent_date = $dateSent->format('M. d, Y');
+            $sent_time = $dateSent->format('g:i A');
+
+
+            //load date-sent label
+            if ($prev_sent_date !== $sent_date) {
+                $htx .= "
+                      <div class=\"time-label\">
+                        <span class=\"bg-danger\">
+                          $sent_date
+                        </span>
+                      </div>
+                ";    
+                $prev_sent_date = $sent_date;            
+            }
+
+
+            //load attachments
+            $att_htx = "";
+            foreach ($attachments as $attachment) {
+                $att = (object) $attachment;
+                $att_htx .= "
+                      <a class=\"btn btn-ms btn-app bg-danger\"> 
+                      <span class=\"badge bg-teal\">$att->mime_type</span>
+                      <i class=\"fas fa-file\"></i>$att->filename
+                      </a>
+                ";
+            }
+
+
+            //load timelime-items
+            $entry_header = $senderEmail=='me'?'Pantawid - Routed document(s)':"$senderEmail - responded";
+            $htx .= "
+                  <div>
+                    <i class=\"fas fa-envelope bg-primary\"></i>
+
+                    <div class=\"timeline-item\">
+                      <span class=\"time\"><i class=\"far fa-clock\"></i> $sent_time</span>
+
+                      <h3 class=\"timeline-header\"><a href=\"#\">$entry_header</a></h3>
+
+                      <div class=\"timeline-body\">
+                        $formattedBody
+                      </div>
+                      <div class=\"timeline-footer\">
+                        $att_htx
+                      </div>
+                    </div>
+                  </div>
+            ";
+        }
+
+        $htx .= "
+              <div>
+                <i class=\"far fa-clock bg-gray\"></i>
+              </div>
+        ";
+
+
+        // print('<pre>');
+        print_r(json_encode([
+            'status'=>$route_data->RSTATUS,
+            'response'=>count($resposes)-1,
+            'datesent'=>$route_data->DATE_ROUTE,
+            'subject'=>$route_data->SUBJECT,
+            'drn'=>$route_data->DRN,
+            'timeline'=>$htx,
+        ]));
+        // print('</pre>');
+
+
     }
 	
 
@@ -148,6 +253,17 @@ class routing extends CI_Controller {
 
         # RETURN RESULT
         print(json_encode(['result'=>'success','message_id'=>$message_id]));
+    }
+
+    public function test(){
+        // $data = $this->Routing_model->get_route_info('18a45215b0bc153e');
+        $data = $this->Routing_model->get_trend_responses('18a45215b0bc153e');
+
+        print('<pre>');
+        print_r($data);
+        print('</pre>');
+        // 
+        // print(1);
     }
 
 

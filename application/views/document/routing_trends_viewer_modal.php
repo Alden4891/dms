@@ -4,7 +4,7 @@
   <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="routing_trends_viewer_modal_label">Trends</h5>
+        <h5 class="modal-title" id="routing_trends_viewer_modal_label">Communucation Trends</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -25,43 +25,21 @@
                           <div class="card-body box-profile">
 
 
-                            <h3 class="profile-username text-center">DRN-12345-1234</h3>
+                            <h3 class="trends-modal-viewer-drn text-center">DRN-12345-1234</h3>
 
-                            <p class="text-muted text-center">Sample subject</p>
+                            <p class="text-muted text-center trends-modal-viewer-subject">Sample subject</p>
 
                             <ul class="list-group list-group-unbordered mb-3">
                               <li class="list-group-item">
-                                <b>Date Sent</b> <a class="float-right">2023-07-10</a>
+                                <b>Date Sent</b> <a class="float-right trends-modal-viewer-datesent">2023-07-10</a>
                               </li>
                               <li class="list-group-item">
-                                <b>Responses</b> <a class="float-right">543</a>
+                                <b>Responses</b> <a class="float-right trends-modal-viewer-response">543</a>
                               </li>
                               <li class="list-group-item">
-                                <b>Status</b> <a class="float-right">13,287</a>
+                                <b>Status</b> <a class="float-right trends-modal-viewer-status">13,287</a>
                               </li>
-                              <li class="list-group-item">
-                                <b>Attachments:</b> <a class="float-right"></a>
 
-
-
-                                <ul class="">
-                                  <li class="">
-                                    <a class="">sample document1.pdf</a>
-                                  </li>
-                                  <li class="">
-                                    <a class="">sample document2.pdf</a>
-                                  </li>
-                                  <li class="">
-                                    <a class="">sample document3.pdf</a>
-                                  </li>
-                                  <li class="">
-                                    <a class="">sample document4.pdf</a>
-                                  </li>
-                                </ul>
-
-
-
-                              </li>
                             </ul>
 
                             <!-- <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> -->
@@ -71,11 +49,13 @@
                         <!-- /.card -->
 
                         <!-- About Me Box -->
-                        <div class="card card-primary">
+
+                      <!--
+                         <div class="card card-primary">
                           <div class="card-header">
                             <h3 class="card-title">Mailing List</h3>
                           </div>
-                          <!-- /.card-header -->
+
                           <div class="card-body">
                             <strong><i class="fas fas-solid fa-at"></i> ALDEN A. QUINONES</strong>
                             <p class="text-muted">
@@ -83,7 +63,6 @@
                             </p>
                             <hr>
 
-
                             <strong><i class="fas fas-solid fa-at"></i> ALDEN A. QUINONES</strong>
                             <p class="text-muted">
                                alden.roxy@gmail.com <span class="badge badge-info right">6</span>
@@ -94,7 +73,6 @@
                                alden.roxy@gmail.com <span class="badge badge-info right">6</span>
                             </p>
                             <hr>
-
 
                             <hr>
 
@@ -102,8 +80,11 @@
 
                             <p class="text-muted">Click on the recepient email to view replies.</p>
                           </div>
-                          <!-- /.card-body -->
-                        </div>
+                        </div> -->
+
+
+
+
                         <!-- /.card -->
                       </div>
                       <!-- /.col -->
@@ -121,17 +102,18 @@
                               <!-- /.tab-pane -->
                               <div class="tab-pane active" id="timeline">
                                 <!-- The timeline -->
-                                <div class="timeline timeline-inverse">
+                                <div class="timeline timeline-inverse timeline-container">
+                                  
                                   <!-- timeline time label -->
-                                  <div class="time-label">
+<!--                                   <div class="time-label">
                                     <span class="bg-danger">
                                       10 JUL. 2023
                                     </span>
-                                  </div>
+                                  </div> -->
                                   <!-- /.timeline-label -->
                                   
                                   <!-- timeline item -->
-                                  <div>
+<!--                                   <div>
                                     <i class="fas fa-envelope bg-primary"></i>
 
                                     <div class="timeline-item">
@@ -146,15 +128,24 @@
                                         quora plaxo ideeli hulu weebly balihoo...
                                       </div>
                                       <div class="timeline-footer">
-                                        <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                                        <a href="#" class="btn btn-danger btn-sm">Delete</a>
+
+                                          <a class="btn btn-ms btn-app bg-danger"> 
+                                          <span class="badge bg-teal">1</span>
+                                          <i class="fas fa-file"></i> sample2
+                                          </a>
+
+                                          <a class="btn btn-ms btn-app bg-danger">
+                                          <span class="badge bg-teal">2</span>
+                                          <i class="fas fa-file"></i> sample2.pdf
+                                          </a>
+
                                       </div>
                                     </div>
-                                  </div>
+                                  </div> -->
                                   <!-- END timeline item -->
 
                                   <!-- timeline item -->
-                                  <div>
+                                  <!-- <div>
                                     <i class="fas fa-comments bg-warning"></i>
 
                                     <div class="timeline-item">
@@ -168,35 +159,32 @@
                                         We are more like Germany, ambitious and misunderstood!
                                       </div>
                                       <div class="timeline-footer">
-            <!--                             <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
-                                         <i class="fas fa-envelope bg-primary"></i> -->
+ 
 
-
-                                          <a class="btn btn-ms btn-app bg-danger">
+                                          <a class="btn btn-ms btn-app bg-danger"> 
                                           <span class="badge bg-teal">1</span>
-                                          <i class="fas fa-inbox"></i> sample1.pdf
+                                          <i class="fas fa-file"></i> sample2
                                           </a>
 
                                           <a class="btn btn-ms btn-app bg-danger">
-                                          <span class="badge bg-teal">1</span>
-                                          <i class="fas fa-inbox"></i> sample2.pdf
-
-
+                                          <span class="badge bg-teal">2</span>
+                                          <i class="fas fa-file"></i> sample2.pdf
                                           </a>
+
                                       </div>
                                     </div>
-                                  </div>
+                                  </div> -->
                                   <!-- END timeline item -->
                                   <!-- timeline time label -->
-                                  <div class="time-label">
+<!--                                   <div class="time-label">
                                     <span class="bg-success">
                                       12 July. 2023
                                     </span>
-                                  </div>
+                                  </div> -->
 
 
                                   <!-- timeline item -->
-                                  <div>
+<!--                                   <div>
                                     <i class="fas fa-comments bg-warning"></i>
 
                                     <div class="timeline-item">
@@ -213,16 +201,14 @@
                                         <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
                                       </div>
                                     </div>
-                                  </div>
+                                  </div> -->
                                   <!-- END timeline item -->
 
 
 
 
 
-                                  <div>
-                                    <i class="far fa-clock bg-gray"></i>
-                                  </div>
+
                                 </div>
                               </div>
                             </div>
