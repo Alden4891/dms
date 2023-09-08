@@ -1,0 +1,44 @@
+{
+    "response": [
+        {
+            "messageId": "18a73848ccd84f0a",
+            "subject": "re: sample subject",
+            "senderName": "me",
+            "senderEmail": "me",
+            "dateSent": "2023-09-08 14:39:41",
+            "messageBody": "Good day,",
+            "has_attachments": 1,
+            "attachments": [
+                {
+                    "attachmentId": "ANGjdJ8aNyRc-0L5PF_Gvgqexq2sabZg49kjMCdbi91wL_B70p2vB5Rz-uOWgsAiFXx2HjCNH4PtOAJXqrWJH1EDpXjgwu-VGVwbnIW4TQAlJK6pCzY_dFghLhVlbmDUEeSvVBzft-eVob0DCj3VCFzUiyFLourXKySlRRjlATwLJz3q8iUkDtwEhZqLcBKJfDHaNIZswGXYZOWFPk8FydudozQUqNrZ_958hFny-a2mA8vhQP6AMnFWz8EQSrRoMEZQHfP-k2CEjrhuv7hORp-NYkwhg05owjv0AtivKHU7s_Ig_gcBeb-jzeYrJO8XP5iaLWuJtG0myaiAPQtHpQTbdS6uBu8YXhwNYFFLJHzA4ZP9GVVqf3IyexYgoKrGuiCwvAhgIHVl05qUaRcf",
+                    "filename": "doc_389_a(1).pdf",
+                    "dl_filename": "18a73848ccd84f0a_doc_389_a(1).pdf",
+                    "dl_link": "<a href = \"http:\/\/172.26.131.40\/dms\/attachments\/18a73848ccd84f0a_doc_389_a(1).pdf\" >http:\/\/172.26.131.40\/dms\/attachments\/18a73848ccd84f0a_doc_389_a(1).pdf<\/a>",
+                    "mime_type": "application\/pdf"
+                },
+                {
+                    "attachmentId": "ANGjdJ8c9sc6R6b9gEL363mEz3bq5bAC9J5Pz66grUSce8hMe3xVOHxasM_X9x2cCxWM1ZLIYqXXr01xCDF6Z2NM-H7FkN3FPMASlMuXoac4f59Ez9B3dJWZ048lWCYYscSFZT2JzN-9iB_GABttzEoH6NdH1fa3muQe5B4YeoYs-RqC9r2PdUGbU8RS90il9InE1x-yaCaXlNoZv2vke6RByN1x5saHViXV9JGRSj2a2Sp5mOCU_odDyuUoG6huGHOtQQ-LL9aeCl4llQzHkokkZmektRCUrv-LZgpIIAiPeU4MqOS6MSzwdDF8w3KjWp2GsXoDTf1rTwlJycXey62EJuEs_Nc4uiPDrV86hzg-3Jn3dTcQQhbZd4sjygvVjVUrMnvdLx0zdB0DU6VwS7rpEOb1ri6yock2FD_lFQ",
+                    "filename": "doc_389_a(2).pdf",
+                    "dl_filename": "18a73848ccd84f0a_doc_389_a(2).pdf",
+                    "dl_link": "<a href = \"http:\/\/172.26.131.40\/dms\/attachments\/18a73848ccd84f0a_doc_389_a(2).pdf\" >http:\/\/172.26.131.40\/dms\/attachments\/18a73848ccd84f0a_doc_389_a(2).pdf<\/a>",
+                    "mime_type": "application\/pdf"
+                },
+                {
+                    "attachmentId": "ANGjdJ8kDC9tao_Grttl7uGkZlLbRXZDyO3AB6UKggbozE5lrbIl0J4B89woZw4RN20_iHnyO-rxpxiNNmsdPnoP0Y7qdwdqYyjBEbnW5yx2EcQHJVEK894YE5teL_30u-jEmzEkL4FfUBb1NN0QV1wEjOKg2pAyZMbHT3ReRhZoZpYHECqAeGoQVxpFQbuGs5w05oRIQ0MgY0fm4hlQjpEpM4mQN7IVGpbL1ysYPd-98tuC2Cu4zYvvhbht-MM904W504YLGrCF0GLBT8-xLyln12F9CKfXt_GSkDQuGPmE15UD9gZoc4lsz4CshalGJKhkZ4ZyBWlO3j0BPWVL2XYUqA9D0K8XaYpKzRwE3zuEtlwRTetSTH76FPEsAkAtmpq4uLjsZxht598P7ODfr7iGQ541AB-EUG9QoNwz6w",
+                    "filename": "doc_389_a(3).pdf",
+                    "dl_filename": "18a73848ccd84f0a_doc_389_a(3).pdf",
+                    "dl_link": "<a href = \"http:\/\/172.26.131.40\/dms\/attachments\/18a73848ccd84f0a_doc_389_a(3).pdf\" >http:\/\/172.26.131.40\/dms\/attachments\/18a73848ccd84f0a_doc_389_a(3).pdf<\/a>",
+                    "mime_type": "application\/pdf"
+                },
+                {
+                    "attachmentId": "ANGjdJ_HpU9bvEbHJO4CuBgEtAW3gCtzBuQRMVNuyDYnzmO9m01itk0vwr2wifM3uknEuCL7bo2uLy3pPsYpr6RjKGW7AOf6Cz3hHigXm7_wov64Evr3lXKz-c5hZ1-vdGTmveHpxC-Ud827zCM9TK_C7PEN817rY2H8_lUeBdmNN8-aqyfZ68Oy4_UZuOM33tUiSoZeOOGV4oMCxAEc73Y4kceIVnPY2nkdtXPMccYwEqFljjU6jip_NxsSGjIu-rGTNzSj6-dprea5qHYh9pimmnHk9RYIeuCjYsDOT3_wSGj6gWh7c1yzuRkE4V17y6iV25Ci5eR3xd2S8QfW0GNazfNa6fHy7hrYadEqetiEcdh3UszHhK8NC0TvdzqOkD10rHQZgZjKxyD_rwmFT4AEyIkFMQzkPaADw-RzIQ",
+                    "filename": "doc_389_a(4).pdf",
+                    "dl_filename": "18a73848ccd84f0a_doc_389_a(4).pdf",
+                    "dl_link": "<a href = \"http:\/\/172.26.131.40\/dms\/attachments\/18a73848ccd84f0a_doc_389_a(4).pdf\" >http:\/\/172.26.131.40\/dms\/attachments\/18a73848ccd84f0a_doc_389_a(4).pdf<\/a>",
+                    "mime_type": "application\/pdf"
+                }
+            ]
+        }
+    ],
+    "date": "2023-09-08 14:41:14"
+}

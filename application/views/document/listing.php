@@ -25,7 +25,7 @@
                   <div class="info-box bg-light">
                     <div class="info-box-content">
                       <span class="info-box-text text-center text-muted">Total Number of documents</span>
-                      <span class="info-box-number text-center text-muted mb-0">2300</span>
+                      <span class="info-box-number text-center text-muted mb-0">x</span>
                     </div>
                   </div>
                 </div>
@@ -33,7 +33,7 @@
                   <div class="info-box bg-light">
                     <div class="info-box-content">
                       <span class="info-box-text text-center text-muted">Total number of routed documents</span>
-                      <span class="info-box-number text-center text-muted mb-0">2000</span>
+                      <span class="info-box-number text-center text-muted mb-0">x</span>
                     </div>
                   </div>
                 </div>
@@ -41,7 +41,7 @@
                   <div class="info-box bg-light">
                     <div class="info-box-content">
                       <span class="info-box-text text-center text-muted">Total Number of archived documents</span>
-                      <span class="info-box-number text-center text-muted mb-0">20</span>
+                      <span class="info-box-number text-center text-muted mb-0">x</span>
                     </div>
                   </div>
                 </div>
@@ -72,9 +72,16 @@
                                    <i class="fas fa-file-prescription"></i> Select
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                                    <a class="dropdown-item" href="#" id="btn_edit_view" ><i class="fas fa-eye"></i> View</a>
                                     <a class="dropdown-item" href="#" id="btn_edit_entry" ><i class="fas fa-edit"></i> Edit</a>
                                     <a class="dropdown-item" href="#" id="btn_route_entry"><i class="fas fa-route"></i> Route</a>
                                     <a class="dropdown-item" href="#" id="btn_archive_entry"><i class="fas fa-archive"></i> Archive</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" id="btn_archive_entry"><i class="fas fa-archive"></i> Mark Accomplished</a>
+                                    <a class="dropdown-item" href="#" id="btn_archive_entry"><i class="fas fa-archive"></i> Mark On-Hold</a>
+
+
                                   </div>
                                 </div>
 

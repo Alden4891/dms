@@ -33,8 +33,12 @@ class test extends CI_Controller {
         print("<pre>");
     }
 
-    public function get_route_listing($value=''){
-        
+    public function get_email_by_threadID($message_id){
+        $this->load->model("Gmail_model");
+        $data = $this->Gmail_model->get_email_by_threadID($message_id);
+        print('<pre>');
+        print_r($data);
+        print('</pre>');
     }
 
 

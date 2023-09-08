@@ -205,6 +205,21 @@ function get_email_by_id($emailId) {
 
     ## WORKING UDFs ------------------------------------------------------------------------------------------
 
+    public function check_cache($message_id) {
+        $jsonFilePath=FCPATH."cache/gmail_responses/$message_id.json";
+        if (file_exists($jsonFilePath)) {
+            $jsonString = file_get_contents($jsonFilePath);
+            $data = (object) json_decode($jsonString, true);
+            if ($data !== null) {
+                //return true if there's response(s).
+                return (count($data->response) > 1);
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
 
     public function get_mails($query = 'is:sent'){
 
@@ -405,9 +420,40 @@ function get_email_by_id($emailId) {
             $messageId = $message->getId();
             $message = $this->service->users_messages->get('me', $messageId);
             $headers = $message->getPayload()->getHeaders();
-
             $msgId = $message->id;
+            $message_body = '';
+
             $fbody = $this->get_formatted_body($message);
+
+            // --------------------------------------------------------------------------------
+            // Initialize unformattedBody
+            $unformattedBody = '';
+
+            // Get the email's payload
+            $payload = $message->getPayload();
+
+            // Check if the payload has parts (typically for multipart emails)
+            if ($payload->getParts()) {
+                foreach ($payload->getParts() as $part) {
+                    // Check if the part has a plain text content type
+                    if ($part->getMimeType() === 'text/plain') {
+                        // Decode and set the unformatted body
+                        $unformattedBody = base64_decode($part->getBody()->getData());
+                        break; // Stop searching for plain text if found
+                    }
+                }
+            }
+
+            # find the message body
+            if ($fbody != '') {
+                $message_body = $fbody;
+            }elseif($unformattedBody != ''){
+                $message_body = $unformattedBody;
+            }else{
+                $message_body = $message->getSnippet();
+            }
+
+            // --------------------------------------------------------------------------------
 
             $from = '';
             $subject = '';
@@ -499,7 +545,7 @@ function get_email_by_id($emailId) {
                     , "senderName" => $senderName
                     , "senderEmail" => $senderEmail
                     , "dateSent" => $dateSent // Adding the date sent to the array
-                    , "formattedBody" => $fbody
+                    , "messageBody" => $message_body
                     , "has_attachments" => ($hasAttachments == true ? 1 : 0)
                     , "attachments" => $arr_attachment
 
