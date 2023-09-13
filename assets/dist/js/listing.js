@@ -94,6 +94,40 @@ $(document).ready(function() {
         });
     }
 
+    //on change document status
+    $(document).on('click', '.ch-stat-opt',function(e){
+        e.preventDefault();
+        var handle = $(this);
+        var status_id = handle.attr('status');
+        var doc_id = handle.closest('tr').attr('doc_id');
+        setTimeout(function() {
+            $.ajax(base + 'document/change_status', {
+                data: {
+                    doc_id:doc_id, 
+                    status_id:status_id
+                },
+                type: "POST",
+                error: function(data) {
+                    console.log(data);
+                    alert("[5] An error has occurred! Please contact aaquinones.fo12@dswd.gov.ph");
+                },
+                success: function(data) {
+                    var obj = jQuery.parseJSON(data);
+                    if (obj.success) {
+                        var status = obj.new_status;
+                        var row_status_value = handle.closest('tr').find('.row-status-value');
+                        row_status_value.html(status);
+                        row_status_value.addClass('bg-info');
+                        console.log(obj);
+                    }
+                },
+                complete: function() {
+                    //do nothing
+                }
+            });
+        }, 100);
+    });
+
     //on view btn_document_preview clicked
     $(document).on('click', '#btn_document_preview', function(e) {
         e.preventDefault();
@@ -141,6 +175,43 @@ $(document).ready(function() {
         //show modal
         $("#documentEntryEditorModal").modal("show");
     });
+
+    // on view clicked
+    $(document).on('click','#btn_view_entry',function(){
+        var doc_id = $(this).closest('tr').attr('doc_id');
+
+        //get doc data
+        setTimeout(function() {
+            $.ajax(base + 'document/get_viewer_content/' + doc_id, {
+                type: "POST",
+                error: function(data) {
+                    console.log(data);
+                    alert("[1] An error has occurred! Please contact aaquinones.fo12@dswd.gov.ph");
+                },
+                success: function(data) {
+                    // var obj_data = jQuery.parseJSON(data);
+                    console.log(data);
+                    // doc-viewer-attanment-list-container
+
+                    // $('#listing_doc_viewer_modal2').modal("show");
+
+                },
+                complete: function() {
+                    // Hide loading indicator
+
+                }
+            });
+        }, 100);
+
+
+
+        // var attachment_id = $(this).attr('attachment-id');
+        // $('#prev_pdf2').attr('src', base + "document/get_document_instance/113");
+        // $('#listing_doc_viewer_modal').modal('show');        
+        
+    });
+
+    
 
     // on edit document clicked
     $(document).on('click', '#btn_edit_entry', function() {

@@ -65,25 +65,29 @@
                               <td><?php echo $document->DRN; ?></td>
                               <td><?php echo $document->SUBJECT; ?></td>
                               <td><?php echo $document->DATE_POSTED=='0000-00-00 00:00:00'?'no-data':$document->DATE_POSTED; ?></td>
-                              <td><?php echo $document->STATUS; ?></td>
+                              <td class="row-status-value"><?php echo $document->STATUS; ?></td>
                               <td>
-                                <div class="dropdown">
+                                 <div class="dropdown">
                                   <button  style="width: 100%;" class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                   <i class="fas fa-file-prescription"></i> Select
+                                   <i class="fas fa-file-prescription"></i> Option
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                                    <a class="dropdown-item" href="#" id="btn_edit_view" ><i class="fas fa-eye"></i> View</a>
+                                    <a class="dropdown-item" href="#" id="btn_view_entry" ><i class="fas fa-eye"></i> View</a>
                                     <a class="dropdown-item" href="#" id="btn_edit_entry" ><i class="fas fa-edit"></i> Edit</a>
                                     <a class="dropdown-item" href="#" id="btn_route_entry"><i class="fas fa-route"></i> Route</a>
-                                    <a class="dropdown-item" href="#" id="btn_archive_entry"><i class="fas fa-archive"></i> Archive</a>
+                                    <a class="dropdown-item" href="#" id="btn_delete_entry"><i class="fas fa-trash-alt"></i> Delete</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#" id="btn_archive_entry"><i class="fas fa-archive"></i> Mark Accomplished</a>
-                                    <a class="dropdown-item" href="#" id="btn_archive_entry"><i class="fas fa-archive"></i> Mark On-Hold</a>
-
+                                    <a class="dropdown-item ch-stat-opt" href="#" status="1"><i class="fas fa-tasks"></i> Mark In Progress</a>
+                                    <a class="dropdown-item ch-stat-opt" href="#" status="2"><i class="fas fa-clock"></i> Mark Pending</a>
+                                    <a class="dropdown-item ch-stat-opt" href="#" status="3"><i class="fas fa-archive"></i> Mark Forwarded</a>
+                                    <a class="dropdown-item ch-stat-opt" href="#" status="4"><i class="fas fa-thumbs-up"></i> Mark Approved</a>
+                                    <a class="dropdown-item ch-stat-opt" href="#" status="5"><i class="fas fa-check"></i> Mark Accomplished</a>
+                                    <a class="dropdown-item ch-stat-opt" href="#" status="6"><i class="fab fa-expeditedssl"></i> Mark On-hold</a>
+                                    <a class="dropdown-item ch-stat-opt" href="#" status="7"><i class="fas fa-window-close"></i> Mark Cancelled</a>
 
                                   </div>
-                                </div>
+                                </div> 
 
                               </td>
                           </tr>

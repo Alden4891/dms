@@ -29,7 +29,7 @@ class Documents_model extends CI_Model {
         return $this->db->select('`tbl_documents`.`ID`,`tbl_documents`.`DRN`,`tbl_documents`.`SUBJECT`,`tbl_status`.`STATUS`,`tbl_documents`.`DATE_POSTED`')
                 ->from('`db_dms`.`tbl_documents`')
                 ->join('`db_dms`.`tbl_status`', '(`tbl_documents`.`STATUS` = `tbl_status`.`ID`)', 'LEFT')
-                // ->where_in('`tbl_documents`.`ID`', array(566, 567, 568))
+                ->where_in('`tbl_documents`.`ID`', array(566, 567, 568))
                 ->order_by('`tbl_documents`.`ID` ASC')->get()->result();
     }
 
@@ -95,6 +95,15 @@ class Documents_model extends CI_Model {
     public function get_file_details($upload_id) {
         $this->db->where('id', $upload_id);
         return $this->db->get('tbl_uploads')->row();
+    }
+
+    public function set_status($data) {
+        $this->db->where('`ID`', $data->doc_id)
+        ->set('`STATUS`', $data->status_id)
+        ->update('tbl_documents');
+
+        // return true if has changes
+        return ($this->db->affected_rows() > 0);
     }
 
 }

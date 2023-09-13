@@ -9,6 +9,7 @@ class document extends CI_Controller {
     		redirect(site_url('user/login'), 'refresh');
 
     		$this->load->helper('url');
+    		$this->load->model('Documents_model');
     }
 
     public function index(){
@@ -17,7 +18,6 @@ class document extends CI_Controller {
 
 	public function listing($tag = ''){
 
-		$this->load->model('Documents_model');
 
 		$data['open_menu'] = 'document';
 		$data['documents'] = $this->Documents_model->get_list();
@@ -29,6 +29,7 @@ class document extends CI_Controller {
 		$this->load->view('document/jsloader.php');
 
     	$this->load->view('document/listing_doc_route_modal');
+		$this->load->view('document/listing_doc_viewer_modal2');
 		$this->load->view('document/listing_doc_editor_modal');
 		$this->load->view('document/listing_doc_viewer_modal');
 
@@ -36,7 +37,6 @@ class document extends CI_Controller {
 	}
 
 	public function data($doc_id) {
-		$this->load->model('Documents_model');
 		$data = $this->Documents_model->get_document($doc_id);
 		print_r(json_encode($data));
 		// 386
@@ -55,7 +55,6 @@ class document extends CI_Controller {
     }
 
 	public function get_upload_listing($doc_id){
-		$this->load->model('Documents_model');
 		$dataset = $this->Documents_model->get_upload_listing($doc_id);
 		// print('<pre>');
 		// print_r($dataset);
@@ -89,9 +88,7 @@ class document extends CI_Controller {
 	}
 
 	public function get_document_instance($file_id) {
-		$this->load->model('Documents_model');
 		$data = $this->Documents_model->get_file_details($file_id);
-
 		header('Content-type: '. $data->mime_type);
 		header('Content-Disposition: inline; filename="' . basename($data->org_filename) . '"');
 		header('Content-Transfer-Encoding: binary');
@@ -99,14 +96,53 @@ class document extends CI_Controller {
 		readfile(site_url("uploads/$data->filename"));
 	}
 
+	public function get_viewer_content($doc_id) {
+		$attachment_list = "";
+		$data = $this->db->get_where('tbl_uploads', array('doc_id' => $doc_id))->result();
+
+		//load: 
+		$default_id = 0;
+		foreach ($data as $entry) {
+			$default_id = $entry->id;
+			
+			$attachment_list .= "
+	                  <li class=\"nav-item active\">
+	                    <a href=\"#\" class=\"nav-link\" att_id=\"$entry->id\">
+	                      <i class=\"far fa-file-pdf\"></i> $entry->org_filename
+	                      // <span class=\"badge bg-primary float-right\">12</span>
+	                    </a>
+	                  </li>
+	                  ";			
+		}
+
+		print_r(
+			[
+				'attachment_list'=>$attachment_list,
+				'default_url'=>site_url('document/get_document_instance/'.$default_id),
+			]
+		);
+
+
+		
+	}
+
+	public function change_status(){
+		$form_data = (object) $this->input->post();
+		$success = $this->Documents_model->set_status($form_data);
+		if ($success) {
+			$status = $this->db->select('`status`')->where(array('id' => $form_data->status_id))->get('tbl_status')->row();
+			return print_r(json_encode(['success'=>True, 'new_status'=>$status->status]));
+		}else{
+			return print_r(json_encode(['success'=>False]));
+		}
+	}
+
 	public function get_attachments($doc_id) {
-		$this->load->model('Documents_model');
 		$dataSet = $this->Documents_model->get_upload_listing($doc_id);
 		print(json_encode($dataSet));
 	}
 
 	public function save(){
-
 		$form_data = $this->input->post();
 
 		// Separate the specified elements into a separate array
@@ -141,7 +177,6 @@ class document extends CI_Controller {
 		$form_data['RESTRICTIONS'] = $restrictions_dec;
 
         // Save the data to the database or perform any other required operations
-        $this->load->model('Documents_model');
 		$doc_id = $this->Documents_model->save_document($form_data);
 
 		//return result
