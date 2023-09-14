@@ -10,4 +10,9 @@
 
 <?php } ?>
 
+<?php if ($ctlr_name=="archive") { ?>
+	<script src="<?=site_url('assets/dist/js/archive.js')?>"></script>
+
+<?php } ?>
+
 

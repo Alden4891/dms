@@ -72,7 +72,7 @@
               <li class="nav-item">
                 <a href="<?=site_url('archive')?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Archive</p>
+                  <p>Data Recovery</p>
                 </a>
               </li>
 

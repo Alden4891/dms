@@ -8,6 +8,8 @@ class archive extends CI_Controller {
 		if(!$this->session->userdata('user_id'))
 		redirect(site_url('user/login'), 'refresh');
 
+		$this->load->model("Dom_model");
+		$this->load->model("Documents_model");
     }
 
     public function index(){
@@ -16,18 +18,23 @@ class archive extends CI_Controller {
     
 	public function listing($tag = ''){
 		$data['open_menu'] = 'document';
-		$this->load->view('templates/header');
+		$data['listing'] = $this->Dom_model->get_deleted_documents_table_entries();
+ 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar',$data);
-		// $this->load->view('archive/listing');
+		$this->load->view('document/archive');
 		$this->load->view('templates/footer');
+		$this->load->view('document/listing_doc_viewer_modal2'); #2
+		$this->load->view('document/jsloader.php');
 	}
 
-	public function send(){
-
-	}
-	
-	public function archive($doc_id){
-
+	public function restore($doc_id){
+		$is_restored = $this->Documents_model->restore($doc_id);
+		if ($is_restored) {
+			print_r(json_encode(array('success'=>true))); 
+		}else{
+			print_r(json_encode(array('success'=>false))); 
+		}
+		
 	}
 
 	

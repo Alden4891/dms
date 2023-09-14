@@ -9,6 +9,46 @@ class Dom_model extends CI_Model {
         
     }
 
+    public function get_deleted_documents_table_entries(){
+      $query = $this->db->select(
+          '`tbl_documents`.`ID` as DOC_ID
+          ,`tbl_documents`.`DRN`
+          ,`tbl_documents`.`SUBJECT`
+          ,CONCAT(`users`.`firstname`,\' \',`users`.`middlename`,\' \',`users`.`lastname`) AS \'DELETED_BY\'
+          ,`tbl_documents`.`DELETE_DATE`')
+      ->from('`db_dms`.`tbl_documents`')
+      ->join('`db_dms`.`users`', '(`tbl_documents`.`DELETED_BY` = `users`.`user_id`)')
+      ->get();
+      $result = $query->result();
+
+        $table_content = "";
+        foreach ($result as $row) {
+
+
+            //PREPARE TABLE
+            $table_content .= "
+              <tr doc_id=$row->DOC_ID>
+                  <td>$row->DRN</td>
+                  <td>$row->SUBJECT</td>
+                  <td>$row->DELETE_DATE</td>
+                  <td>$row->DELETED_BY</td>
+                  <td>
+                    <button type=\"button\" class=\"btn btn-danger btn-xs\" id=\"restore-button\">
+                      <i class=\"fas fa-undo\" ></i> Restore
+                    </button>
+                    <button type=\"button\" class=\"btn btn-info btn-xs\" id=\"preview\">
+                      <i class=\"fas fa-eye\" ></i> View
+                    </button>
+                  </td>
+
+              </tr>
+            ";
+        }
+        return $table_content;
+
+        
+    }
+
     public function get_routed_documents_table_entries() {
         $query = $this->db->select(
                             "`tbl_routes`.`ID`
