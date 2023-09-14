@@ -18,7 +18,6 @@ class document extends CI_Controller {
 
 	public function listing($tag = ''){
 
-
 		$data['open_menu'] = 'document';
 		$data['documents'] = $this->Documents_model->get_list();
 
@@ -26,13 +25,15 @@ class document extends CI_Controller {
 		$this->load->view('templates/sidebar',$data);
 		$this->load->view('document/listing');
 
+    	$this->load->view('document/listing_doc_route_modal'); #1
+		$this->load->view('document/listing_doc_viewer_modal2'); #2
+		$this->load->view('document/listing_doc_editor_modal'); #3
+		$this->load->view('document/listing_doc_viewer_modal'); #4
+
+
 		$this->load->view('document/jsloader.php');
 
-    	$this->load->view('document/listing_doc_route_modal');
-		$this->load->view('document/listing_doc_viewer_modal2');
-		$this->load->view('document/listing_doc_editor_modal');
-		$this->load->view('document/listing_doc_viewer_modal');
-
+		
 		$this->load->view('templates/footer');
 	}
 
@@ -103,23 +104,25 @@ class document extends CI_Controller {
 		//load: 
 		$default_id = 0;
 		foreach ($data as $entry) {
-			$default_id = $entry->id;
 			
+			#get the 1st entry
+			$default_id = ($default_id==0?$entry->id:$default_id);
+			$iframe_src = site_url('document/get_document_instance/'.$entry->id);
+
 			$attachment_list .= "
 	                  <li class=\"nav-item active\">
-	                    <a href=\"#\" class=\"nav-link\" att_id=\"$entry->id\">
+	                    <a href=\"$iframe_src\" class=\"nav-link\" att_id=\"$entry->id\" target=\"prev_pdf2\">
 	                      <i class=\"far fa-file-pdf\"></i> $entry->org_filename
-	                      // <span class=\"badge bg-primary float-right\">12</span>
 	                    </a>
 	                  </li>
 	                  ";			
 		}
 
-		print_r(
-			[
-				'attachment_list'=>$attachment_list,
-				'default_url'=>site_url('document/get_document_instance/'.$default_id),
-			]
+		print(
+			json_encode([
+					'attachment_list'=>$attachment_list,
+					'default_url'=>site_url('document/get_document_instance/'.$default_id),
+			])
 		);
 
 
@@ -181,6 +184,15 @@ class document extends CI_Controller {
 
 		//return result
 		print_r(json_encode(array('doc_id'=>$doc_id)));
+	}
+
+	public function delete($doc_id){
+		$is_deleted = $this->Documents_model->delete($doc_id);
+		if ($is_deleted) {
+			print_r(json_encode(array('success'=>true))); 
+		}else{
+			print_r(json_encode(array('success'=>false))); 
+		}
 	}
 
     public function upload($doc_id) {

@@ -26,11 +26,17 @@ class Documents_model extends CI_Model {
      * @return mixed Result of all documents.
      */
     public function get_list() {
-        return $this->db->select('`tbl_documents`.`ID`,`tbl_documents`.`DRN`,`tbl_documents`.`SUBJECT`,`tbl_status`.`STATUS`,`tbl_documents`.`DATE_POSTED`')
+
+        $result = $this->db->select('`tbl_documents`.`ID`,`tbl_documents`.`DRN`,`tbl_documents`.`SUBJECT`,`tbl_status`.`STATUS`,`tbl_documents`.`DATE_POSTED`')
                 ->from('`db_dms`.`tbl_documents`')
                 ->join('`db_dms`.`tbl_status`', '(`tbl_documents`.`STATUS` = `tbl_status`.`ID`)', 'LEFT')
                 ->where_in('`tbl_documents`.`ID`', array(566, 567, 568))
-                ->order_by('`tbl_documents`.`ID` ASC')->get()->result();
+                ->group_start()
+                ->where('`tbl_documents`.`DELETED_BY`', NULL)
+                ->group_end()
+                ->order_by('`tbl_documents`.`ID` ASC')->get();
+
+        return $result->result();
     }
 
 
@@ -105,5 +111,18 @@ class Documents_model extends CI_Model {
         // return true if has changes
         return ($this->db->affected_rows() > 0);
     }
+
+    public function delete($doc_id) {
+        $data = array(
+            'DELETE_DATE' => date('Y-m-d H:i:s'), // Set to the current datetime
+            'DELETED_BY' => $this->session->userdata('user_id')
+        );
+
+        $this->db->where('id', $doc_id);
+        $this->db->update('tbl_documents', $data);
+
+        return ($this->db->affected_rows() > 0);
+    }
+
 
 }

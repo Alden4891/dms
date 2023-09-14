@@ -189,11 +189,12 @@ $(document).ready(function() {
                     alert("[1] An error has occurred! Please contact aaquinones.fo12@dswd.gov.ph");
                 },
                 success: function(data) {
-                    // var obj_data = jQuery.parseJSON(data);
-                    console.log(data);
-                    // doc-viewer-attanment-list-container
+                    var obj_data = jQuery.parseJSON(data);
 
-                    // $('#listing_doc_viewer_modal2').modal("show");
+                    console.log(obj_data.default_url);
+                    $('.doc-viewer-attanment-list-container').html(obj_data.attachment_list);
+                    $('#prev_pdf2').attr('src',obj_data.default_url)
+                    $('#listing_doc_viewer_modal2').modal("show");
 
                 },
                 complete: function() {
@@ -338,6 +339,70 @@ $(document).ready(function() {
 
         $("#documentEntryEditorModal").modal("show");
     });
+
+    // on delete clicked
+    $(document).on('click','#btn_delete_entry',function(e){
+        e.preventDefault();
+        var handler = $(this);
+        var doc_id = handler.closest('tr').attr('doc_id');
+        var tr = handler.closest('tr');
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You are about to delete this entry!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+
+            //send delete post
+            doc_id
+            $.ajax({
+                url: base + "document/delete/" + doc_id,
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    var obj = jQuery.parseJSON(response);
+                    if (obj.success) {
+                        Swal.fire({
+                          title: 'Deleted!',
+                          text: 'Your file has been deleted.',
+                          icon: 'success',
+                          confirmButtonText: 'OK'
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            tr.fadeOut(400, function() {
+                              tr.remove(); 
+                            });
+                          }
+                        });   
+                    }else{
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Something went wrong while deleting this document! Please contact aaquinones.fo12@dswd.gov.ph',
+                        } );
+                    }
+
+
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
+
+
+
+
+          }
+        })
+
+
+    });
+    
 
     // on route document clicked
     $(document).on('click', '#btn_route_entry', function() {

@@ -1,6 +1,6 @@
 
 <!-- .listing_doc_viewer_modal -->
-<div class="modal fade" id="listing_doc_viewer_modal" tabindex="-1" role="dialog" aria-labelledby="listing_doc_viewer_modalLabel" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="listing_doc_viewer_modal"  tabindex="2" role="dialog" role="dialog" aria-labelledby="listing_doc_viewer_modalLabel" aria-hidden="true" data-backdrop="static">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
     <div class="modal-content">
       <div class="modal-header">

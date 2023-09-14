@@ -1,7 +1,7 @@
 
 
 <!-- .documentEntryEditorModal -->
-<div class="modal fade" id="documentEntryEditorModal" tabindex="-1" role="dialog" aria-labelledby="documentEntryEditorModalLabel" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="documentEntryEditorModal"  tabindex="1" role="dialog" aria-labelledby="documentEntryEditorModalLabel" aria-hidden="true" data-backdrop="static">
   <form id="form_doc_editor">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
     <div class="modal-content">

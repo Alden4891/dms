@@ -1,6 +1,6 @@
 
 <!-- .listing_doc_viewer_modal2 -->
-<div class="modal fade" id="listing_doc_viewer_modal2" tabindex="-1" role="dialog" aria-labelledby="listing_doc_viewer_modalLabel2" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="listing_doc_viewer_modal2"  tabindex="3" role="dialog" role="dialog" aria-labelledby="listing_doc_viewer_modalLabel2" aria-hidden="true" >
   <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -20,7 +20,7 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Attachments</h3>
+                <h3 class="card-title">Catalogue</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -138,7 +138,7 @@
     </section>
 
 
-
+      </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
         <!-- <button type="button" class="btn btn-primary">Send</button> -->
