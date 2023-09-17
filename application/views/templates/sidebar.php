@@ -39,7 +39,7 @@
 
 
           <li class="nav-item <?=($open_menu=='dashboard'?'menu-open':'')?>">
-            <a href="<?=site_url('dashboard')?>" class="nav-link">
+            <a href="<?=site_url('#')?>" class="nav-link">
                <i class="nav-icon fas fa-copy"></i>
               <p>
                 Dashboard

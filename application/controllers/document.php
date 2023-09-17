@@ -20,6 +20,7 @@ class document extends CI_Controller {
 
 		$data['open_menu'] = 'document';
 		$data['documents'] = $this->Documents_model->get_list();
+		$data['totals'] = (object) $this->Documents_model->get_totals();
 
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar',$data);
@@ -30,11 +31,9 @@ class document extends CI_Controller {
 		$this->load->view('document/listing_doc_editor_modal'); #3
 		$this->load->view('document/listing_doc_viewer_modal'); #4
 
+		$this->load->view('templates/footer');
 
 		$this->load->view('document/jsloader.php');
-
-		
-		$this->load->view('templates/footer');
 	}
 
 	public function data($doc_id) {
@@ -122,6 +121,7 @@ class document extends CI_Controller {
 			json_encode([
 					'attachment_list'=>$attachment_list,
 					'default_url'=>site_url('document/get_document_instance/'.$default_id),
+					'file_exists'=>($default_id>0?true:false)
 			])
 		);
 

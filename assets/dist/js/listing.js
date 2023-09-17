@@ -190,16 +190,20 @@ $(document).ready(function() {
                 },
                 success: function(data) {
                     var obj_data = jQuery.parseJSON(data);
-
-                    console.log(obj_data.default_url);
-                    $('.doc-viewer-attanment-list-container').html(obj_data.attachment_list);
-                    $('#prev_pdf2').attr('src',obj_data.default_url)
-                    $('#listing_doc_viewer_modal2').modal("show");
-
+                    if (obj_data.file_exists) {
+                        $('.doc-viewer-attanment-list-container').html(obj_data.attachment_list);
+                        $('#prev_pdf2').attr('src',obj_data.default_url)
+                        $('#listing_doc_viewer_modal2').modal("show");
+                    }else{
+                        Swal.fire({
+                          icon: 'info',
+                          title: 'Attachment not found!',
+                          text: 'It seems like you haven\'t attached any file in this entry.',
+                        } );
+                    }
                 },
                 complete: function() {
                     // Hide loading indicator
-
                 }
             });
         }, 100);

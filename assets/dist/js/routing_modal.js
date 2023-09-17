@@ -58,7 +58,7 @@ $( document ).ready(function() {
                       Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'An error has occurred while fetching contacts!',
+                        text: 'An error has occurred while fetching contacts!!!',
                         footer: 'Please contact <a href="">aaquinones.fo12@dswd.gov.ph</a>'
                       })
                     },

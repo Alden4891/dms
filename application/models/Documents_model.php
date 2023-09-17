@@ -19,6 +19,29 @@ class Documents_model extends CI_Model {
         return $this->db->get('tbl_documents')->result();
     }
 
+    public function get_totals() {
+        // Build the CodeIgniter query
+        $this->db->select('(SELECT COUNT(*) FROM tbl_documents WHERE deleted_by IS NULL) AS doc_count', FALSE);
+        $this->db->select('(SELECT COUNT(*) FROM tbl_routes) AS route_count', FALSE);
+        $this->db->select('(SELECT COUNT(*) FROM tbl_documents WHERE NOT deleted_by IS NULL) AS archived_count', FALSE);
+
+        // Execute the query
+        $query = $this->db->get();
+
+        // Fetch the results
+        $result = $query->row();
+
+        // Access the counts
+        $doc_count = $result->doc_count;
+        $route_count = $result->route_count;
+        $archived_count = $result->archived_count;        
+
+        return [
+            'doc_count'=>$result->doc_count,
+            'route_count'=>$result->route_count,
+            'archived_count'=>$result->archived_count
+        ];
+    }
 
     /**
      * Retrieve data for listing only.
@@ -30,7 +53,7 @@ class Documents_model extends CI_Model {
         $result = $this->db->select('`tbl_documents`.`ID`,`tbl_documents`.`DRN`,`tbl_documents`.`SUBJECT`,`tbl_status`.`STATUS`,`tbl_documents`.`DATE_POSTED`')
                 ->from('`db_dms`.`tbl_documents`')
                 ->join('`db_dms`.`tbl_status`', '(`tbl_documents`.`STATUS` = `tbl_status`.`ID`)', 'LEFT')
-                ->where_in('`tbl_documents`.`ID`', array(566, 567, 568))
+                // ->where_in('`tbl_documents`.`ID`', array(566, 567, 568))
                 ->group_start()
                 ->where('`tbl_documents`.`DELETED_BY`', NULL)
                 ->group_end()

@@ -16,7 +16,11 @@ class routing extends CI_Controller {
 
     public function index(){
 		$data['open_menu'] = 'document';
-		$data['route_listing'] = $this->Dom_model->get_routed_documents_table_entries();
+		$result = $this->Dom_model->get_routed_documents_table_entries();
+        $data['route_listing'] = $result->table_content;
+        $data['route_count'] = $result->route_count;
+        $data['route_due'] = $result->route_due;
+        $data['route_responsed'] = $result->route_responsed;
 
 		$this->load->view('templates/header');
 		$this->load->view('templates/sidebar',$data);
@@ -156,11 +160,8 @@ class routing extends CI_Controller {
             'timeline'=>$htx,
         ]));
         // print('</pre>');
-
-
     }
 	
-
     public function send(){
 
         $form_data = (object) $this->input->post();
@@ -183,7 +184,7 @@ class routing extends CI_Controller {
             'MESSAGE' => $form_data->message,
             'RECEPIENT_EMAIL' => implode(',', $form_data->emails),
             'GMAIL_MESSAGE_ID' => $message_id,
-            'RSTATUS' => 1 //[0=>'draft',1=>'sent', 2=>'with_replies',3=>'closed']
+            'RSTATUS' => 1 //[1=>'Waiting for reply', 2=>'Overdue',3=>'Follow-up sent',4=>'Inresponsive',5=>'Closed']
         );
 
         $this->db->insert('tbl_routes', $data) or die(json_encode(['result'=>'failed','error'=>'An error occurred while saving routing information in database','message_id'=>0]));
@@ -192,16 +193,16 @@ class routing extends CI_Controller {
         print(json_encode(['result'=>'success','message_id'=>$message_id]));
     }
 
-    public function test(){
-        // $data = $this->Routing_model->get_route_info('18a45215b0bc153e');
-        $data = $this->Routing_model->get_trend_responses('18a45215b0bc153e');
+    public function reply(){
+        $form_data = (object) $this->input->post();
+        $route_data = $this->Routing_model->get_route_info($form_data->tread_id);
+        $form_data->emails = $route_data->RECEPIENT_EMAIL;
+        $res = $this->Gmail_model->reply($form_data->tread_id, $form_data->message_body, $form_data->emails);
 
-        print('<pre>');
-        print_r($data);
-        print('</pre>');
-        // 
-        // print(1);
+        print_r($res);
     }
+
+
 
 
 }

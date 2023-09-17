@@ -56,19 +56,30 @@ class Dom_model extends CI_Model {
                             ,`tbl_routes`.`GMAIL_MESSAGE_ID`
                             ,`tbl_routes`.`SUBJECT`
                             ,`tbl_routes`.`DATE_ROUTE`
-                            ,`tbl_routes`.`RSTATUS`
+                            ,`tbl_rstatus`.`STATUS`
                             , `tbl_routes`.`DOC_ID`
                             , CONCAT(TIMESTAMPDIFF(DAY, DATE_ROUTE, NOW()),' day(s) ',TIMESTAMPDIFF(HOUR, DATE_ROUTE, NOW()) % 24,' hr(s)') as AGE
                             , TIMESTAMPDIFF(DAY, DATE_ROUTE, NOW()) as 'DAY_DURATION'
                             ")
                             ->from('`db_dms`.`tbl_routes`')
                             ->join('`db_dms`.`tbl_documents`', '(`tbl_routes`.`DOC_ID` = `tbl_documents`.`ID`)')
+                            ->join('`db_dms`.`tbl_rstatus`', '(`tbl_routes`.`RSTATUS` = `tbl_rstatus`.`ID`)')
                             ->get();
         $result = $query->result();
 
         $table_content = "";
+        $route_due = 0;
+        $route_count = $query->num_rows();
+        $route_responsed = 0;
         foreach ($result as $row) {
 
+            $with_response = $this->Gmail_model->check_cache($row->GMAIL_MESSAGE_ID);
+            if ($with_response) {
+              $route_responsed+=1;
+            }
+            if ($row->DAY_DURATION > 7) {
+                $route_due+=1;
+            }
 
             //PREPARE TABLE
             $table_content .= "
@@ -77,10 +88,10 @@ class Dom_model extends CI_Model {
                   <td>$row->SUBJECT</td>
                   <td>$row->DATE_ROUTE</td>
                   <td>$row->AGE</td>
-                  <td>sample2</td>
+                  <td>$row->STATUS</td>
                   <td>
                     ".($row->DAY_DURATION >= 7 ? "<i class='fa fa-flag fa-sm' style='color: #ff0000;'></i>":"" )."
-                    ".($this->Gmail_model->check_cache($row->GMAIL_MESSAGE_ID) ? "<i class='fa fa-registered'></i>":"" )."
+                    ".($with_response ? "<i class='fa fa-registered'></i>":"" )."
 
                   </td>
                   <td>
@@ -89,8 +100,9 @@ class Dom_model extends CI_Model {
                        <i class='fas fa-file-prescription'></i> Select
                       </button>
                       <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
+                      
                         <a class='dropdown-item' href='#' id='btn_route_view_trend'><i class='fas fa-edit'></i> View Responses</a>
-                        <a class='dropdown-item' href='#' id='btn_route_send_followup'><i class='fas fa-route'></i> Send a followup response</a>
+                        <a class='dropdown-item send_reply' href='#' id='btn_route_send_followup'><i class='fas fa-route'></i> Send a followup response</a>
 
                         <a class='dropdown-item' href='#' id='btn_route_send_followup'><i class='fas fa-route'></i> Check for response</a>
                         <a class='dropdown-item' href='#' id='btn_route_send_followup'><i class='fas fa-route'></i> Mark Done</a>
@@ -104,7 +116,12 @@ class Dom_model extends CI_Model {
               </tr>
             ";
         }
-        return $table_content;
+        return (object) [
+          'table_content'=>$table_content,
+          'route_due'=>$route_due,
+          'route_count'=>$route_count,
+          'route_responsed'=>$route_responsed
+        ];
         // print_r(json_encode(['rows'=>$table_content]));
     }
 }

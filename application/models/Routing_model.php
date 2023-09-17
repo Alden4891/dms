@@ -6,6 +6,23 @@ class Routing_model extends CI_Model {
         $this->load->database();
     }
 
+
+    public function get_trends_responses($message_ids){
+        //["18a6d3f17c0f54f3", "18a73727f23506a5"]
+        $cache_date = new DateTime("1900-01-01 12:00:00"); //initialize datetime 
+        $currentDate = new DateTime();
+
+        $treads = $this->Gmail_model->get_email_by_threadIDs($message_ids);
+        foreach ($treads as $tread) {
+            print('<pre>');
+            print_r($tread);
+            print('</pre>');
+        }
+        print("<hr>");
+
+    }
+
+
     public function get_trend_responses($message_id){
         //18a45215b0bc153e
 

@@ -8,21 +8,15 @@ class test extends CI_Controller {
 
 
 
-    public function data(){
+    public function test2(){
         // print(FCPATH.'attachments');
-        $this->load->view('test');
-       
+        $this->load->model('Routing_model');
+        $data = $this->Routing_model->get_trends_responses(["18a6d3f17c0f54f3", "18a73727f23506a5"]);
+        print('<pre>');
+        print_r($data);
+        print('</pre>');
+    }       
 
-    }
-    
-	public function index(){
-        // $this->load->model("Google_contacts_model");
-        // $data = $this->Google_contacts_model->fetch_contacts();
-        // print_r($data);        
-
-        $pathinfo = pathinfo('./index.php',PATHINFO_BASENAME);
-        print($pathinfo);
-    }
 
     //GMAIL IS WORKING 2023-07-30
     public function gmail(){
@@ -33,13 +27,22 @@ class test extends CI_Controller {
         print("<pre>");
     }
 
-    public function get_email_by_threadID($message_id){
+    public function test1(){
         $this->load->model("Gmail_model");
-        $data = $this->Gmail_model->get_email_by_threadID($message_id);
+        $data = $this->Gmail_model->get_email_by_threadID("18a6d3f17c0f54f3");
         print('<pre>');
         print_r($data);
         print('</pre>');
     }
+
+    public function test3(){
+        $this->load->model("Routing_model");
+        $data = $route_data = $this->Routing_model->get_route_info("18a6d3f17c0f54f3");
+        print('<pre>');
+        print_r($data);
+        print('</pre>');
+    }
+
 
 
 }

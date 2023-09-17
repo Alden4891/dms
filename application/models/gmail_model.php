@@ -53,82 +53,103 @@ class Gmail_model extends CI_Model {
 
     ## EXPERIMENTAL UDFs -------------------------------------------------------------------------------------
 
-function get_email_by_id($emailId) {
+    public function reply($thread_id, $message_body, $emails){
+        $message = new Google_Service_Gmail_Message();
+        $message->setThreadId($thread_id);
+
+        // Create a MIME message
+        $rawMessage = base64_encode(
+              "Subject: Your Subject\r\n"
+            . "To: $emails\r\n"
+            . "Content-Type: text/html; charset=utf-8\r\n\r\n"
+            . $message_body);
+
+        $message->setRaw($rawMessage);
+
+        try {
+            $sentMessage = $this->service->users_messages->send('me', $message);
+            return $sentMessage;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }    
+    }
+
+// function get_email_by_id($emailId) {
    
 
-    $message = $this->service->users_messages->get('me', $emailId, ['format' => 'full']);
-    $payload = $message->getPayload();
-    $headers = $payload->getHeaders();
-    $parts = $payload->getParts();
-    $dateSent = '';
-    $toEmail = '';
-    $fromEmail = '';
-    $subject = '';
-    $snippet = $message->getSnippet();
-    $textBody = '';
-    $htmlBody = '';
-    $attachments = [];
+//     $message = $this->service->users_messages->get('me', $emailId, ['format' => 'full']);
+//     $payload = $message->getPayload();
+//     $headers = $payload->getHeaders();
+//     $parts = $payload->getParts();
+//     $dateSent = '';
+//     $toEmail = '';
+//     $fromEmail = '';
+//     $subject = '';
+//     $snippet = $message->getSnippet();
+//     $textBody = '';
+//     $htmlBody = '';
+//     $attachments = [];
 
-    foreach ($headers as $header) {
-        $name = $header->getName();
-        $value = $header->getValue();
+//     foreach ($headers as $header) {
+//         $name = $header->getName();
+//         $value = $header->getValue();
         
-        if ($name == 'Date') {
-            $dateSent = $value;
-        } else if ($name == 'To') {
-            $toEmail = $value;
-        } else if ($name == 'From') {
-            $fromEmail = $value;
-        } else if ($name == 'Subject') {
-            $subject = $value;
-        }
-    }
+//         if ($name == 'Date') {
+//             $dateSent = $value;
+//         } else if ($name == 'To') {
+//             $toEmail = $value;
+//         } else if ($name == 'From') {
+//             $fromEmail = $value;
+//         } else if ($name == 'Subject') {
+//             $subject = $value;
+//         }
+//     }
 
-    if (count($parts) == 0) {
-        $textBody = $payload->getBody()->getData();
-    } else {
-        foreach ($parts as $part) {
-            $partHeaders = $part->getHeaders();
-            $partName = $part->getFilename();
-            $partMimeType = $part->getMimeType();
-            $partBody = $part->getBody();
+//     if (count($parts) == 0) {
+//         $textBody = $payload->getBody()->getData();
+//     } else {
+//         foreach ($parts as $part) {
+//             $partHeaders = $part->getHeaders();
+//             $partName = $part->getFilename();
+//             $partMimeType = $part->getMimeType();
+//             $partBody = $part->getBody();
 
-            if ($partName != '' || $partMimeType != '') {
-                $attachments[] = [
-                    'name' => $partName,
-                    'mime_type' => $partMimeType,
-                    'data' => $partBody,
-                ];
-            } else if ($part->getParts() && count($part->getParts()) > 0) {
-                foreach ($part->getParts() as $subpart) {
-                    if ($subpart->getMimeType() == 'text/plain') {
-                        $textBody = $subpart->getBody()->getData();
-                    } else if ($subpart->getMimeType() == 'text/html') {
-                        $htmlBody = $subpart->getBody()->getData();
-                    }
-                }
-            } else if ($part->getMimeType() == 'text/plain' && empty($textBody)) {
-                $textBody = $partBody->getData();
-            } else if ($part->getMimeType() == 'text/html' && empty($htmlBody)) {
-                $htmlBody = $partBody->getData();
-            }
-        }
-    }
+//             if ($partName != '' || $partMimeType != '') {
+//                 $attachments[] = [
+//                     'name' => $partName,
+//                     'mime_type' => $partMimeType,
+//                     'data' => $partBody,
+//                 ];
+//             } else if ($part->getParts() && count($part->getParts()) > 0) {
+//                 foreach ($part->getParts() as $subpart) {
+//                     if ($subpart->getMimeType() == 'text/plain') {
+//                         $textBody = $subpart->getBody()->getData();
+//                     } else if ($subpart->getMimeType() == 'text/html') {
+//                         $htmlBody = $subpart->getBody()->getData();
+//                     }
+//                 }
+//             } else if ($part->getMimeType() == 'text/plain' && empty($textBody)) {
+//                 $textBody = $partBody->getData();
+//             } else if ($part->getMimeType() == 'text/html' && empty($htmlBody)) {
+//                 $htmlBody = $partBody->getData();
+//             }
+//         }
+//     }
 
-    $decodedTextBody = base64_decode(str_replace(['-', '_'], ['+', '/'], $textBody));
-    $decodedHtmlBody = base64_decode(str_replace(['-', '_'], ['+', '/'], $htmlBody));
+//     $decodedTextBody = base64_decode(str_replace(['-', '_'], ['+', '/'], $textBody));
+//     $decodedHtmlBody = base64_decode(str_replace(['-', '_'], ['+', '/'], $htmlBody));
 
-    return [
-        'message_id' => $message->getId(),
-        'date_sent' => $dateSent,
-        'to_email' => $toEmail,
-        'from_email' => $fromEmail,
-        'subject' => $subject,
-        'snippet' => $snippet,
-        'body' => $decodedHtmlBody,
-        'attachments' => $attachments,
-    ];
-}
+//     return [
+//         'message_id' => $message->getId(),
+//         'date_sent' => $dateSent,
+//         'to_email' => $toEmail,
+//         'from_email' => $fromEmail,
+//         'subject' => $subject,
+//         'snippet' => $snippet,
+//         'body' => $decodedHtmlBody,
+//         'attachments' => $attachments,
+//     ];
+// }
 
 
 // public function get_email_by_id2($emailId) {
@@ -201,6 +222,9 @@ function get_email_by_id($emailId) {
 //         'attachments' => $attachments,
 //     ];
 // }
+    ## exp ----------------------------------------------------------------
+
+
 
 
     ## WORKING UDFs ------------------------------------------------------------------------------------------
@@ -408,6 +432,161 @@ function get_email_by_id($emailId) {
         }
         return $body;
     }
+
+    public function get_email_by_threadIDs($thread_ids) {
+        $result = array();
+
+        foreach ($thread_ids as $thread_id) {
+            $ds = array();
+            $thread = $this->service->users_threads->get('me', $thread_id);
+            $messages = $thread->getMessages();
+
+            foreach ($messages as $message) {
+                $arr_attachment = array();
+
+                $messageId = $message->getId();
+                $message = $this->service->users_messages->get('me', $messageId);
+                $headers = $message->getPayload()->getHeaders();
+                $msgId = $message->id;
+                $message_body = '';
+
+                $fbody = $this->get_formatted_body($message);
+
+
+                // --------------------------------------------------------------------------------
+                // Initialize unformattedBody
+                $unformattedBody = '';
+
+                // Get the email's payload
+                $payload = $message->getPayload();
+
+                // Check if the payload has parts (typically for multipart emails)
+                if ($payload->getParts()) {
+                    foreach ($payload->getParts() as $part) {
+                        // Check if the part has a plain text content type
+                        if ($part->getMimeType() === 'text/plain') {
+                            // Decode and set the unformatted body
+                            $unformattedBody = base64_decode($part->getBody()->getData());
+                            break; // Stop searching for plain text if found
+                        }
+                    }
+                }
+
+                # find the message body
+                if ($fbody != '') {
+                    $message_body = $fbody;
+                }elseif($unformattedBody != ''){
+                    $message_body = $unformattedBody;
+                }else{
+                    $message_body = $message->getSnippet();
+                }
+
+                // --------------------------------------------------------------------------------
+
+                $from = '';
+                $subject = '';
+                foreach ($headers as $header) {
+                    if ($header->getName() == 'From') {
+                        $from = $header->getValue();
+                        // break;
+                    }
+                    if ($header->getName() == 'Subject') {
+                        $subject = $header->getValue();
+                        // break;
+                    }
+                    if ($header->getName() == 'Date') { // Adding this block to extract date sent
+                        $dateSent = date('Y-m-d H:i:s', strtotime($header->getValue()));
+                    }
+                }
+
+                // Get the name and email address of the sender
+                $senderName = "me";
+                $senderEmail = "me";
+                $headers = $message->getPayload()->getHeaders();
+                // var_dump($headers);
+                $fromHeader = array_filter($headers, function($header) {
+                    return $header->name === 'From';
+                });
+                $fromValue = reset($fromHeader)->value;
+                $fromRegex = '/(.*) <([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})>/';
+                if (preg_match($fromRegex, $fromValue, $matches)) {
+                    $senderName = $matches[1];
+                    $senderEmail = $matches[2];
+                } else {
+                    // echo "No match found\n";
+                }
+
+                // Loop through the parts of the message to find any attachments
+                $hasAttachments = false;
+                if (is_array($message->getPayload()->getParts())) {
+                    foreach ($message->getPayload()->getParts() as $part) {
+                        if ($part->getFilename() && $part->getBody()) {
+                            $hasAttachments = true;
+
+                            // Get the attachment data using the Gmail API
+                            $attachmentId = $part->getBody()->getAttachmentId();
+                            $attachment = $this->service->users_messages_attachments->get('me', $messageId, $attachmentId);
+
+                            // Get the attachment data and decode it
+                            $attachmentData = base64_decode($attachment->getData());
+                            // $decodedData = base64_decode($attachmentData);
+                            $filename = $part->getFilename();
+                            $contentType = $part->getMimeType();       
+
+                            $dl_path = SITE_URL("attachments/".$messageId."_".$filename);
+                            array_push($arr_attachment,array(
+                                  "attachmentId" => $attachmentId
+                                , "filename" => $filename
+                                , "dl_filename" => $messageId."_".$filename
+                                , "dl_link" => "<a href = \"$dl_path\" >$dl_path</a>"
+                                , "mime_type" => $contentType
+                            ));
+
+                            // Write the attachment data to a file  
+                            $dl_path = "attachments/".$messageId."_".$filename;
+                            if (!file_exists($dl_path)) {
+
+                                try {
+                                   $handle = fopen(FCPATH.$dl_path, 'wb');
+                                   fwrite($handle, base64_decode(strtr($attachment->getData(), '-_', '+/')));          
+                                   fclose($handle); 
+
+                                } catch (Exception $e) {
+                                    // Handle the exception, log an error, or take appropriate action
+                                    echo 'An error occurred: ' . $e->getMessage();
+                                }
+                           
+                            }
+         
+                        }   
+                    }       
+                }
+                if ($hasAttachments) {
+                    // echo 'The email has attachments.<br>';
+                } else {
+                    // echo 'The email does not have any attachments. <br>';
+                }
+
+
+
+                array_push($ds, array(
+                    "messageId" => $messageId,
+                    "subject" => $subject,
+                    "senderName" => $senderName,
+                    "senderEmail" => $senderEmail,
+                    "dateSent" => $dateSent,
+                    "messageBody" => $message_body,
+                    "has_attachments" => ($hasAttachments == true ? 1 : 0),
+                    "attachments" => $arr_attachment
+                ));
+            }
+
+            $result[$thread_id] = $ds;
+        }
+
+        return $result;
+    }
+
 
     public function get_email_by_threadID($thread_id) {
         $ds = array();
