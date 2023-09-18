@@ -139,7 +139,45 @@ function formatDateTime(inputString, day_offset = 0) {
 		}, 1000);
 	});
 
-  // [BEGIN: SEND REPLY]------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//[MARK DONE] ----------------------------------------------------------------------------------------------------------------------
+
+	$(document).on('click','#btn_route_mark_done',function(e){
+		e.preventDefault(0);
+		var tr = $(this).closest('tr');
+		var message_id = tr.attr('message_id');
+
+    //load document attachments
+    $.ajax(base + 'routing/close/' + message_id, {
+        type: "POST",
+        error: function(data) {
+            console.log(data);
+
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'An error has occurred!',
+              footer: 'Please contact <a href="">aaquinones.fo12@dswd.gov.ph</a>'
+            })
+
+        },
+        success: function(data) {
+            var obj = jQuery.parseJSON(data);
+            if (obj.success) {
+                swal.fire({
+                    title: "Congratulation!",
+                    text: "Route marked as accomplished successfully! Please refresh the page to view changes.",
+                    icon: "success"
+                });
+            }
+						swal.close();
+        }
+    });
+
+
+	});
+
+
+  // [BEGIN: SEND REPLY]--------------------------------------------------------------------------------------------------------------
   // Dynamically create and append the custom CSS
   const customCss = `
       /* Custom CSS to adjust the width of the Swal2 dialog */
@@ -272,8 +310,6 @@ function formatDateTime(inputString, day_offset = 0) {
 								        },
 								        success: function(data) {
 													//on email send success	
-
-
 					                swal.fire({
 					                    title: "Congratulation!",
 					                    text: "Message sent!",

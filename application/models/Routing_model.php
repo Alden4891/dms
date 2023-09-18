@@ -41,7 +41,6 @@ class Routing_model extends CI_Model {
         $hoursDifference = $interval->h + $interval->days * 24;
 
         if ($hoursDifference >= 3) {
-            
             $response_data['response'] = $this->Gmail_model->get_email_by_threadID($message_id);
             $response_data['date'] =  date('Y-m-d H:i:s');
             file_put_contents($json_path, json_encode($response_data, JSON_PRETTY_PRINT));   

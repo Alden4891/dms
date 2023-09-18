@@ -71,10 +71,14 @@ class routing extends CI_Controller {
 
         $htx = "";
         $prev_sent_date = "";
-       
+        $reply_count = 0;
 
         foreach ($resposes as $respose) {
             $r = (object) $respose;
+
+            if ($r->senderEmail != 'me') {
+                $reply_count+=1;
+            }
 
             $messageId = $r->messageId;
             $senderName = $r->senderName;
@@ -84,8 +88,6 @@ class routing extends CI_Controller {
 
             $formattedBody = $this->remove_section_from_gmail_body($formattedBody,"gmail_signature");
             $formattedBody = $this->remove_section_from_gmail_body($formattedBody,"gmail_quote");
-
-
 
             $has_attachments = $r->has_attachments;
             $attachments = $r->attachments;
@@ -149,11 +151,15 @@ class routing extends CI_Controller {
               </div>
         ";
 
+        //db update number of replies
+        $this->db->where('GMAIL_MESSAGE_ID', $message_id)
+        ->set('REPLY_COUNT', $reply_count)
+        ->update('tbl_routes');
 
         // print('<pre>');
         print_r(json_encode([
             'status'=>$route_data->RSTATUS,
-            'response'=>count($resposes)-1,
+            'response'=>$reply_count,
             'datesent'=>$route_data->DATE_ROUTE,
             'subject'=>$route_data->SUBJECT,
             'drn'=>$route_data->DRN,
@@ -199,9 +205,19 @@ class routing extends CI_Controller {
         $form_data->emails = $route_data->RECEPIENT_EMAIL;
         $res = $this->Gmail_model->reply($form_data->tread_id, $form_data->message_body, $form_data->emails);
 
+        //SAVE FOLLOWUPS
+        $this->db->where('GMAIL_MESSAGE_ID', $form_data->tread_id)
+        ->set('REPLY_COUNT', 'REPLY_COUNT+1', FALSE)
+        ->update('tbl_routes');
         print_r($res);
     }
 
+    public function close($message_id){
+        $this->db->where('GMAIL_MESSAGE_ID', $message_id)
+        ->set('RSTATUS', 6)
+        ->update('tbl_routes');     
+        print(json_encode(['success'=>true]));
+    }
 
 
 

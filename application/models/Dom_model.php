@@ -57,7 +57,10 @@ class Dom_model extends CI_Model {
                             ,`tbl_routes`.`SUBJECT`
                             ,`tbl_routes`.`DATE_ROUTE`
                             ,`tbl_rstatus`.`STATUS`
-                            , `tbl_routes`.`DOC_ID`
+                            ,`tbl_routes`.`RSTATUS`
+                            ,`tbl_routes`.`DOC_ID`
+                            ,`tbl_routes`.`FOLLOWUP_COUNT`
+                            ,`tbl_routes`.`REPLY_COUNT`
                             , CONCAT(TIMESTAMPDIFF(DAY, DATE_ROUTE, NOW()),' day(s) ',TIMESTAMPDIFF(HOUR, DATE_ROUTE, NOW()) % 24,' hr(s)') as AGE
                             , TIMESTAMPDIFF(DAY, DATE_ROUTE, NOW()) as 'DAY_DURATION'
                             ")
@@ -74,7 +77,7 @@ class Dom_model extends CI_Model {
         foreach ($result as $row) {
 
             $with_response = $this->Gmail_model->check_cache($row->GMAIL_MESSAGE_ID);
-            if ($with_response) {
+            if ($row->REPLY_COUNT > 0) {
               $route_responsed+=1;
             }
             if ($row->DAY_DURATION > 7) {
@@ -90,8 +93,9 @@ class Dom_model extends CI_Model {
                   <td>$row->AGE</td>
                   <td>$row->STATUS</td>
                   <td>
-                    ".($row->DAY_DURATION >= 7 ? "<i class='fa fa-flag fa-sm' style='color: #ff0000;'></i>":"" )."
-                    ".($with_response ? "<i class='fa fa-registered'></i>":"" )."
+                    ".($row->DAY_DURATION >= 3 && $row->RSTATUS <> 6 ? "<i class='fa fa-flag fa-sm' style='color: #ff0000;'></i>":"" )."
+                    ".($row->FOLLOWUP_COUNT > 0 && $row->RSTATUS <> 6  ? "<i class='fa fa-solid fa-feather' style='color: #0000ff;'></i>":"" )."
+                    ".($row->REPLY_COUNT > 0 && $row->RSTATUS <> 6 ? "<i class='fa fa-registered'></i>":"" )."
 
                   </td>
                   <td>
@@ -102,11 +106,11 @@ class Dom_model extends CI_Model {
                       <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
                       
                         <a class='dropdown-item' href='#' id='btn_route_view_trend'><i class='fas fa-edit'></i> View Responses</a>
-                        <a class='dropdown-item send_reply' href='#' id='btn_route_send_followup'><i class='fas fa-route'></i> Send a followup response</a>
+                        <a class='dropdown-item send_reply' href='#' id='btn_route_send_followup'><i class='fa fa-solid fa-feather' ></i> Send a followup response</a>
 
-                        <a class='dropdown-item' href='#' id='btn_route_send_followup'><i class='fas fa-route'></i> Check for response</a>
-                        <a class='dropdown-item' href='#' id='btn_route_send_followup'><i class='fas fa-route'></i> Mark Done</a>
-                        <a class='dropdown-item' href='#' id='btn_route_send_followup'><i class='fas fa-route' ></i> Delete</a>
+                        <a class='dropdown-item' href='#' id='btn_route_check_replies'><i class='fas fa-route'></i> Check for response</a>
+                        <a class='dropdown-item' href='#' id='btn_route_mark_done'><i class='fas fa-route'></i> Mark Done</a>
+                        <a class='dropdown-item' href='#' id='btn_route_delete'><i class='fas fa-route' ></i> Delete</a>
 
 
                       </div>
