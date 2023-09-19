@@ -9,17 +9,19 @@ class Routing_model extends CI_Model {
 
     public function get_trends_responses($message_ids){
         //["18a6d3f17c0f54f3", "18a73727f23506a5"]
-        $cache_date = new DateTime("1900-01-01 12:00:00"); //initialize datetime 
-        $currentDate = new DateTime();
-
+ 
         $treads = $this->Gmail_model->get_email_by_threadIDs($message_ids);
-        foreach ($treads as $tread) {
-            print('<pre>');
-            print_r($tread);
-            print('</pre>');
-        }
-        print("<hr>");
+        foreach ($treads as $treadID => $tread) {
+            
+            $json_path=FCPATH."cache/gmail_responses/".$treadID.".json";
 
+            $response_data = array();
+            $response_data['response'] = $tread;
+            $response_data['date'] =  date('Y-m-d H:i:s');
+            file_put_contents($json_path, json_encode($response_data, JSON_PRETTY_PRINT));   
+
+        }
+       return true;
     }
 
 
@@ -72,5 +74,7 @@ class Routing_model extends CI_Model {
             return array(); // Return an empty array if no results found
         }
     }
+
+
 
 }

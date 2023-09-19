@@ -6,14 +6,24 @@ class test extends CI_Controller {
         parent::__construct();
     }
 
-
-
     public function test2(){
         // print(FCPATH.'attachments');
         $this->load->model('Routing_model');
-        $data = $this->Routing_model->get_trends_responses(["18a6d3f17c0f54f3", "18a73727f23506a5"]);
+
+        //get list og message_ids
+        $this->db->select('GMAIL_MESSAGE_ID');
+        $this->db->from('tbl_routes');
+        $this->db->where_in('RSTATUS', array(1, 2, 3, 4, 5));
+        $query = $this->db->get();
+        $result = $query->result_array();
+        $message_ids = array();
+        foreach ($result as $row) {
+            $message_ids[] = $row['GMAIL_MESSAGE_ID'];
+        }
+
+        $success = $this->Routing_model->get_trends_responses($message_ids);
         print('<pre>');
-        print_r($data);
+        print_r($success);
         print('</pre>');
     }       
 

@@ -49,42 +49,65 @@ function formatDateTime(inputString, day_offset = 0) {
 	//--------------------------------------------------------------------
 	$(document).on('click','#btn_force_update',function(e){
 		e.preventDefault();
-		
-    swal.fire({
-      title: "Fetching information! Please wait...",
-      html: '<img src="' + base + 'assets/images/mail-sending.gif" style="width: 400px; height: 300px;">',
-      showConfirmButton: false,
-      allowOutsideClick: false,
-      allowEscapeKey: false
-    });
+				
 
-	    setTimeout(function() {
+		Swal.fire({
+		  title: 'Are you sure?',
+		  text: "You are about to fetch updates from all active routes! This will take a while.",
+		  icon: 'question',
+		  showCancelButton: true,
+		  confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  confirmButtonText: 'Yes, update it!'
+		}).then((result) => {
+		  if (result.isConfirmed) {
+		    swal.fire({
+		      title: "Fetching information! Please wait...",
+		      html: '<img src="' + base + 'assets/images/mail-sending.gif" style="width: 400px; height: 300px;">',
+		      showConfirmButton: false,
+		      allowOutsideClick: false,
+		      allowEscapeKey: false
+		    });
 
-	        //load document attachments
-	        $.ajax(base + 'routing/get_all_trend', {
-	            type: "POST",
-	            error: function(data) {
-	                console.log(data);
+			    setTimeout(function() {
 
-	                Swal.fire({
-	                  icon: 'error',
-	                  title: 'Oops...',
-	                  text: 'An error has occurred!',
-	                  footer: 'Please contact <a href="">aaquinones.fo12@dswd.gov.ph</a>'
-	                })
+			        //load document attachments
+			        $.ajax(base + 'routing/get_all_tread', {
+			            type: "POST",
+			            error: function(data) {
+			                console.log(data);
 
-	            },
-	            success: function(attachment_data) {
-	                var ohtx = jQuery.parseJSON(attachment_data);
-	                console.log(ohtx.timeline);
+			                Swal.fire({
+			                  icon: 'error',
+			                  title: 'Oops...',
+			                  text: 'An error has occurred!',
+			                  footer: 'Please contact <a href="">aaquinones.fo12@dswd.gov.ph</a>'
+			                })
+
+			            },
+			            success: function(data) {
+			                var res = jQuery.parseJSON(data);
+			                if (res.success) {
+												Swal.fire({
+												    title: "Congratulation!",
+												    text: "Fetching updates successfully! The page will reload automatially.",
+												    icon: "success",
+												    confirmButtonText: "OK"
+												}).then((result) => {
+												    if (result.isConfirmed) {
+												        // Reload the page
+												        window.location.reload();
+												    }
+												});
 
 
-									swal.close();
+			                }
+			            }
+			        });
 
-	            }
-	        });
-
-		}, 1000);
+				}, 1000);
+		  }
+		})
 
 	});
 
@@ -163,13 +186,18 @@ function formatDateTime(inputString, day_offset = 0) {
         success: function(data) {
             var obj = jQuery.parseJSON(data);
             if (obj.success) {
-                swal.fire({
-                    title: "Congratulation!",
-                    text: "Route marked as accomplished successfully! Please refresh the page to view changes.",
-                    icon: "success"
-                });
+							Swal.fire({
+							    title: "Congratulation!",
+							    text: "Route marked as accomplished successfully! The page will reload automatically.",
+							    icon: "success",
+							    confirmButtonText: "OK"
+							}).then((result) => {
+							    if (result.isConfirmed) {
+							        // Reload the page
+							        window.location.reload();
+							    }
+							});
             }
-						swal.close();
         }
     });
 

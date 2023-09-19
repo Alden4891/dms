@@ -212,6 +212,26 @@ class routing extends CI_Controller {
         print_r($res);
     }
 
+    /*This will forcely download treads of emails*/
+    public function get_all_tread() {
+        // print(FCPATH.'attachments');
+        $this->load->model('Routing_model');
+
+        //get list og message_ids
+        $this->db->select('GMAIL_MESSAGE_ID');
+        $this->db->from('tbl_routes');
+        $this->db->where_in('RSTATUS', array(1, 2, 3, 4, 5));
+        $query = $this->db->get();
+        $result = $query->result_array();
+        $message_ids = array();
+        foreach ($result as $row) {
+            $message_ids[] = $row['GMAIL_MESSAGE_ID'];
+        }
+
+        $success = $this->Routing_model->get_trends_responses($message_ids);
+        print_r(json_encode(['success'=>true]));
+    }
+
     public function close($message_id){
         $this->db->where('GMAIL_MESSAGE_ID', $message_id)
         ->set('RSTATUS', 6)
