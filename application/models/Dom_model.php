@@ -84,6 +84,28 @@ class Dom_model extends CI_Model {
                 $route_due+=1;
             }
 
+            //FOLLOW-UP
+            $follow_up_icon_color = "#FFFFFF"; 
+            if ($row->FOLLOWUP_COUNT == 1 && $row->RSTATUS <> 6) {
+              $follow_up_icon_color = "#00CC00"; //GREEN
+            }elseif ($row->FOLLOWUP_COUNT == 2 && $row->RSTATUS <> 6) {
+              $follow_up_icon_color = "#0000FF"; //BLUE
+            }elseif ($row->FOLLOWUP_COUNT > 2 && $row->RSTATUS <> 6) {
+              $follow_up_icon_color = "#FF0000";  //RED
+            }
+
+            //OVERDUE
+            $overdue_icon_color = "#FFFFFF"; 
+            if ($row->DAY_DURATION > 7 && $row->RSTATUS <> 6) {
+              $overdue_icon_color = "#FF0000"; //RED
+            }elseif ($row->DAY_DURATION > 5 && $row->RSTATUS <> 6) {
+              $overdue_icon_color = "#0000FF"; //BLUE
+            }elseif ($row->DAY_DURATION > 2 && $row->RSTATUS <> 6) {
+              $overdue_icon_color = "#00CC00"; //GREEN
+            }
+
+            
+
             //PREPARE TABLE
             $table_content .= "
               <tr doc_id=$row->DOC_ID message_id='$row->GMAIL_MESSAGE_ID'>
@@ -93,8 +115,8 @@ class Dom_model extends CI_Model {
                   <td>$row->AGE</td>
                   <td>$row->STATUS</td>
                   <td>
-                    ".($row->DAY_DURATION >= 3 && $row->RSTATUS <> 6 ? "<i class='fa fa-flag fa-sm' style='color: #ff0000;'></i>":"" )."
-                    ".($row->FOLLOWUP_COUNT > 0 && $row->RSTATUS <> 6  ? "<i class='fa fa-solid fa-feather' style='color: #0000ff;'></i>":"" )."
+                    ".($row->DAY_DURATION >= 3 && $row->RSTATUS <> 6 ? "<i class='fa fa-flag fa-sm' style='color: $overdue_icon_color;'></i>":"" )."
+                    ".($row->FOLLOWUP_COUNT > 0 && $row->RSTATUS <> 6  ? "<i class='fa fa-solid fa-feather' style='color: $follow_up_icon_color;'></i>":"" )."
                     ".($row->REPLY_COUNT > 0 && $row->RSTATUS <> 6 ? "<i class='fa fa-registered'></i>":"" )."
 
                   </td>
