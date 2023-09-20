@@ -54,6 +54,7 @@ class Documents_model extends CI_Model {
                 ->from('`db_dms`.`tbl_documents`')
                 ->join('`db_dms`.`tbl_status`', '(`tbl_documents`.`STATUS` = `tbl_status`.`ID`)', 'LEFT')
                 // ->where_in('`tbl_documents`.`ID`', array(566, 567, 568))
+                ->where('`tbl_documents`.`id` >=', 566)
                 ->group_start()
                 ->where('`tbl_documents`.`DELETED_BY`', NULL)
                 ->group_end()

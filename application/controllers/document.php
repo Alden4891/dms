@@ -10,6 +10,7 @@ class document extends CI_Controller {
 
     		$this->load->helper('url');
     		$this->load->model('Documents_model');
+    		$this->load->model('Attachment_model');
     }
 
     public function index(){
@@ -64,7 +65,7 @@ class document extends CI_Controller {
 		foreach($dataset as $row) {
 			$doc_id = str_pad($row->id, 5, '0', STR_PAD_LEFT);
 			$row_template .= "
-	            <tr>
+	            <tr att_id=\"$row->id\">
 	              <td style=\"\">$doc_id</td>
 	              <td style=\"\">$row->filename</td>
 	              <td style=\"\">".$this->formatBytes($row->size)."</td>
@@ -79,6 +80,10 @@ class document extends CI_Controller {
 	                  <a type=\"button\" class=\"btn btn-secondary print_pdf\" href=\"".site_url('document/get_document_instance/').$doc_id."\">
 	                    <i class=\"fa fa-print\"></i>
 	                  </a>
+	                  <a type=\"button\" class=\"btn btn-secondary editor-delete-attachment\">
+	                    <i class=\"fa fa-trash\"></i>
+	                  </a>
+
 	                </div>
 	              </td>
 	            </tr>
@@ -88,12 +93,8 @@ class document extends CI_Controller {
 	}
 
 	public function get_document_instance($file_id) {
-		$data = $this->Documents_model->get_file_details($file_id);
-		header('Content-type: '. $data->mime_type);
-		header('Content-Disposition: inline; filename="' . basename($data->org_filename) . '"');
-		header('Content-Transfer-Encoding: binary');
-		header('Accept-Ranges: bytes');
-		readfile(site_url("uploads/$data->filename"));
+		//no need to return, this will load the instance of the document
+		$this->Attachment_model->get_instance($file_id);
 	}
 
 	public function get_viewer_content($doc_id) {
@@ -194,6 +195,16 @@ class document extends CI_Controller {
 			print_r(json_encode(array('success'=>false))); 
 		}
 	}
+
+	public function delete_attachment($attachment_id){
+		$is_deleted = $this->Attachment_model->delete($attachment_id);
+		if ($is_deleted) {
+			print_r(json_encode(array('success'=>true))); 
+		}else{
+			print_r(json_encode(array('success'=>false))); 
+		}
+	}
+
 
     public function upload($doc_id) {
 

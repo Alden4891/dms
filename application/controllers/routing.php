@@ -29,7 +29,18 @@ class routing extends CI_Controller {
         $this->load->view('templates/footer');
 		$this->load->view('document/jsloader.php');
     }
-    
+
+    public function delete($message_id){
+        $is_deleted = $this->Routing_model->delete($message_id);
+        
+        if ($is_deleted) {
+            print_r(json_encode(array('success'=>true))); 
+        }else{
+            print_r(json_encode(array('success'=>false))); 
+        }
+    }
+
+
     private function remove_section_from_gmail_body($html,$class = 'gmail_signature') {
 
         // Create a DOMDocument object

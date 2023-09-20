@@ -10,6 +10,7 @@ class archive extends CI_Controller {
 
 		$this->load->model("Dom_model");
 		$this->load->model("Documents_model");
+
     }
 
     public function index(){
@@ -34,7 +35,41 @@ class archive extends CI_Controller {
 		}else{
 			print_r(json_encode(array('success'=>false))); 
 		}
-		
+	}
+
+	public function test(){
+      $query1 = $this->db->select(
+          '`tbl_documents`.`ID` as DOC_ID
+          ,`tbl_documents`.`DRN`
+          ,`tbl_documents`.`SUBJECT`
+          ,"CATALOGUE" AS "SOURCE"
+          ,CONCAT(`users`.`firstname`,\' \',`users`.`middlename`,\' \',`users`.`lastname`) AS \'DELETED_BY\'
+          ,`tbl_documents`.`DELETE_DATE`')
+      ->from('`db_dms`.`tbl_documents`')
+      ->join('`db_dms`.`users`', '(`tbl_documents`.`DELETED_BY` = `users`.`user_id`)')
+      ->get();
+      $result1 = $query1->result();
+
+      $query2 = $this->db->select(
+          '`tbl_routes`.`ID` as DOC_ID
+          ,`tbl_documents`.`DRN`
+          ,`tbl_documents`.`SUBJECT`
+          ,"ROUTES" AS "SOURCE"
+          ,CONCAT(`users`.`firstname`,\' \',`users`.`middlename`,\' \',`users`.`lastname`) AS \'DELETED_BY\'
+          ,`tbl_routes`.`DELETED_DATE` as DELETE_DATE')
+      ->from('`db_dms`.`tbl_routes`')
+      ->join('`db_dms`.`users`', '(`tbl_routes`.`DELETED_BY` = `users`.`user_id`)')
+      ->join('`db_dms`.`tbl_documents`', '(`tbl_routes`.`DOC_ID` = `tbl_documents`.`ID`)')
+      ->get();
+      $result2 = $query2->result();
+      $mergedArray = array_merge($result1, $result2);
+      
+      print('<pre>');
+      print_r($mergedArray);
+      print('</pre>');
+	
+
+	
 	}
 
 	

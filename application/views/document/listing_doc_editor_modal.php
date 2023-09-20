@@ -53,8 +53,6 @@
                                         <option value="7">DATA REQUESTS</option>
                                       </select>
                                     </div>
-
-
                                </div>
                             </div>
                               <div id="form_object_container">
@@ -70,7 +68,7 @@
                           </div> <!-- CARD BODY -->
 
 
-                          <div class="card-footer">
+                          <div class="card-footer attachment-container invisible" >
                             <strong>ATTACHMENTS</strong>
                             <div>
 

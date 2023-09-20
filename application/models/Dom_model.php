@@ -67,6 +67,9 @@ class Dom_model extends CI_Model {
                             ->from('`db_dms`.`tbl_routes`')
                             ->join('`db_dms`.`tbl_documents`', '(`tbl_routes`.`DOC_ID` = `tbl_documents`.`ID`)')
                             ->join('`db_dms`.`tbl_rstatus`', '(`tbl_routes`.`RSTATUS` = `tbl_rstatus`.`ID`)')
+                            ->group_start()
+                            ->where('`tbl_routes`.`DELETED_BY`', NULL)
+                            ->group_end()
                             ->get();
         $result = $query->result();
 

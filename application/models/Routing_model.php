@@ -75,6 +75,16 @@ class Routing_model extends CI_Model {
         }
     }
 
+    public function delete($message_id) {
+        $data = array(
+            'DELETED_DATE' => date('Y-m-d H:i:s'), // Set to the current datetime
+            'DELETED_BY' => $this->session->userdata('user_id')
+        );
 
+        $this->db->where('GMAIL_MESSAGE_ID', $message_id);
+        $this->db->update('tbl_routes', $data);
+
+        return ($this->db->affected_rows() > 0);
+    }
 
 }

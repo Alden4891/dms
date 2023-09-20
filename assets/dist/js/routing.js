@@ -366,8 +366,63 @@ function formatDateTime(inputString, day_offset = 0) {
 
 	});
 
-
   // [BEGIN: SEND REPLY]------------------------------------------------------------------------------------------------------------------------------------------------------------
+	$(document).on('click','#btn_route_delete',function(e){
+		e.preventDefault();
+		  var handler = $(this);
+      var message_id = handler.closest('tr').attr('message_id');
+      var tr = handler.closest('tr');
+			Swal.fire({
+          title: 'Are you sure?',
+          text: "You are about to delete this entry!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
 
+            //send delete post
+            $.ajax({
+                url: base + "routing/delete/" + message_id,
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    var obj = jQuery.parseJSON(response);
+                    if (obj.success) {
+                        Swal.fire({
+                          title: 'Deleted!',
+                          text: 'Route#'+message_id+' deleted successfully!',
+                          icon: 'success',
+                          confirmButtonText: 'OK'
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            tr.fadeOut(400, function() {
+                              tr.remove(); 
+                            });
+                          }
+                        });   
+                    }else{
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Something went wrong while deleting this route! Please contact aaquinones.fo12@dswd.gov.ph',
+                        } );
+                    }
+
+
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
+
+          }
+        })
+
+
+	});
 
 });

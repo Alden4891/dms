@@ -28,12 +28,16 @@ class docEditor_model extends CI_Model {
 
         //PREPARE OPTIONS DATASETS
         $this->ds_employees = $this->db->select('`ID`,`NAME`')->order_by('`NAME` ASC')->get('lib_employees')->result();
-        $this->ds_obsu = $this->db->get('tbl_obsu')->result();
+        // $this->ds_obsu = $this->db->get('tbl_obsu')->result();
         $this->ds_status = $this->db->get('tbl_status')->result();
+
+        $this->ds_obsu = $this->db->select('ID,OBSU,REPLACE(REPLACE(`FORMAT`,\'{series}\',LPAD(`SERIES`+1,4,\'0\')),\'{yy}\',DATE_FORMAT(CURDATE(),\'%y\')) AS NEXT_DRN')
+                                  ->get('tbl_obsu')->result();
+
 
         //PRE-LOAD OPTIONS
         $this->options_employees = implode('', array_map(fn($employee) => "<option value='{$employee->ID}'>{$employee->NAME}</option>", $this->ds_employees));
-        $this->options_obsu = implode('', array_map(fn($obsu) => "<option value='{$obsu->ID}'>{$obsu->OBSU}</option>", $this->ds_obsu));
+        $this->options_obsu = implode('', array_map(fn($obsu) => "<option next_drn='{$obsu->NEXT_DRN}' value='{$obsu->ID}'>{$obsu->OBSU}</option>", $this->ds_obsu));
         $this->options_status = implode('', array_map(fn($status) => "<option value='{$status->ID}'>{$status->STATUS}</option>", $this->ds_status));
 
 		$this->drn = "
@@ -298,8 +302,8 @@ class docEditor_model extends CI_Model {
       ";
 
 	 	//LOAD DEFAULT INPUTS
-	 	$this->htx .= $this->drn;
 	 	$this->htx .= $this->obsu;
+        $this->htx .= $this->drn;
 	 	$this->htx .= $this->doc_title;
 
     }

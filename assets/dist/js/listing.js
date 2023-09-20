@@ -33,27 +33,26 @@ $(document).ready(function() {
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             const listItem = $('<li></li>');
-            const fileTypeIcon = getFileTypeIcon(file.type);
 
-            listItem.html(`<img src="images/${fileTypeIcon}" alt="${file.type} icon" class="file-icon" width="20px" height="20px"> <small>${file.name}</small>`);
+            // Replace 'fileTypeIcon' with the Font Awesome class for the desired icon
+            const iconClass = getFileTypeIconClass(file.type);
+
+            listItem.html(`<i class="${iconClass}"></i> <small>${file.name}</small>`);
             fileList.append(listItem);
         }
     }
 
-    function getFileTypeIcon(fileType) {
-        // Define icons for specific file types here
-        // For simplicity, let's assume three file types with corresponding icons
+    // Function to map file types to Font Awesome classes
+    function getFileTypeIconClass(fileType) {
         switch (fileType) {
             case 'image/jpeg':
-                return 'jpg-icon.png';
             case 'image/png':
-                return 'png-icon.png';
+                return 'fas fa-image'; // Use the Font Awesome image icon
             case 'application/pdf':
-                return 'pdf-icon.png';
-            case 'text/plain':
-                return 'text-icon.png';
+                return 'fas fa-file-pdf'; // Use the Font Awesome PDF icon
+            // Add more cases as needed for different file types and corresponding icons
             default:
-                return 'default-icon.png';
+                return 'fas fa-file'; // Default icon for other file types
         }
     }
 
@@ -93,6 +92,15 @@ $(document).ready(function() {
             console.log('clearing: ' + checkboxClass);
         });
     }
+
+    //auto generate drn 
+    $(document).on('change', '#OBSU', function (e) {
+        e.preventDefault();
+        var selectedOption = $(this).find(':selected');
+        var dataValue = selectedOption.attr('next_drn');
+        $('#DRN').val(dataValue);
+
+    });
 
     //on change document status
     $(document).on('click', '.ch-stat-opt',function(e){
@@ -134,6 +142,64 @@ $(document).ready(function() {
         var attachment_id = $(this).attr('attachment-id');
         $('#prev_pdf').attr('src', base + "document/get_document_instance/" + attachment_id + "#view=FitH");
         $('#listing_doc_viewer_modal').modal('show');
+    });
+
+    $(document).on('click','.editor-delete-attachment',function(e){
+        e.preventDefault();
+        var tr = $(this).closest('tr');
+        var attachment_id = tr.attr('att_id');
+
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You are about to delete this attachment!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+
+            //send delete post
+            $.ajax({
+                url: base + "document/delete_attachment/" + attachment_id,
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    var obj = jQuery.parseJSON(response);
+                    if (obj.success) {
+                        Swal.fire({
+                          title: 'Deleted!',
+                          text: 'Attachment has been deleted.',
+                          icon: 'success',
+                          confirmButtonText: 'OK'
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            tr.fadeOut(400, function() {
+                              tr.remove(); 
+                            });
+                          }
+                        });   
+                    }else{
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Something went wrong while deleting the file! Please contact aaquinones.fo12@dswd.gov.ph',
+                        } );
+                    }
+
+
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
+
+          }
+        })
+
+
     });
 
     $(document).on('click', '.print_pdf', function(e) {
@@ -310,9 +376,9 @@ $(document).ready(function() {
                                 }
                             });
 
+                            $('.attachment-container').removeClass('invisible');
 
-                            //load uploaded files
-
+                            //get uploaded files
                             $.ajax({
                                 url: base + "document/get_upload_listing/" + obj_data.ID,
                                 type: 'POST',
@@ -362,7 +428,6 @@ $(document).ready(function() {
           if (result.isConfirmed) {
 
             //send delete post
-            doc_id
             $.ajax({
                 url: base + "document/delete/" + doc_id,
                 type: 'POST',
@@ -397,9 +462,6 @@ $(document).ready(function() {
                     console.log(error);
                 }
             });
-
-
-
 
           }
         })
@@ -533,6 +595,7 @@ $(document).ready(function() {
 
                         $('#form_object_container').html('');
                         $('#form_editor_remarks_container').addClass('invisible');
+                        $('.attachment-container').addClass('invisible');
                     }
                 },
                 error: function(data) {
@@ -543,6 +606,7 @@ $(document).ready(function() {
                     var obj = jQuery.parseJSON(data);
                     $('#form_object_container').html(obj.dom);
                     $('#form_editor_remarks_container').removeClass('invisible');
+                    $('.attachment-container').removeClass('invisible');
                     $('#DOC_TYPE').attr('curr-value', doctype);
                     $('.options-container').removeClass('invisible')
 
@@ -622,7 +686,7 @@ $(document).ready(function() {
 
                 swal.fire({
                     title: "Congratulation!",
-                    text: "You have routed the document successfully!",
+                    text: "You have saved the document successfully!",
                     icon: "success"
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -644,6 +708,7 @@ $(document).ready(function() {
                 // Code to run regardless of success or failure
                 // console.log('Request completed.');
                 e.preventDefault();
+
             }
         });
 
