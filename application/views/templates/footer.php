@@ -91,6 +91,27 @@
       "autoWidth": false,
       "responsive": true,
     });
+
+
+    //logout function
+    $('.logout-menu').click(function() {
+        Swal.fire({
+            title: "Logout",
+            text: "Are you sure you want to logout?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, logout",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirect to the logout URL or perform logout action
+                // You can replace this with your actual logout logic
+                window.location.href = "user/logout"; // Replace with your logout URL
+            }
+        });
+    });
   });
 </script>
 </body>

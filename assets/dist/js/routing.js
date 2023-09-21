@@ -46,7 +46,84 @@ function formatDateTime(inputString, day_offset = 0) {
   return formattedString;
 }
 
-	//--------------------------------------------------------------------
+	// [FORCE UPDATE] ------------------------------------------------------------------------
+
+	$(document).on('click','#btn_route_check_replies',function(e){
+		e.preventDefault();
+		var handler = $(this);
+		var tr = handler.closest('tr');
+		var message_id = tr.attr('message_id');
+
+
+
+		Swal.fire({
+		  title: 'Are you sure?',
+		  text: "You are about to check for update on this route! This will take a while.",
+		  icon: 'question',
+		  showCancelButton: true,
+		  confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  confirmButtonText: 'Yes, fetch update!'
+		}).then((result) => {
+		  if (result.isConfirmed) {
+		    swal.fire({
+		      title: "Fetching information! Please wait...",
+		      html: '<img src="' + base + 'assets/images/mail-sending.gif" style="width: 400px; height: 300px;">',
+		      showConfirmButton: false,
+		      allowOutsideClick: false,
+		      allowEscapeKey: false
+		    });
+
+			    setTimeout(function() {
+
+			        //load document attachments
+			        $.ajax(base + 'routing/force_update/'+message_id, {
+			            type: "POST",
+			            error: function(data) {
+			                console.log(data);
+
+			                Swal.fire({
+			                  icon: 'error',
+			                  title: 'Oops...',
+			                  text: 'An error has occurred!',
+			                  footer: 'Please contact <a href="">aaquinones.fo12@dswd.gov.ph</a>'
+			                })
+
+			            },
+			            success: function(data) {
+			                var res = jQuery.parseJSON(data);
+			                if (res.success) {
+					               tr.fadeOut(500, function() {
+					                    // Replace the faded-out row with new content or another row
+					                    tr.replaceWith(res.row);
+					                });
+
+
+												Swal.fire({
+												    title: "Congratulation!",
+												    text: "Fetching updates successfully! The page will reload automatially.",
+												    icon: "success",
+												    confirmButtonText: "OK"
+												}).then((result) => {
+												    if (result.isConfirmed) {
+												        // Reload the page
+												        // window.location.reload();
+												    }
+												});
+
+
+			                }
+			            }
+			        });
+
+				}, 1000);
+		  }
+		})
+
+
+	});
+
+	// [FORCE UPDATE ALL] --------------------------------------------------------------------
 	$(document).on('click','#btn_force_update',function(e){
 		e.preventDefault();
 				
@@ -72,7 +149,7 @@ function formatDateTime(inputString, day_offset = 0) {
 			    setTimeout(function() {
 
 			        //load document attachments
-			        $.ajax(base + 'routing/get_all_tread', {
+			        $.ajax(base + 'routing/force_update_all', {
 			            type: "POST",
 			            error: function(data) {
 			                console.log(data);
@@ -111,6 +188,7 @@ function formatDateTime(inputString, day_offset = 0) {
 
 	});
 
+	//[VIEW ROUTES] ----------------------------------------------------------------------------------------------------------------------
 	$(document).on('click', '#btn_route_view_trend', function() {
 		var base = $('base').attr('url');
 		var message_id = $(this).closest('tr').attr('message_id');
@@ -355,18 +433,12 @@ function formatDateTime(inputString, day_offset = 0) {
 			      });
 			      // Unbind the click event from the "Open Editor" button to avoid multiple bindings
 			      // $('.send_reply').off('click', openHtmlEditor);
-			  
-
-	        //\------------------
-
-
-
 	      }
 	    });
 
 	});
 
-  // [BEGIN: SEND REPLY]------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // [BEGIN: DELETE ROUTE]------------------------------------------------------------------------------------------------------------------------------------------------------------
 	$(document).on('click','#btn_route_delete',function(e){
 		e.preventDefault();
 		  var handler = $(this);

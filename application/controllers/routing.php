@@ -224,11 +224,11 @@ class routing extends CI_Controller {
     }
 
     /*This will forcely download treads of emails*/
-    public function get_all_tread() {
+    public function force_update_all() {
         // print(FCPATH.'attachments');
         $this->load->model('Routing_model');
 
-        //get list og message_ids
+        //get list of message_ids
         $this->db->select('GMAIL_MESSAGE_ID');
         $this->db->from('tbl_routes');
         $this->db->where_in('RSTATUS', array(1, 2, 3, 4, 5));
@@ -242,6 +242,27 @@ class routing extends CI_Controller {
         $success = $this->Routing_model->get_trends_responses($message_ids);
         print_r(json_encode(['success'=>true]));
     }
+
+    /*This will forcely download updates in specific tread*/
+    public function force_update($message_id) {
+        // print(FCPATH.'attachments');
+        $this->load->model('Routing_model');
+
+        $success = $this->Routing_model->get_trends_responses([$message_id]);
+        $row = '';
+        if ($success) {
+            $row = $this->Dom_model->get_routed_documents_table_entry($message_id);
+        }
+        
+        
+        print_r(json_encode(
+            [
+            'success'=>true,
+            'row'=>$row,
+            ]
+        ));
+    }
+
 
     public function close($message_id){
         $this->db->where('GMAIL_MESSAGE_ID', $message_id)

@@ -2,20 +2,20 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class archive extends CI_Controller {
-    public function __construct() {
-        parent::__construct();
+		public function __construct() {
+		    parent::__construct();
 
 		if(!$this->session->userdata('user_id'))
-		redirect(site_url('user/login'), 'refresh');
+			redirect(site_url('user/login'), 'refresh');
 
-		$this->load->model("Dom_model");
-		$this->load->model("Documents_model");
+			$this->load->model("Dom_model");
+			$this->load->model("Documents_model");
+			$this->load->model("Archive_model");
+		}
 
-    }
-
-    public function index(){
-    	$this->listing();
-    }
+		public function index(){
+			$this->listing();
+		}
     
 	public function listing($tag = ''){
 		$data['open_menu'] = 'document';
@@ -28,8 +28,15 @@ class archive extends CI_Controller {
 		$this->load->view('document/jsloader.php');
 	}
 
-	public function restore($doc_id){
-		$is_restored = $this->Documents_model->restore($doc_id);
+	public function restore($src,$doc_id){
+
+		$is_restored = false;
+		if ($src == 'CATALOGUE') {
+			$is_restored = $this->Documents_model->restore($doc_id);
+		}else{
+			$is_restored = $this->Archive_model->restore($doc_id);
+		}
+		
 		if ($is_restored) {
 			print_r(json_encode(array('success'=>true))); 
 		}else{
@@ -63,7 +70,10 @@ class archive extends CI_Controller {
       ->get();
       $result2 = $query2->result();
       $mergedArray = array_merge($result1, $result2);
-      
+
+			usort($mergedArray, function ($a, $b) {
+			    return strtotime($b->DELETE_DATE) - strtotime($a->DELETE_DATE);
+			});
       print('<pre>');
       print_r($mergedArray);
       print('</pre>');

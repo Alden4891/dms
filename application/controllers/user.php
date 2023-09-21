@@ -8,6 +8,13 @@ class user extends CI_Controller {
 
   }
 
+  public function logout(){
+      // Destroy the entire session
+      $this->session->sess_destroy();
+      redirect(site_url('user/login'));
+
+  }
+
   public function login(){
       $this->load->view('user/login');
   }

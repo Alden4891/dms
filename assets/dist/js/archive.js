@@ -43,6 +43,7 @@ $(document).ready(function() {
         var handle = $(this);
         var doc_id = handle.closest('tr').attr('doc_id');
         var tr = handle.closest('tr');
+        var src = tr.attr('src');
 
         Swal.fire({
           title: 'Are you sure?',
@@ -55,7 +56,7 @@ $(document).ready(function() {
         }).then((result) => {
           if (result.isConfirmed) {
             setTimeout(function() {
-                $.ajax(base + 'archive/restore/'+doc_id, {
+                $.ajax(base + 'archive/restore/'+src+'/'+doc_id, {
                     type: "POST",
                     error: function(data) {
                         console.log(data);

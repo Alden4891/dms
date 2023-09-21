@@ -3,6 +3,7 @@ class Dom_model extends CI_Model {
     public function __construct(){
         $this->load->database();
         $this->load->model('Gmail_model');
+        $this->load->model('Routing_model');
     }
 
     public function get_routed_ducuments_trend_viewer_data(){
@@ -10,82 +11,81 @@ class Dom_model extends CI_Model {
     }
 
     public function get_deleted_documents_table_entries(){
-      $query = $this->db->select(
+
+
+      // $query = $this->db->select(
+      //     '`tbl_documents`.`ID` as DOC_ID
+      //     ,`tbl_documents`.`DRN`
+      //     ,`tbl_documents`.`SUBJECT`
+      //     ,CONCAT(`users`.`firstname`,\' \',`users`.`middlename`,\' \',`users`.`lastname`) AS \'DELETED_BY\'
+      //     ,`tbl_documents`.`DELETE_DATE`')
+      // ->from('`db_dms`.`tbl_documents`')
+      // ->join('`db_dms`.`users`', '(`tbl_documents`.`DELETED_BY` = `users`.`user_id`)')
+      // ->get();
+      // $result = $query->result();
+
+      # DELETED in tbl_documents
+      $query1 = $this->db->select(
           '`tbl_documents`.`ID` as DOC_ID
           ,`tbl_documents`.`DRN`
           ,`tbl_documents`.`SUBJECT`
+          ,"CATALOGUE" AS "SOURCE"
           ,CONCAT(`users`.`firstname`,\' \',`users`.`middlename`,\' \',`users`.`lastname`) AS \'DELETED_BY\'
           ,`tbl_documents`.`DELETE_DATE`')
       ->from('`db_dms`.`tbl_documents`')
       ->join('`db_dms`.`users`', '(`tbl_documents`.`DELETED_BY` = `users`.`user_id`)')
       ->get();
-      $result = $query->result();
+      $result1 = $query1->result();
 
-        $table_content = "";
-        foreach ($result as $row) {
+      # DELETED in tbl_routes
+      $query2 = $this->db->select(
+          '`tbl_routes`.`ID` as DOC_ID
+          ,`tbl_documents`.`DRN`
+          ,`tbl_documents`.`SUBJECT`
+          ,"ROUTES" AS "SOURCE"
+          ,CONCAT(`users`.`firstname`,\' \',`users`.`middlename`,\' \',`users`.`lastname`) AS \'DELETED_BY\'
+          ,`tbl_routes`.`DELETED_DATE` as DELETE_DATE')
+      ->from('`db_dms`.`tbl_routes`')
+      ->join('`db_dms`.`users`', '(`tbl_routes`.`DELETED_BY` = `users`.`user_id`)')
+      ->join('`db_dms`.`tbl_documents`', '(`tbl_routes`.`DOC_ID` = `tbl_documents`.`ID`)')
+      ->get();
+      $result2 = $query2->result();
 
+      # merge and sort (Desc) DATE DELETED
+      $result = array_merge($result1, $result2);
+      usort($result, function ($a, $b) {
+          return strtotime($b->DELETE_DATE) - strtotime($a->DELETE_DATE);
+      });
 
-            //PREPARE TABLE
-            $table_content .= "
-              <tr doc_id=$row->DOC_ID>
-                  <td>$row->DRN</td>
-                  <td>$row->SUBJECT</td>
-                  <td>$row->DELETE_DATE</td>
-                  <td>$row->DELETED_BY</td>
-                  <td>
-                    <button type=\"button\" class=\"btn btn-danger btn-xs\" id=\"restore-button\">
-                      <i class=\"fas fa-undo\" ></i> Restore
-                    </button>
-                    <button type=\"button\" class=\"btn btn-info btn-xs\" id=\"preview\">
-                      <i class=\"fas fa-eye\" ></i> View
-                    </button>
-                  </td>
+      # PREPARE TABLE
+      $table_content = "";
+      foreach ($result as $row) {
+          //PREPARE TABLE
+          $table_content .= "
+            <tr doc_id='$row->DOC_ID' src='$row->SOURCE'>
+                <td>$row->DRN</td>
+                <td>$row->SUBJECT</td>
+                <td>$row->DELETE_DATE</td>
+                <td>$row->DELETED_BY</td>
+                <td>$row->SOURCE</td>                
+                <td>
+                  <button type=\"button\" class=\"btn btn-danger btn-xs\" id=\"restore-button\">
+                    <i class=\"fas fa-undo\" ></i> Restore
+                  </button>
+                  <button type=\"button\" class=\"btn btn-info btn-xs\" id=\"preview\">
+                    <i class=\"fas fa-eye\" ></i> View
+                  </button>
+                </td>
 
-              </tr>
-            ";
-        }
-        return $table_content;
+            </tr>
+          ";
+      }
+      return $table_content;
 
         
     }
 
-    public function get_routed_documents_table_entries() {
-        $query = $this->db->select(
-                            "`tbl_routes`.`ID`
-                            ,`tbl_documents`.`DRN`
-                            ,`tbl_routes`.`GMAIL_MESSAGE_ID`
-                            ,`tbl_routes`.`SUBJECT`
-                            ,`tbl_routes`.`DATE_ROUTE`
-                            ,`tbl_rstatus`.`STATUS`
-                            ,`tbl_routes`.`RSTATUS`
-                            ,`tbl_routes`.`DOC_ID`
-                            ,`tbl_routes`.`FOLLOWUP_COUNT`
-                            ,`tbl_routes`.`REPLY_COUNT`
-                            , CONCAT(TIMESTAMPDIFF(DAY, DATE_ROUTE, NOW()),' day(s) ',TIMESTAMPDIFF(HOUR, DATE_ROUTE, NOW()) % 24,' hr(s)') as AGE
-                            , TIMESTAMPDIFF(DAY, DATE_ROUTE, NOW()) as 'DAY_DURATION'
-                            ")
-                            ->from('`db_dms`.`tbl_routes`')
-                            ->join('`db_dms`.`tbl_documents`', '(`tbl_routes`.`DOC_ID` = `tbl_documents`.`ID`)')
-                            ->join('`db_dms`.`tbl_rstatus`', '(`tbl_routes`.`RSTATUS` = `tbl_rstatus`.`ID`)')
-                            ->group_start()
-                            ->where('`tbl_routes`.`DELETED_BY`', NULL)
-                            ->group_end()
-                            ->get();
-        $result = $query->result();
-
-        $table_content = "";
-        $route_due = 0;
-        $route_count = $query->num_rows();
-        $route_responsed = 0;
-        foreach ($result as $row) {
-
-            $with_response = $this->Gmail_model->check_cache($row->GMAIL_MESSAGE_ID);
-            if ($row->REPLY_COUNT > 0) {
-              $route_responsed+=1;
-            }
-            if ($row->DAY_DURATION > 7) {
-                $route_due+=1;
-            }
+    private function get_routed_documents_table_row($row) {
 
             //FOLLOW-UP
             $follow_up_icon_color = "#FFFFFF"; 
@@ -108,9 +108,8 @@ class Dom_model extends CI_Model {
             }
 
             
-
-            //PREPARE TABLE
-            $table_content .= "
+            //PREPARE ROW
+            return "
               <tr doc_id=$row->DOC_ID message_id='$row->GMAIL_MESSAGE_ID'>
                   <td>$row->DRN</td>
                   <td>$row->SUBJECT</td>
@@ -133,9 +132,9 @@ class Dom_model extends CI_Model {
                         <a class='dropdown-item' href='#' id='btn_route_view_trend'><i class='fas fa-edit'></i> View Responses</a>
                         <a class='dropdown-item send_reply' href='#' id='btn_route_send_followup'><i class='fa fa-solid fa-feather' ></i> Send a followup response</a>
 
-                        <a class='dropdown-item' href='#' id='btn_route_check_replies'><i class='fas fa-route'></i> Check for response</a>
-                        <a class='dropdown-item' href='#' id='btn_route_mark_done'><i class='fas fa-route'></i> Mark Done</a>
-                        <a class='dropdown-item' href='#' id='btn_route_delete'><i class='fas fa-route' ></i> Delete</a>
+                        <a class='dropdown-item' href='#' id='btn_route_check_replies'><i class='fas fa-exclamation'></i> Check for response</a>
+                        <a class='dropdown-item' href='#' id='btn_route_mark_done'><i class='fas fa-check'></i> Mark Done</a>
+                        <a class='dropdown-item' href='#' id='btn_route_delete'><i class='fas fa-trash' ></i> Delete</a>
 
 
                       </div>
@@ -143,7 +142,36 @@ class Dom_model extends CI_Model {
 
                   </td>
               </tr>
-            ";
+            "; 
+
+
+    }
+
+    public function get_routed_documents_table_entry($message_id) {
+        $query = $this->Routing_model->fetch($message_id);
+        return $this->get_routed_documents_table_row($query->row());
+    }
+
+
+    public function get_routed_documents_table_entries() {
+        
+        $query = $this->Routing_model->fetch();
+        $result = $query->result();
+        $table_content = "";
+        $route_due = 0;
+        $route_count = $query->num_rows();
+        $route_responsed = 0;
+        foreach ($result as $row) {
+            // $with_response = $this->Gmail_model->check_cache($row->GMAIL_MESSAGE_ID);
+            if ($row->REPLY_COUNT > 0) {
+              $route_responsed+=1;
+            }
+            if ($row->DAY_DURATION > 7) {
+                $route_due+=1;
+            }
+
+            $table_content.=$this->get_routed_documents_table_row($row);
+
         }
         return (object) [
           'table_content'=>$table_content,
