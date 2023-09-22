@@ -3,24 +3,26 @@
 // require __DIR__ . '/../vendor/autoload.php';
 require 'C:/xampp/htdocs/ddis/application/libraries/vendor/autoload.php';
 
+// $clientSecret = "client.secret.pantawid.fo12@dswd.gov.ph.json";
+// $token = "token.pantawid.fo12@dswd.gov.ph.json";
+
+$clientSecret = "client.secret.aaquinones.fo12@dswd.gov.ph.json";
+$token = "token.aaquinones.fo12@dswd.gov.ph.json";
+
 $client = new Google_Client();
 $client->setApplicationName('Peoples API PHP');
-$client->setAuthConfig('aaquinones.fo12.dswd.gov.ph.auoth.client.json');
-// $client->setAuthConfig('alden.roxy.gmail.com.auoth.client.json');
-
+$client->setAuthConfig($clientSecret);
 
 $client->setAccessType('offline');
 $client->setPrompt('select_account consent');
 $client->setScopes(['https://www.googleapis.com/auth/contacts.readonly']);
 
-
-
-if (file_exists('token.json')) {
-    $accessToken = json_decode(file_get_contents('token.json'), true);
+if (file_exists($token)) {
+    $accessToken = json_decode(file_get_contents($token), true);
     if ($client->isAccessTokenExpired()) {
         $client->fetchAccessTokenWithRefreshToken($accessToken['refresh_token']);
         $accessToken = $client->getAccessToken();
-        file_put_contents('token.json', json_encode($accessToken));
+        file_put_contents($token, json_encode($accessToken));
     }
 } else {
     $authUrl = $client->createAuthUrl();
@@ -28,7 +30,7 @@ if (file_exists('token.json')) {
     print 'Enter verification code: ';
     $authCode = trim(fgets(STDIN));
     $accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
-    file_put_contents('token.json', json_encode($accessToken));
+    file_put_contents($token, json_encode($accessToken));
 }
 $client->setAccessToken($accessToken);
 $service = new Google_Service_Gmail($client);

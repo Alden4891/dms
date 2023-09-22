@@ -2,21 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 include_once APPPATH . "libraries/vendor/autoload.php";
 
-/*
-    # IN CONTROLLER
-    1. return using echo json_encode($your_php_array) 
-
-    # IN VIEW (JAVASCRIPT)
-    $.post("your_php_script.php", function (data) {
-      const javascriptArray = data.map((item) => ({
-        value: item.email,
-        text: item.display_name,
-      }));
-      console.log(javascriptArray);
-    });
-*/
-
-
 class Google_contacts_model extends CI_Model {
     
     private $google_client;
@@ -24,9 +9,13 @@ class Google_contacts_model extends CI_Model {
     public function __construct() {
         parent::__construct();
 
+
+        $client_secret = $this->config->item('contacts_client_secret');
+        $client_token = $this->config->item('contacts_token');
+
         $this->google_client = new Google_Client();
         $this->google_client->setApplicationName('APP NAME');
-        $this->google_client->setAuthConfig(FCPATH . 'assets/google/clients/aaquinones.fo12.dswd.gov.ph.auoth.client.json');
+        $this->google_client->setAuthConfig(FCPATH . 'assets/google/clients/contacts/' . $client_secret);
         $this->google_client->setAccessType('offline');
         $this->google_client->setPrompt('select_account consent');
 
@@ -36,7 +25,7 @@ class Google_contacts_model extends CI_Model {
         ]);
 
         // Load previously authorized credentials from a file.
-        $tokenPath = FCPATH . 'assets/google/clients/token.json';
+        $tokenPath = FCPATH . 'assets/google/clients/contacts/' . $client_token;
         if (file_exists($tokenPath)) {
             $accessToken = json_decode(file_get_contents($tokenPath), true);
             $this->google_client->setAccessToken($accessToken);

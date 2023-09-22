@@ -575,7 +575,15 @@ $(document).ready(function() {
         }
 
         // Show loading indicator
-        $('#form_object_container').html('<div id="loading_indicator" class="text-center"><img src="images/loading.gif" alt="Loading..." /></div>  ');
+        // $('#form_object_container').html('<div id="loading_indicator" class="text-center"><img src="images/loading.gif" alt="Loading..." /></div>  ');
+        swal.fire({
+          title: "Please wait...",
+          html: '<img src="' + base + 'assets/images/loading_gears.gif">',
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          allowEscapeKey: false
+        });
+
         $('#form_editor_remarks_container').addClass('invisible');
 
         //fetch data and objects; the timer is for testing only
@@ -594,6 +602,7 @@ $(document).ready(function() {
                         $('#form_object_container').html('');
                         $('#form_editor_remarks_container').addClass('invisible');
                         $('.attachment-container').addClass('invisible');
+                         swal.close();
                     }
                 },
                 error: function(data) {
@@ -608,13 +617,15 @@ $(document).ready(function() {
                     $('#DOC_TYPE').attr('curr-value', doctype);
                     $('.options-container').removeClass('invisible')
 
+                    swal.close();
+
                 },
                 complete: function() {
                     // Hide loading indicator
                     $('#form_editor_remarks_container').removeClass('loading');
                 }
             });
-        }, 100);
+        }, 300);
     });
 
     $(document).on('change', '#fe_drn', function(e) {

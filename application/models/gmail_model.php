@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // require_once APPPATH . 'libraries/google-api/vendor/autoload.php';
 include_once APPPATH . "libraries/vendor/autoload.php";
 
+
 class Gmail_model extends CI_Model {
 
     private $client;
@@ -12,9 +13,12 @@ class Gmail_model extends CI_Model {
     {
         parent::__construct();
 
+        $client_secret = $this->config->item('gmail_client_secret');
+        $client_token = $this->config->item('gmail_token');
+
         $this->client = new Google_Client();
         $this->client->setApplicationName('APP NAME');
-        $this->client->setAuthConfig(FCPATH . 'assets/google/clients/gmail/google-client-secret.json');
+        $this->client->setAuthConfig(FCPATH . 'assets/google/clients/gmail/' . $client_secret);
         $this->client->setAccessType('offline');
         $this->client->setPrompt('select_account consent');
 
@@ -24,7 +28,7 @@ class Gmail_model extends CI_Model {
         $this->client->addScope(Google_Service_Oauth2::USERINFO_EMAIL);
 
         // Load previously authorized credentials from a file.
-        $tokenPath = FCPATH . 'assets/google/clients/gmail/token_read_compose_modify.json';
+        $tokenPath = FCPATH . 'assets/google/clients/gmail/' . $client_token;
         if (file_exists($tokenPath)) {
             $accessToken = json_decode(file_get_contents($tokenPath), true);
             $this->client->setAccessToken($accessToken);
