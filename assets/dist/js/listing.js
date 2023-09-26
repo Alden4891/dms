@@ -282,7 +282,33 @@ $(document).ready(function() {
         
     });
 
-    
+    function convertTimeToHHMM(timeString) {
+      const parts = timeString.split(":"); // Split the time string by colon
+
+      if (parts.length >= 2) {
+        return `${parts[0]}:${parts[1]}`; // Extract hours and minutes
+      } else {
+        console.error("Invalid time format");
+        return null; // Return null for invalid input
+      }
+    }
+
+    function convertTo12HourFormat(timeString) {
+      const parts = timeString.split(':');
+      const hours = parseInt(parts[0], 10);
+      const minutes = parts[1];
+      let period = 'AM';
+
+      if (hours >= 12) {
+        period = 'PM';
+        if (hours > 12) {
+          hours -= 12;
+        }
+      }
+
+      return `${String(hours).padStart(2, '0')}:${minutes} ${period}`;
+    }
+
 
     // on edit document clicked
     $(document).on('click', '#btn_edit_entry', function() {
@@ -339,7 +365,10 @@ $(document).ready(function() {
                             $('#ID').val(obj_data.ID);
                             $('#DRN').val(obj_data.DRN);
                             $('#DATE_POSTED').val(obj_data.DATE_POSTED.split(' ')[0]);
-                            $('#TIME_POSTED').val(obj_data.DATE_POSTED.split(' ')[1]);
+                            // $('#TIME_POSTED').val(obj_data.DATE_POSTED);
+                            $('#TIME_POSTED').val(convertTimeToHHMM((obj_data.DATE_POSTED.split(' ')[1])));
+                            // $('#TIME_POSTED').val(convertTo12HourFormat(obj_data.DATE_POSTED.split(' ')[1]));
+                            console.log(convertTo12HourFormat(obj_data.DATE_POSTED.split(' ')[1]));
                             $('#OBSU').val(obj_data.OBSU);
                             $('#STATUS').val(obj_data.STATUS);
                             $('#SUBJECT').val(obj_data.SUBJECT);

@@ -8,6 +8,7 @@ class document extends CI_Controller {
     		if(!$this->session->userdata('user_id'))
     		redirect(site_url('user/login'), 'refresh');
 
+
     		$this->load->helper('url');
     		$this->load->model('Documents_model');
     		$this->load->model('Attachment_model');
@@ -244,7 +245,8 @@ class document extends CI_Controller {
 		        // Generate custom file name
 		        $extension = pathinfo($_FILES['attached-files']['name'], PATHINFO_EXTENSION);
 		        $org_filename = pathinfo($_FILES['attached-files']['name'], PATHINFO_BASENAME);
-		        $fileName = "doc_$doc_id"."_a" . '(' . ($i + 1) . ').' . $extension;
+		        // $fileName = "doc_$doc_id"."_a" . '(' . ($i + 1) . ').' . $extension;
+		        $fileName = uniqid("file-", false) . "-" . $doc_id . $extension;
 		        
 		        $config['file_name'] = $fileName;
 
