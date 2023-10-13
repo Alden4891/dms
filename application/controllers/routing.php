@@ -74,8 +74,10 @@ class routing extends CI_Controller {
 
     public function get_trend_viewer_data($message_id){
 
-        //LOAD TRENDS
-       
+        // If the value is not already an array, convert it to an array
+        // if (!is_array($value)) {
+        //         $value = [$value];
+        // }
         $trend_data = $this->Routing_model->get_trend_responses($message_id);
         $route_data = $this->Routing_model->get_route_info($message_id);
         $resposes   = $trend_data ['response'];

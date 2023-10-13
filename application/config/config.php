@@ -552,8 +552,11 @@ date_default_timezone_set('Asia/Manila');
 $config['ldap_server'] = '172.16.10.10';
 
 #mail authentication
-$config['gmail_client_secret']    = "client.secret.pantawid.fo12@dswd.gov.ph.json";
-$config['gmail_token']            = "token.pantawid.fo12@dswd.gov.ph.json";
+// $config['gmail_client_secret']    = "client.secret.pantawid.fo12@dswd.gov.ph.json";
+// $config['gmail_token']            = "token.pantawid.fo12@dswd.gov.ph.json";
+$config['gmail_client_secret']    = "client.secret.aaquinones.fo12@dswd.gov.ph.json";
+$config['gmail_token']            = "token.aaquinones.fo12@dswd.gov.ph.json";
+
 
 #contacts authentication
 $config['contacts_client_secret'] = "client.secret.pantawid.fo12@dswd.gov.ph.json";

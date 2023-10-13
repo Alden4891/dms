@@ -80,7 +80,7 @@ function formatDateTime(inputString, day_offset = 0) {
 			        $.ajax(base + 'routing/force_update/'+message_id, {
 			            type: "POST",
 			            error: function(data) {
-			                console.log(data);
+			                // console.log(data);
 
 			                Swal.fire({
 			                  icon: 'error',
@@ -152,7 +152,7 @@ function formatDateTime(inputString, day_offset = 0) {
 			        $.ajax(base + 'routing/force_update_all', {
 			            type: "POST",
 			            error: function(data) {
-			                console.log(data);
+			                // console.log(data);
 
 			                Swal.fire({
 			                  icon: 'error',
@@ -208,7 +208,7 @@ function formatDateTime(inputString, day_offset = 0) {
 	        $.ajax(base + 'routing/get_trend_viewer_data/' + message_id, {
 	            type: "POST",
 	            error: function(data) {
-	                console.log(data);
+	                // console.log(data);
 
 	                Swal.fire({
 	                  icon: 'error',
@@ -220,7 +220,7 @@ function formatDateTime(inputString, day_offset = 0) {
 	            },
 	            success: function(attachment_data) {
 	                var ohtx = jQuery.parseJSON(attachment_data);
-	                console.log(ohtx.timeline);
+	                // console.log(ohtx.timeline);
 
 	                $('.timeline-container').html(ohtx.timeline);
 	                $('.timeline-container').html(ohtx.timeline);
@@ -251,7 +251,7 @@ function formatDateTime(inputString, day_offset = 0) {
     $.ajax(base + 'routing/close/' + message_id, {
         type: "POST",
         error: function(data) {
-            console.log(data);
+            // console.log(data);
 
             Swal.fire({
               icon: 'error',
@@ -368,7 +368,7 @@ function formatDateTime(inputString, day_offset = 0) {
 			                      editor = ckEditor; // Store the editor instance
 			                  })
 			                  .catch(error => {
-			                      console.error(error);
+			                      // console.error(error);
 			                  });
 			          },
 			          onClose: function () {
@@ -428,7 +428,7 @@ function formatDateTime(inputString, day_offset = 0) {
 
 
 			          } else if (result.dismiss === Swal.DismissReason.cancel) {
-			              console.log("Cancelled");
+			              // console.log("Cancelled");
 			          }
 			      });
 			      // Unbind the click event from the "Open Editor" button to avoid multiple bindings
@@ -487,7 +487,7 @@ function formatDateTime(inputString, day_offset = 0) {
 
                 },
                 error: function(xhr, status, error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             });
 

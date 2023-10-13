@@ -37,7 +37,6 @@ $( document ).ready(function() {
         preload: true, // Preload options to improve performance
         onChange: function(value) {
             // Your real-time update logic goes here
-            // console.log("Selected values:", value);
         },
         plugins: {
             remove_button: {
@@ -163,7 +162,6 @@ $( document ).ready(function() {
                   text: 'An error has occurred!',
                   footer: 'Please contact <a href="">aaquinones.fo12@dswd.gov.ph</a>'
                 })
-                console.log(data);
               },
               success: function (data) {
                 var send_mail_result = jQuery.parseJSON(data);

@@ -6,13 +6,31 @@ class Attachment_model extends CI_Model {
         $this->load->model('Documents_model');
     }
 
+    // public function get_instance($file_id) {
+    //     $data = $this->Documents_model->get_file_details($file_id);
+    //     header('Content-type: '. $data->mime_type);
+    //     header('Content-Disposition: inline; filename="' . basename($data->org_filename) . '"');
+    //     header('Content-Transfer-Encoding: binary');
+    //     header('Accept-Ranges: bytes');
+    //     readfile(site_url("uploads/$data->filename"));
+    // }
+
     public function get_instance($file_id) {
         $data = $this->Documents_model->get_file_details($file_id);
-        header('Content-type: '. $data->mime_type);
+        header('Content-type: ' . $data->mime_type);
         header('Content-Disposition: inline; filename="' . basename($data->org_filename) . '"');
         header('Content-Transfer-Encoding: binary');
         header('Accept-Ranges: bytes');
-        readfile(site_url("uploads/$data->filename"));
+        
+        // Disable SSL certificate verification for this specific request
+        $context = stream_context_create(array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+            ),
+        ));
+
+        readfile(site_url("uploads/$data->filename"), false, $context);
     }
 
     public function delete($file_id){

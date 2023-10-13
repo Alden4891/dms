@@ -51,30 +51,30 @@ class Routing_model extends CI_Model {
         return $is_success;
     }
 
-    // public function get_trend_responses($message_id){
-    //     //18a45215b0bc153e
+    public function get_trend_responses($message_id){
+        //18a45215b0bc153e
 
-    //     $json_path=FCPATH."cache/gmail_responses/$message_id.json";
+        $json_path=FCPATH."cache/gmail_responses/$message_id.json";
 
-    //     // LOAD CACHE IF EXISTS
-    //     $cache_date = new DateTime("1900-01-01 12:00:00"); //initialize datetime 
-    //     $currentDate = new DateTime();
-    //     $response_data = array();
-    //     if (file_exists($json_path)) {
-    //         $jsonData = file_get_contents($json_path);
-    //         $response_data = json_decode($jsonData, true); 
-    //         $cache_date = new DateTime($response_data['date']);
-    //     }
-    //     $interval = $currentDate->diff($cache_date);
-    //     $hoursDifference = $interval->h + $interval->days * 24;
+        // LOAD CACHE IF EXISTS
+        $cache_date = new DateTime("1900-01-01 12:00:00"); //initialize datetime 
+        $currentDate = new DateTime();
+        $response_data = array();
+        if (file_exists($json_path)) {
+            $jsonData = file_get_contents($json_path);
+            $response_data = json_decode($jsonData, true); 
+            $cache_date = new DateTime($response_data['date']);
+        }
+        $interval = $currentDate->diff($cache_date);
+        $hoursDifference = $interval->h + $interval->days * 24;
 
-    //     if ($hoursDifference >= 3) {
-    //         $response_data['response'] = $this->Gmail_model->get_email_by_threadID($message_id);
-    //         $response_data['date'] =  date('Y-m-d H:i:s');
-    //         file_put_contents($json_path, json_encode($response_data, JSON_PRETTY_PRINT));   
-    //     }  
-    //     return $response_data; 
-    // }
+        if ($hoursDifference >= 3) {
+            $response_data['response'] = $this->Gmail_model->get_email_by_threadID($message_id);
+            $response_data['date'] =  date('Y-m-d H:i:s');
+            file_put_contents($json_path, json_encode($response_data, JSON_PRETTY_PRINT));   
+        }  
+        return $response_data; 
+    }
 
     public function get_route_info($message_id){
         // Define the query to retrieve data
