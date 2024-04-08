@@ -111,6 +111,10 @@
               </div>
             </div>
             <div class="col-12 col-md-12 col-lg-3 order-1 order-md-2">
+              <div class="text-center mt-5 mb-3">
+                <a href="#" class="btn btn-sm btn-primary" id="btn_upload_document">NEW DOCUMENT</a>
+                <!-- <a href="#" class="btn btn-sm btn-warning">Report contact</a> -->
+              </div>
               <h3 class="text-primary"><i class="fas fa-paint-brush"></i>Note:</h3>
               <p class="text-muted">
                 Please note that the following list consists of indexes of documents. To search for a specific document, please use the search box located at the upper-right corner of the table.</p>
@@ -180,10 +184,7 @@
 
 
               </ul>
-              <div class="text-center mt-5 mb-3">
-                <a href="#" class="btn btn-sm btn-primary" id="btn_upload_document">NEW DOCUMENT</a>
-                <!-- <a href="#" class="btn btn-sm btn-warning">Report contact</a> -->
-              </div>
+
             </div>
           </div>
         </div>

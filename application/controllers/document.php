@@ -246,7 +246,7 @@ class document extends CI_Controller {
 		        $extension = pathinfo($_FILES['attached-files']['name'], PATHINFO_EXTENSION);
 		        $org_filename = pathinfo($_FILES['attached-files']['name'], PATHINFO_BASENAME);
 		        // $fileName = "doc_$doc_id"."_a" . '(' . ($i + 1) . ').' . $extension;
-		        $fileName = uniqid("file-", false) . "-" . $doc_id . $extension;
+		        $fileName = uniqid("file-", false) . "-" . $doc_id .".". $extension;
 		        
 		        $config['file_name'] = $fileName;
 

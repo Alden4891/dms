@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // $config['base_assets'] = 'http://localhost/dms/assets/';
 
 
-$config['base_url'] = '';
+$config['base_url'] = 'https://'.$_SERVER['SERVER_ADDR'].':8081';
 $config['base_assets'] = '';
 
 
@@ -549,7 +549,8 @@ $config['proxy_ips'] = '';
 */
 
 date_default_timezone_set('Asia/Manila');
-$config['ldap_server'] = '172.16.10.10';
+//$config['ldap_server'] = '172.16.10.10';
+$config['ldap_server'] = 'ENTDSWD.LOCAL';
 
 #mail authentication
 // $config['gmail_client_secret']    = "client.secret.pantawid.fo12@dswd.gov.ph.json";
